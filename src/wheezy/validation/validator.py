@@ -2,6 +2,9 @@
 """ ``validator`` module.
 """
 
+from wheezy.validation.comp import iteritems
+from wheezy.validation.comp import iterkeys
+
 
 class Validator(object):
     """
@@ -21,7 +24,7 @@ class Validator(object):
         """
         assert mapping
         if klass:
-            for name in mapping.iterkeys():
+            for name in iterkeys(mapping):
                 assert hasattr(klass, name)
         self.mapping = mapping
 
@@ -65,7 +68,7 @@ class Validator(object):
             {}
         """
         succeed = True
-        for (name, rules) in self.mapping.iteritems():
+        for (name, rules) in iteritems(self.mapping):
             value = getattr(model, name)
             result = []
             for rule in rules:
