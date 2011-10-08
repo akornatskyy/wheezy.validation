@@ -4,11 +4,24 @@
 
 
 class Validator(object):
-
+    """
+    """
     def __init__(self, mapping, klass=None):
+        """
+            If ``klass`` is supplied than mapping is checked
+            against available attributes.
+
+            >>> class User(object):
+            ...     name = None
+            >>> from wheezy.validation.rules import required
+            >>> user_validator = Validator({
+            ...	    'name': [required]
+            ... }, User)
+            >>> assert user_validator
+        """
         assert mapping
         if klass:
-            for name in self.mapping.iterkeys():
+            for name in mapping.iterkeys():
                 assert hasattr(klass, name)
         self.mapping = mapping
 
