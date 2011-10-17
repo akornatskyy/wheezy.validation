@@ -44,7 +44,8 @@ class Validator(object):
             ...	    'name': [required, length(min=4)]
             ... })
 
-            Let validate user.
+            Let validate user. By default validation stops on fist
+            fail.
 
             >>> results = {}
             >>> v.validate(user, results)
@@ -57,6 +58,17 @@ class Validator(object):
             False
             >>> results
             {'name': [('validation_length_min', {'min': 4})]}
+
+            However you can get all fails by settings optional
+            ``stop`` to ``False``.
+
+            >>> user.name = ''
+            >>> results = {}
+            >>> v.validate(user, results, stop=False)
+            False
+            >>> results # doctest: +NORMALIZE_WHITESPACE
+            {'name': ['validation_required',
+                ('validation_length_min', {'min': 4})]}
 
             Validation succeed
 
