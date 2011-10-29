@@ -5,7 +5,7 @@
 from decimal import Decimal
 
 
-CONVERTERS = {
+value_providers = {
     'str': str,
     'int': int,
     'Decimal': Decimal,
@@ -32,20 +32,36 @@ def try_update_model(model, values, results):
         'abc'
         >>> user.balance
         Decimal('0.1')
+        >>> user.age
+        33
 
-        >>> #from timeit import timeit
-        >>> #timeit(lambda: try_update_model(user, values,
-        ... #    results), number=100000)
+        Invalid values:
+
+        >>> values = {'balance': ['x'], 'age': ['x']}
+        >>> user = User()
+        >>> try_update_model(user, values, results)
+        False
+        >>> results['balance']
+        ['invalid_value']
+        >>> user.balance
+        Decimal('0')
+        >>> results['age']
+        ['invalid_value']
+        >>> user.age
+        0
     """
+    succeed = True
     for name in model.__dict__:
         attr = getattr(model, name)
-        converter = CONVERTERS[type(attr).__name__]
-        if converter:
-            value = values[name]
-            try:
-                value = converter(value[-1])
-            except ArithmeticError:
-                results[name] = ['invalid_value']
-            else:
-                setattr(model, name, value)
-    return True
+        provider = value_providers.get(type(attr).__name__, None)
+        if provider:
+            value = values.get(name, None)
+            if value is not None:
+                try:
+                    value = provider(value[-1])
+                except (ArithmeticError, ValueError):
+                    results[name] = ['invalid_value']
+                    succeed = False
+                else:
+                    setattr(model, name, value)
+    return succeed
