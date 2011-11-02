@@ -4,6 +4,8 @@
 
 from decimal import Decimal
 
+from wheezy.validation.comp import null_translations
+
 
 value_providers = {
     'str': str,
@@ -15,7 +17,7 @@ value_providers = {
 }
 
 
-def try_update_model(model, values, results):
+def try_update_model(model, values, results, translations=None):
     """
         >>> class User(object):
         ...     def __init__(self):
@@ -41,26 +43,31 @@ def try_update_model(model, values, results):
         >>> user = User()
         >>> try_update_model(user, values, results)
         False
-        >>> results['balance']
-        ['invalid_value']
+        >>> len(results['balance'])
+        1
         >>> user.balance
         Decimal('0')
-        >>> results['age']
-        ['invalid_value']
+        >>> len(results['age'])
+        1
         >>> user.age
         0
     """
+    if translations is None:
+        translations = null_translations
+    ugettext = translations.ugettext
     succeed = True
     for name in model.__dict__:
         attr = getattr(model, name)
-        provider = value_providers.get(type(attr).__name__, None)
-        if provider:
+        value_provider = value_providers.get(type(attr).__name__, None)
+        if value_provider:
             value = values.get(name, None)
             if value is not None:
                 try:
-                    value = provider(value[-1])
+                    value = value[-1]
+                    value = value_provider(value)
                 except (ArithmeticError, ValueError):
-                    results[name] = ['invalid_value']
+                    results[name] = [ugettext(
+                        "The value '%s' is invalid." % value)]
                     succeed = False
                 else:
                     setattr(model, name, value)
