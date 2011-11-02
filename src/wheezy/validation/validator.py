@@ -2,33 +2,22 @@
 """ ``validator`` module.
 """
 
+from gettext import NullTranslations
+
 from wheezy.validation.comp import iteritems
 from wheezy.validation.comp import iterkeys
+
+
+null_translations = NullTranslations()
 
 
 class Validator(object):
     """
     """
-    def __init__(self, mapping, klass=None):
-        """
-            If ``klass`` is supplied than mapping is checked
-            against available attributes.
-
-            >>> class User(object):
-            ...     name = None
-            >>> from wheezy.validation.rules import required
-            >>> user_validator = Validator({
-            ...	    'name': [required]
-            ... }, User)
-            >>> assert user_validator
-        """
-        assert mapping
-        if klass:
-            for name in iterkeys(mapping):
-                assert hasattr(klass, name)
+    def __init__(self, mapping):
         self.mapping = mapping
 
-    def validate(self, model, results, stop=True):
+    def validate(self, model, results, stop=True, translations=None):
         """
             Here is a class and object we are going to validate.
 
@@ -50,14 +39,16 @@ class Validator(object):
             >>> results = {}
             >>> v.validate(user, results)
             False
-            >>> results
-            {'name': ['validation_required']}
+            >>> len(results['name'])
+            1
+
             >>> user.name = 'abc'
             >>> results = {}
             >>> v.validate(user, results)
             False
-            >>> results
-            {'name': [('validation_length_min', {'min': 4})]}
+
+            >>> len(results['name'])
+            1
 
             However you can get all fails by settings optional
             ``stop`` to ``False``.
@@ -66,9 +57,8 @@ class Validator(object):
             >>> results = {}
             >>> v.validate(user, results, stop=False)
             False
-            >>> results # doctest: +NORMALIZE_WHITESPACE
-            {'name': ['validation_required',
-                ('validation_length_min', {'min': 4})]}
+            >>> len(results['name']) # doctest: +NORMALIZE_WHITESPACE
+            2
 
             Validation succeed
 
@@ -79,12 +69,16 @@ class Validator(object):
             >>> results
             {}
         """
+        if translations is None:
+            translations = null_translations
+        ugettext = translations.ugettext
         succeed = True
         for (name, rules) in iteritems(self.mapping):
             value = getattr(model, name)
             result = []
             for rule in rules:
-                rule_succeed = rule.validate(value, name, model, result)
+                rule_succeed = rule.validate(value, name, model,
+                        result, ugettext)
                 succeed &= rule_succeed
                 if not rule_succeed and stop:
                     break
