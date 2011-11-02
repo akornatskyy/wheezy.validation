@@ -2,13 +2,9 @@
 """ ``validator`` module.
 """
 
-from gettext import NullTranslations
-
 from wheezy.validation.comp import iteritems
 from wheezy.validation.comp import iterkeys
-
-
-null_translations = NullTranslations()
+from wheezy.validation.comp import null_translations
 
 
 class Validator(object):
@@ -57,7 +53,7 @@ class Validator(object):
             >>> results = {}
             >>> v.validate(user, results, stop=False)
             False
-            >>> len(results['name']) # doctest: +NORMALIZE_WHITESPACE
+            >>> len(results['name'])
             2
 
             Validation succeed
