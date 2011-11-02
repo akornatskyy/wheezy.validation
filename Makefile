@@ -1,5 +1,5 @@
-.SILENT: clean env doc release test
-.PHONY: clean env doc release test
+.SILENT: clean env doc release test po
+.PHONY: clean env doc release test po
 
 VERSION=2.6
 PYTHON=env/bin/python$(VERSION)
@@ -60,3 +60,13 @@ doc:
 
 test-demos:
 	$(PYTEST) -q -x --pep8 demos/
+
+po:
+	xgettext --join-existing --sort-by-file --omit-header \
+		-o i18n/validation.po src/wheezy/validation/*.py
+	cp i18n/validation.po i18n/en/LC_MESSAGES
+	for l in `ls --hide *.po i18n`; do \
+		echo -n "$$l => "; \
+		msgfmt -v i18n/$$l/LC_MESSAGES/validation.po \
+			-o i18n/$$l/LC_MESSAGES/validation.mo; \
+	done
