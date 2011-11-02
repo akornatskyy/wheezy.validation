@@ -15,3 +15,7 @@ else:  # pragma: nocover
     iterkeys = lambda d: d.iterkeys()
     iteritems = lambda d: d.iteritems()
     copyitems = lambda d: d.items()
+
+
+from gettext import NullTranslations
+null_translations = NullTranslations()
