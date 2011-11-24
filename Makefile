@@ -8,7 +8,7 @@ PYTHON=env/bin/python$(VERSION)
 EASY_INSTALL=env/bin/easy_install-$(VERSION)
 PYTEST=env/bin/py.test-$(VERSION)
 NOSE=env/bin/nosetests-$(VERSION)
-SPHINX=env/bin/sphinx-build
+SPHINX=/usr/bin/python /usr/bin/sphinx-build
 
 all: clean po doctest-cover test release
 
@@ -34,7 +34,8 @@ env:
 	# The following packages available for python < 3.0
 	#if [ "$$(echo $(VERSION) | sed 's/\.//')" -lt 30 ]; then \
 	#	$(EASY_INSTALL) sphinx; \
-	#fi;\
+	#fi
+	$(PYTHON) setup.py develop -i $(PYPI)
 
 clean:
 	find src/ -type d -name __pycache__ | xargs rm -rf
