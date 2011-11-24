@@ -9,6 +9,7 @@ from wheezy.validation.comp import null_translations
 
 value_providers = {
     'str': str,
+    'unicode': lambda s: s.decode('utf-8'),
     'int': int,
     'Decimal': Decimal,
     'bool': bool,

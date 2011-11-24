@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/wheezy/validation/model.py:70
+#: src/wheezy/validation/model.py:71
 #, python-format
 msgid "The value '%s' is invalid."
 msgstr "The value '%s' is invalid."
