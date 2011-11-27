@@ -21,7 +21,7 @@ class RequiredRule(object):
         """
         return RequiredRule(message_template)
 
-    def validate(self, value, name, model, result, ugettext):
+    def validate(self, value, name, model, result, gettext):
         """
             If ``value`` is evaluated to ``False`` than it cause
             this rule to fail.
@@ -47,7 +47,7 @@ class RequiredRule(object):
             >>> assert isinstance(required, RequiredRule)
         """
         if not value:
-            result.append(ugettext(self.message_template))
+            result.append(gettext(self.message_template))
             return False
         return True
 
@@ -92,32 +92,32 @@ class LengthRule(object):
             else:
                 self.check = self.succeed
 
-    def succeed(self, value, name, model, result, ugettext):
+    def succeed(self, value, name, model, result, gettext):
         return True
 
-    def check_min(self, value, name, model, result, ugettext):
+    def check_min(self, value, name, model, result, gettext):
         if len(value) < self.min:
-            result.append(ugettext(self.message_template)
+            result.append(gettext(self.message_template)
                     % {'min': self.min})
             return False
         return True
 
-    def check_max(self, value, name, model, result, ugettext):
+    def check_max(self, value, name, model, result, gettext):
         if len(value) > self.max:
-            result.append(ugettext(self.message_template)
+            result.append(gettext(self.message_template)
                     % {'max': self.max})
             return False
         return True
 
-    def check(self, value, name, model, result, ugettext):
+    def check(self, value, name, model, result, gettext):
         l = len(value)
         if l < self.min or l > self.max:
-            result.append(ugettext(self.message_template)
+            result.append(gettext(self.message_template)
                     % {'min': self.min, 'max': self.max})
             return False
         return True
 
-    def validate(self, value, name, model, result, ugettext):
+    def validate(self, value, name, model, result, gettext):
         """
             >>> r = LengthRule()
 
@@ -191,7 +191,7 @@ class LengthRule(object):
             >>> assert length is LengthRule
         """
         return value is None or self.check(value, name, model,
-                result, ugettext)
+                result, gettext)
 
 
 length = LengthRule

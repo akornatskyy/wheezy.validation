@@ -19,3 +19,8 @@ else:  # pragma: nocover
 
 from gettext import NullTranslations
 null_translations = NullTranslations()
+
+if PY3:  # pragma: nocover
+    ref_gettext = lambda t: t.gettext
+else:  # pragma: nocover
+    ref_gettext = lambda t: t.ugettext

@@ -4,7 +4,9 @@
 
 from decimal import Decimal
 
+from wheezy.validation.comp import PY3
 from wheezy.validation.comp import null_translations
+from wheezy.validation.comp import ref_gettext
 
 
 value_providers = {
@@ -13,9 +15,12 @@ value_providers = {
     'int': int,
     'Decimal': Decimal,
     'bool': bool,
-    'long': long,
     'float': float
 }
+
+
+if not PY3:  # pragma: nocover
+    value_providers['long'] = long
 
 
 def try_update_model(model, values, results, translations=None):
@@ -53,7 +58,7 @@ def try_update_model(model, values, results, translations=None):
     """
     if translations is None:
         translations = null_translations
-    ugettext = translations.ugettext
+    gettext = ref_gettext(translations)
     succeed = True
     for name in model.__dict__:
         attr = getattr(model, name)
@@ -65,7 +70,7 @@ def try_update_model(model, values, results, translations=None):
                     value = value[-1]
                     value = value_provider(value)
                 except (ArithmeticError, ValueError):
-                    results[name] = [ugettext(
+                    results[name] = [gettext(
                         "The value '%s' is invalid." % value)]
                     succeed = False
                 else:

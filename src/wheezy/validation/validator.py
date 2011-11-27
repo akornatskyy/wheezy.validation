@@ -5,6 +5,7 @@
 from wheezy.validation.comp import iteritems
 from wheezy.validation.comp import iterkeys
 from wheezy.validation.comp import null_translations
+from wheezy.validation.comp import ref_gettext
 
 
 class Validator(object):
@@ -67,14 +68,14 @@ class Validator(object):
         """
         if translations is None:
             translations = null_translations
-        ugettext = translations.ugettext
+        gettext = ref_gettext(translations)
         succeed = True
         for (name, rules) in iteritems(self.mapping):
             value = getattr(model, name)
             result = []
             for rule in rules:
                 rule_succeed = rule.validate(value, name, model,
-                        result, ugettext)
+                        result, gettext)
                 succeed &= rule_succeed
                 if not rule_succeed and stop:
                     break
