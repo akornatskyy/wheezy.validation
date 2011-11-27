@@ -33,8 +33,7 @@ def try_update_model(model, values, results, translations=None):
         True
         >>> user.name
         'abc'
-        >>> user.balance
-        Decimal('0.1')
+        >>> assert Decimal('0.1') == user.balance
         >>> user.age
         33
 
@@ -46,8 +45,7 @@ def try_update_model(model, values, results, translations=None):
         False
         >>> len(results['balance'])
         1
-        >>> user.balance
-        Decimal('0')
+        >>> assert Decimal(0) == user.balance
         >>> len(results['age'])
         1
         >>> user.age
