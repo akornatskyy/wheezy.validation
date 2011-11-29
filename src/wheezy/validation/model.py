@@ -25,13 +25,15 @@ if not PY3:  # pragma: nocover
 
 def try_update_model(model, values, results, translations=None):
     """
+        ``values`` - a dict of lists or strings
+
         >>> class User(object):
         ...     def __init__(self):
         ...         self.name = ''
         ...         self.age = 0
         ...         self.balance = Decimal(0)
         >>> user = User()
-        >>> values = {'name': ['abc'], 'balance': ['0.1'],
+        >>> values = {'name': 'abc', 'balance': ['0.1'],
         ...     'age': [33]}
         >>> results = {}
         >>> try_update_model(user, values, results)
@@ -62,17 +64,20 @@ def try_update_model(model, values, results, translations=None):
     succeed = True
     for name in model.__dict__:
         attr = getattr(model, name)
-        value_provider = value_providers.get(type(attr).__name__, None)
-        if value_provider:
-            value = values.get(name, None)
-            if value is not None:
-                try:
+        provider_name = type(attr).__name__
+        try:
+            value_provider = value_providers[provider_name]
+            value = values[name]
+            try:
+                if isinstance(value, list):
                     value = value[-1]
-                    value = value_provider(value)
-                except (ArithmeticError, ValueError):
-                    results[name] = [gettext(
-                        "The value '%s' is invalid." % value)]
-                    succeed = False
-                else:
-                    setattr(model, name, value)
+                value = value_provider(value)
+            except (ArithmeticError, ValueError):
+                results[name] = [gettext(
+                    "The value '%s' is invalid." % value)]
+                succeed = False
+            else:
+                setattr(model, name, value)
+        except KeyError:
+            pass
     return succeed

@@ -38,7 +38,6 @@ class Validator(object):
             False
             >>> len(results['name'])
             1
-
             >>> user.name = 'abc'
             >>> results = {}
             >>> v.validate(user, results)
