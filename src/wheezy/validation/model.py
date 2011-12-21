@@ -4,7 +4,6 @@
 
 from decimal import Decimal
 
-from wheezy.validation.comp import PY3
 from wheezy.validation.comp import null_translations
 from wheezy.validation.comp import ref_gettext
 
@@ -17,10 +16,6 @@ value_providers = {
     'bool': bool,
     'float': float
 }
-
-
-if not PY3:  # pragma: nocover
-    value_providers['long'] = long
 
 
 def try_update_model(model, values, results, translations=None):
@@ -44,6 +39,16 @@ def try_update_model(model, values, results, translations=None):
         >>> user.age
         33
 
+        ``model`` can be dict.
+
+        >>> user = {'name': '', 'age': 0}
+        >>> try_update_model(user, values, results)
+        True
+        >>> user['name']
+        'abc'
+        >>> user['age']
+        33
+
         Invalid values:
 
         >>> values = {'balance': ['x'], 'age': ['x']}
@@ -61,9 +66,18 @@ def try_update_model(model, values, results, translations=None):
     if translations is None:
         translations = null_translations
     gettext = ref_gettext(translations)
+    if hasattr(model, '__iter__'):
+        attribute_names = model
+        model_type = type(model)
+        getter = model_type.__getitem__
+        setter = model_type.__setitem__
+    else:
+        attribute_names = model.__dict__
+        getter = getattr
+        setter = setattr
     succeed = True
-    for name in model.__dict__:
-        attr = getattr(model, name)
+    for name in attribute_names:
+        attr = getter(model, name)
         provider_name = type(attr).__name__
         try:
             value_provider = value_providers[provider_name]
@@ -77,7 +91,7 @@ def try_update_model(model, values, results, translations=None):
                     "The value '%s' is invalid." % value)]
                 succeed = False
             else:
-                setattr(model, name, value)
+                setter(model, name, value)
         except KeyError:
             pass
     return succeed

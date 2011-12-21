@@ -64,13 +64,25 @@ class Validator(object):
             True
             >>> results
             {}
+
+            Validatable can be a dict.
+
+            >>> user = {'name': None}
+            >>> results = {}
+            >>> v.validate(user, results)
+            False
         """
         if translations is None:
             translations = null_translations
         gettext = ref_gettext(translations)
         succeed = True
+        # if model is a dict
+        if hasattr(model, '__iter__'):
+            getter = type(model).__getitem__
+        else:
+            getter = getattr
         for (name, rules) in iteritems(self.mapping):
-            value = getattr(model, name)
+            value = getter(model, name)
             result = []
             for rule in rules:
                 rule_succeed = rule.validate(value, name, model,
