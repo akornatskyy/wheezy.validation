@@ -6,6 +6,7 @@ from wheezy.validation.comp import iteritems
 from wheezy.validation.comp import iterkeys
 from wheezy.validation.comp import null_translations
 from wheezy.validation.comp import ref_gettext
+from wheezy.validation.comp import ref_getter
 
 
 class Validator(object):
@@ -76,11 +77,7 @@ class Validator(object):
             translations = null_translations
         gettext = ref_gettext(translations)
         succeed = True
-        # if model is a dict
-        if hasattr(model, '__iter__'):
-            getter = type(model).__getitem__
-        else:
-            getter = getattr
+        getter = ref_getter(model)
         for (name, rules) in iteritems(self.mapping):
             value = getter(model, name)
             result = []

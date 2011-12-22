@@ -24,3 +24,11 @@ if PY3:  # pragma: nocover
     ref_gettext = lambda t: t.gettext
 else:  # pragma: nocover
     ref_gettext = lambda t: t.ugettext
+
+
+def ref_getter(model):
+    # if model is a dict
+    if hasattr(model, '__iter__'):
+        return type(model).__getitem__
+    else:
+        return getattr

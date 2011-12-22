@@ -2,6 +2,9 @@
 """ ``rules`` module.
 """
 
+from wheezy.validation.comp import ref_getter
+
+
 _ = lambda s: s
 
 
@@ -195,3 +198,61 @@ class LengthRule(object):
 
 
 length = LengthRule
+
+
+class CompareRule(object):
+
+    def __init__(self, equal=None, message_template=None):
+        """
+            Initialization selects the most appropriate validation
+            strategy.
+
+            >>> r = CompareRule(equal='confirm_password')
+            >>> assert r.check == r.check_equal
+        """
+        if equal:
+            self.comparand = equal
+            self.check = self.check_equal
+            self.message_template = message_template or _(
+                    'The value failed equality comparison'
+                    ' with "%(comparand)s".')
+
+    def check(self, value, name, model, result, gettext):
+        return True
+
+    def check_equal(self, value, name, model, result, gettext):
+        getter = ref_getter(model)
+        comparand_value = getter(model, self.comparand)
+        if value != comparand_value:
+            result.append(gettext(self.message_template)
+                    % {'comparand': self.comparand})
+            return False
+        return True
+
+    def validate(self, value, name, model, result, gettext):
+        """
+            No any comparer selected
+
+            >>> r = CompareRule()
+            >>> r.validate('abc', None, None, None, _)
+            True
+
+            ``check_equal`` strategy succeed.
+
+            >>> result = []
+            >>> r = CompareRule(equal='confirm_password')
+            >>> model = {
+            ...         'confirm_password': 'x'
+            ... }
+            >>> r.validate('x', None, model, result, _)
+            True
+
+            ``check_equal`` strategy fails.
+
+            >>> result = []
+            >>> r.validate('z', None, model, result, _)
+            False
+        """
+        return self.check(value, None, model, result, gettext)
+
+compare = CompareRule
