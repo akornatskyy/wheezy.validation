@@ -38,7 +38,7 @@ setup(
         'Topic :: Utilities'
     ],
     keywords = [
-        'validation'
+        'validation rules model'
     ],
     packages = ['wheezy', 'wheezy.validation'],
     package_dir = {'': 'src'},
@@ -49,7 +49,6 @@ setup(
     ],
     extras_require = {
         'dev': [
-            'wsgiref',
             'coverage',
             'nose',
             'pytest',
