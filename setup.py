@@ -10,17 +10,17 @@ except:
 README = open(os.path.join(os.path.dirname(__file__), 'README')).read()
 
 setup(
-    name = 'wheezy.validation',
-    version = '0.1',
-    description = 'A lightweight object validation library',
-    long_description = README,
-    url = 'https://bitbucket.org/akorn/wheezy.validation',
+    name='wheezy.validation',
+    version='0.1',
+    description='A lightweight object validation library',
+    long_description=README,
+    url='https://bitbucket.org/akorn/wheezy.validation',
 
-    author = 'Andriy Kornatskyy',
-    author_email = 'andriy.kornatskyy at live.com',
+    author='Andriy Kornatskyy',
+    author_email='andriy.kornatskyy at live.com',
 
-    license = 'MIT',
-    classifiers = [
+    license='MIT',
+    classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
@@ -37,17 +37,15 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Utilities'
     ],
-    keywords = [
-        'validation rules model'
-    ],
-    packages = ['wheezy', 'wheezy.validation'],
-    package_dir = {'': 'src'},
+    keywords='validation rules model',
+    packages=['wheezy', 'wheezy.validation'],
+    package_dir={'': 'src'},
     namespace_packages=['wheezy'],
 
-    zip_safe = True,
-    install_requires = [
+    zip_safe=True,
+    install_requires=[
     ],
-    extras_require = {
+    extras_require={
         'dev': [
             'coverage',
             'nose',
@@ -57,5 +55,5 @@ setup(
         ]
     },
 
-    platforms = 'any'
+    platforms='any'
 )
