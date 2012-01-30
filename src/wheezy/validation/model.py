@@ -88,7 +88,7 @@ def try_update_model(model, values, results, translations=None):
                 value = value_provider(value)
             except (ArithmeticError, ValueError):
                 results[name] = [gettext(
-                    "The value '%s' is invalid." % value)]
+                    "The value '%s' is invalid.") % value]
                 succeed = False
             else:
                 setter(model, name, value)

@@ -9,6 +9,8 @@ _ = lambda s: s
 
 
 class RequiredRule(object):
+    """ Any value evaluated to boolean ``True`` pass this rule.
+    """ 
 
     def __init__(self, message_template=None):
         self.message_template = message_template or _(
@@ -59,6 +61,9 @@ required = RequiredRule()
 
 
 class LengthRule(object):
+    """ Result of python function ``len()`` must fall within a range
+        defined by this rule.
+    """
 
     def __init__(self, min=None, max=None, message_template=None):
         """
@@ -201,6 +206,8 @@ length = LengthRule
 
 
 class CompareRule(object):
+    """ 
+    """
 
     def __init__(self, equal=None, message_template=None):
         """
