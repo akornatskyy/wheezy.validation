@@ -10,7 +10,7 @@ from wheezy.validation.comp import ref_getter
 
 
 class Validator(object):
-    """ Container of validation rules that all together provide 
+    """ Container of validation rules that all together provide
         object validation.
     """
     def __init__(self, mapping):

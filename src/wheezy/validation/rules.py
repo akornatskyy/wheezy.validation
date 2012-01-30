@@ -10,7 +10,7 @@ _ = lambda s: s
 
 class RequiredRule(object):
     """ Any value evaluated to boolean ``True`` pass this rule.
-    """ 
+    """
 
     def __init__(self, message_template=None):
         self.message_template = message_template or _(
@@ -206,7 +206,7 @@ length = LengthRule
 
 
 class CompareRule(object):
-    """ 
+    """ Compares attribute being validated with some other attribute value.
     """
 
     def __init__(self, equal=None, message_template=None):
