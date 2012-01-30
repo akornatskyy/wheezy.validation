@@ -51,7 +51,7 @@ in validator must exist in object you are going to validate.
 Validation
 ~~~~~~~~~~
 
-Not we can proceed with validation::
+Now we can proceed with validation::
     
     credential = Credential()
     errors = {}
@@ -67,7 +67,7 @@ Web form submit is a dictionary where key is the name of the input element
 being submitted and value is a list. That list can have just one item for
 elements like input or several values that depict user choice.
 
-Let assume form submitted values looks this way::
+Let assume form submitted values look this way::
 
     values = {'username': [''], 'password': ['']}
 

@@ -12,7 +12,7 @@ Validator
 
 :py:class:`~wheezy.validation.validator.Validator` is a container of validation
 rules that all together provide object validation. You instantiate 
-:py:class:`~wheezy.validation.validator.Validator` and supply it with a map
+:py:class:`~wheezy.validation.validator.Validator` and supply it a map
 between attribute names being validated and list of rules. Here is an example::
 
     credential_validator = Validator({
@@ -20,7 +20,7 @@ between attribute names being validated and list of rules. Here is an example::
         'password': [required, length(min=8, max=12)]
     })
 
-:py:class:`~wheezy.validation.validator.Validator` in no way tied with object
+:py:class:`~wheezy.validation.validator.Validator` in no way tied to object
 and/or class being validated, instead the only requirement is existance of
 attributes being validated. 
 
@@ -66,7 +66,7 @@ thread safe.
 Validation Rules
 ----------------
 
-Validation rules prevent bad data being processed. A Validation rule is a 
+Validation rules prevent bad data being processed. A validation rule is a 
 criterion used in the process of data validation.
 
 There are a number of validation rules defined already.
