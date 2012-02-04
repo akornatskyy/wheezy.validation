@@ -165,7 +165,7 @@ values, e.g. integer attributes must default to some integer value, etc.
 List of supported ``value_providers``:
 
 .. literalinclude:: ../src/wheezy/validation/model.py
-   :lines: 11-18
+   :lines: 257-
 
 Example of domain model initialized with defaults::
 
@@ -188,3 +188,40 @@ Typical use case as follows::
 ``errors`` dictionary contains all errors reported during model update. Key
 corresponds to attribute being updated, while value is a list of errors.
 
+Numbers
+~~~~~~~
+
+Number value providers (
+:py:meth:`~wheezy.validation.model.int_value_provider`, 
+:py:meth:`~wheezy.validation.model.decimal_value_provider`, 
+:py:meth:`~wheezy.validation.model.float_value_provider`) support thousands
+separator as well as decimal separator. Take a look at ``validation.po`` file.
+
+Date and Time
+~~~~~~~~~~~~~
+Date and time value providers (
+:py:meth:`~wheezy.validation.model.date_value_provider`,
+:py:meth:`~wheezy.validation.model.time_value_provider`,
+:py:meth:`~wheezy.validation.model.datetime_value_provider`) support a number
+of formats. Generally there is default format and fallback formats. It tries
+default format and if it fails tries fallback formats. Take a look at 
+``validation.po`` file for a list of supported format.
+
+Please note that :py:meth:`~wheezy.validation.model.datetime_value_provider`
+fallback to :py:meth:`~wheezy.validation.model.date_value_provider` in case
+none of its own formats matched.
+
+
+Custom Value Providers
+~~~~~~~~~~~~~~~~~~~~~~
+
+Value provider is any callable of the following contract::
+
+    def my_value_provider(str_value, gettext): 
+        return parsed_value
+        
+You can add your value provider to defaults::
+
+    from wheezy.validation.model import value_providers
+    
+    value_providers['my_type'] = my_value_provider
