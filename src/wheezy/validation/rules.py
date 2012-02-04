@@ -278,7 +278,7 @@ class RegexRule(object):
             or a pre-compiled regular expression.
 
             >>> result = []
-            >>> r = regex(re.compile('\w+'))
+            >>> r = regex(re.compile(r'\w+'))
             >>> r.validate('x', None, None, result, _)
             True
         """
@@ -292,7 +292,7 @@ class RegexRule(object):
     def validate(self, value, name, model, result, gettext):
         """
             >>> result = []
-            >>> r = RegexRule('\d+')
+            >>> r = RegexRule(r'\d+')
             >>> r.validate('1234', None, None, result, _)
             True
             >>> r.validate('x', None, None, result, _)
@@ -304,3 +304,63 @@ class RegexRule(object):
         return True
 
 regex = RegexRule
+
+
+class SlugRule(RegexRule):
+    """ Ensures only letters, numbers, underscores or hyphens.
+
+        >>> r = slug
+        >>> result = []
+        >>> r.validate('x14', None, None, result, _)
+        True
+        >>> r.validate('x%', None, None, result, _)
+        False
+    """
+
+    def __init__(self, message_template=None):
+        super(SlugRule, self).__init__(r'^[-\w]+$', message_template or _(
+        'Enter a valid slug, please. The value must consist of letters, '
+        'digits, underscopes and/or hyphens.'))
+
+    def __call__(self, message_template):
+        """ Let you customize message template.
+
+            >>> r = slug('customized')
+            >>> assert r != slug
+            >>> r.message_template
+            'customized'
+        """
+        return SlugRule(message_template)
+
+slug = SlugRule()
+
+
+class EmailRule(RegexRule):
+    """ Ensures a valid email.
+
+        >>> r = email
+        >>> result = []
+        >>> r.validate('x.14@somewhere.org', None, None, result, _)
+        True
+        >>> r.validate('x%', None, None, result, _)
+        False
+    """
+
+    def __init__(self, message_template=None):
+        super(EmailRule, self).__init__(
+                re.compile(r'[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}',
+                    re.IGNORECASE),
+                message_template or
+                _('Enter a valid email address, please.'))
+
+    def __call__(self, message_template):
+        """ Let you customize message template.
+
+            >>> r = email('customized')
+            >>> assert r != slug
+            >>> r.message_template
+            'customized'
+        """
+        return EmailRule(message_template)
+
+email = EmailRule()
