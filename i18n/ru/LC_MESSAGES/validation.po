@@ -14,10 +14,63 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#. thousands separator
+#: src/wheezy/validation/format.py:7
+msgid ","
+msgstr ","
+
+#. decimal point separator
+#: src/wheezy/validation/format.py:9
+msgid "."
+msgstr "."
+
+#. default date input format: 18.5.2008.
+#: src/wheezy/validation/format.py:11
+msgid "%Y/%m/%d"
+msgstr "%d.%m.%Y"
+
+#. fallback date input formats: 5/18/2008. Use | to separate multiple values.
+#: src/wheezy/validation/format.py:13 src/wheezy/validation/format.py:15
+msgid "%m/%d/%Y|%Y-%m-%d|%m/%d/%y"
+msgstr "%d.%m.%y|%Y-%m-%d"
+
+#. default time input format: 16:34.
+#: src/wheezy/validation/format.py:16 src/wheezy/validation/format.py:17
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#. fallback time input formats: 16:34:52. Use | to separate multiple values.
+#: src/wheezy/validation/format.py:18 src/wheezy/validation/format.py:20
+#: src/wheezy/validation/format.py:21
+msgid "%H:%M:%S"
+msgstr "%H:%M:%S"
+
+#. default datetime input format: 2008/5/18 16:34
+#: src/wheezy/validation/format.py:20 src/wheezy/validation/format.py:22
+#: src/wheezy/validation/format.py:23
+msgid "%Y/%m/%d %H:%M"
+msgstr "%d.%m.%Y %H:%M"
+
+#. fallback datetime input formats: 2008/5/18 16:34:52. Use | to separate.
+#: src/wheezy/validation/format.py:22 src/wheezy/validation/format.py:23
+#: src/wheezy/validation/format.py:26 src/wheezy/validation/format.py:27
+msgid ""
+"%Y/%m/%d %H:%M:%S|%m/%d/%Y %H:%M|%m/%d/%Y %H:%M:%S|%Y-%m-%d %H:%M|%Y-%m-%d "
+"%H:%M:%S|%m/%d/%y %H:%M|%m/%d/%y %H:%M:%S"
+msgstr ""
+"%d.%m.%Y %H:%M:%S|%d.%m.%y %H:%M|%d.%m.%y %H:%M:%S|%Y-%m-%d %H:%M|"
+"%Y-%m-%d %H:%M:%S"
+
+
 #: src/wheezy/validation/model.py:70
 #, python-format
 msgid "The value '%s' is invalid."
 msgstr "Значение '%s' является неверным."
+
+#: src/wheezy/validation/model.py:108
+#, python-format
+msgid "The value '%s' is not in one of supported formats."
+msgstr "Значение '%s' не соответсвует ни одному из поддеживаемых форматов."
 
 #: src/wheezy/validation/rules.py:12
 msgid "Required field cannot be left blank."
