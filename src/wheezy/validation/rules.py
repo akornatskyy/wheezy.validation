@@ -364,3 +364,153 @@ class EmailRule(RegexRule):
         return EmailRule(message_template)
 
 email = EmailRule()
+
+
+class RangeRule(object):
+    """ Ensures value is in range defined by this rule.
+
+        Works with any numbers including decimal.
+
+        >>> from decimal import Decimal
+        >>> result = []
+        >>> r = range(max=Decimal('15.79'))
+        >>> r.validate(Decimal('10'), None, None, result, _)
+        True
+    """
+
+    def __init__(self, min=None, max=None, message_template=None):
+        """
+            Initialization selects the most appropriate validation
+            strategy.
+
+            >>> r = RangeRule(min=2)
+            >>> assert r.check == r.check_min
+            >>> r = RangeRule(max=2)
+            >>> assert r.check == r.check_max
+            >>> r = RangeRule()
+            >>> assert r.check == r.succeed
+            >>> r = RangeRule(min=1, max=2)
+        """
+        if min:
+            self.min = min
+            if not max:
+                self.min = min
+                self.check = self.check_min
+                self.message_template = message_template or _(
+                        'Required to be greater or equal to %(min)d.')
+            else:
+                self.max = max
+                self.message_template = message_template or _(
+                        'The value must fall within the range %(min)d'
+                        ' - %(max)d')
+        else:
+            if max:
+                self.max = max
+                self.check = self.check_max
+                self.message_template = message_template or _(
+                        'Exceeds maximum allowed value of %(max)d.')
+            else:
+                self.check = self.succeed
+
+    def succeed(self, value, name, model, result, gettext):
+        return True
+
+    def check_min(self, value, name, model, result, gettext):
+        if value < self.min:
+            result.append(gettext(self.message_template)
+                    % {'min': self.min})
+            return False
+        return True
+
+    def check_max(self, value, name, model, result, gettext):
+        if value > self.max:
+            result.append(gettext(self.message_template)
+                    % {'max': self.max})
+            return False
+        return True
+
+    def check(self, value, name, model, result, gettext):
+        if value < self.min or value > self.max:
+            result.append(gettext(self.message_template)
+                    % {'min': self.min, 'max': self.max})
+            return False
+        return True
+
+    def validate(self, value, name, model, result, gettext):
+        """
+            >>> r = RangeRule()
+
+            Succeed if ``value`` is None
+
+            >>> r.validate(None, None, None, None, _)
+            True
+
+            Since no range specified it chooses ``succeed`` strategy.
+
+            >>> r.validate(100, None, None, None, _)
+            True
+
+            ``check_min`` strategy fails
+
+            >>> result = []
+            >>> r = RangeRule(min=10, message_template='min %(min)d')
+            >>> r.validate(1, None, None, result, _)
+            False
+            >>> result
+            ['min 10']
+
+            ``check_min`` strategy succeed
+
+            >>> result = []
+            >>> r = RangeRule(min=10)
+            >>> r.validate(10, None, None, result, _)
+            True
+            >>> result
+            []
+
+            ``check_max`` strategy fails
+
+            >>> result = []
+            >>> r = RangeRule(max=10, message_template='max %(max)d')
+            >>> r.validate(11, None, None, result, _)
+            False
+            >>> result
+            ['max 10']
+
+            ``check_max`` strategy succeed
+
+            >>> result = []
+            >>> r = RangeRule(max=10)
+            >>> r.validate(10, None, None, result, _)
+            True
+            >>> result
+            []
+
+            ``check`` strategy fails
+
+            >>> r = RangeRule(min=2, max=3,
+            ...         message_template='range %(min)d-%(max)d')
+            >>> result = []
+            >>> r.validate(1, None, None, result, _)
+            False
+            >>> result
+            ['range 2-3']
+
+            ``check`` strategy succeed
+
+            >>> result = []
+            >>> r = RangeRule(min=1, max=2)
+            >>> r.validate(2, None, None, result, _)
+            True
+            >>> result
+            []
+
+            ``length`` is shortcut
+
+            >>> assert length is LengthRule
+        """
+        return value is None or self.check(value, name, model,
+                result, gettext)
+
+
+range = RangeRule
