@@ -11,10 +11,12 @@ if PY3:  # pragma: nocover
     iterkeys = lambda d: d.keys()
     iteritems = lambda d: d.items()
     copyitems = lambda d: list(d.items())
+    regex_pattern = (str,)
 else:  # pragma: nocover
     iterkeys = lambda d: d.iterkeys()
     iteritems = lambda d: d.iteritems()
     copyitems = lambda d: d.items()
+    regex_pattern = (str, unicode)
 
 
 from gettext import NullTranslations

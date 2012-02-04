@@ -2,7 +2,10 @@
 """ ``rules`` module.
 """
 
+import re
+
 from wheezy.validation.comp import ref_getter
+from wheezy.validation.comp import regex_pattern
 
 
 _ = lambda s: s
@@ -263,3 +266,41 @@ class CompareRule(object):
         return self.check(value, None, model, result, gettext)
 
 compare = CompareRule
+
+
+class RegexRule(object):
+    """ Search for regular expression pattern.
+    """
+
+    def __init__(self, regex=None, message_template=None):
+        """
+            ``regex`` - a regular expression pattern to search for
+            or a pre-compiled regular expression.
+
+            >>> result = []
+            >>> r = regex(re.compile('\w+'))
+            >>> r.validate('x', None, None, result, _)
+            True
+        """
+        if isinstance(regex, regex_pattern):
+            self.regex = re.compile(regex)
+        else:
+            self.regex = regex
+        self.message_template = message_template or _(
+                'Enter a valid value, please.')
+
+    def validate(self, value, name, model, result, gettext):
+        """
+            >>> result = []
+            >>> r = RegexRule('\d+')
+            >>> r.validate('1234', None, None, result, _)
+            True
+            >>> r.validate('x', None, None, result, _)
+            False
+        """
+        if not self.regex.search(value):
+            result.append(gettext(self.message_template))
+            return False
+        return True
+
+regex = RegexRule
