@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: wheezy.validation\n"
 "Report-Msgid-Bugs-To: Andriy Kornatskyy <andriy.kornatskyy@live.com>\n"
 "POT-Creation-Date: 2011-11-02 14:13+0200\n"
-"PO-Revision-Date: 2011-11-02 14:13+0200\n"
+"PO-Revision-Date: 2012-02-04 18:52+0200\n"
 "Last-Translator: Andriy Kornatskyy <andriy.kornatskyy@live.com>\n"
 "Language: Russian\n"
 "MIME-Version: 1.0\n"
@@ -95,3 +95,35 @@ msgstr "Превышена максимально допустимая длин�
 #, python-format
 msgid "The value failed equality comparison with \"%(comparand)s\"."
 msgstr "Значение не равно в сравнении с \"%(comparand)s\"."
+
+#: src/wheezy/validation/rules.py:290
+msgid "Required to match validation pattern."
+msgstr "Обязательно должно соответствовать проверяемому шаблону."
+
+#: src/wheezy/validation/rules.py:322
+msgid ""
+"Invalid slug. The value must consist of letters, digits, underscopes and/or "
+"hyphens."
+msgstr ""
+"Неверный слаг. Значение должно содержать буквы, цыфры, знак подчеркивания "
+"и/или тире."
+
+#: src/wheezy/validation/rules.py:354
+msgid "Required to be a valid email address."
+msgstr "Обязательно должно соответствовать правильному адресу электронной "
+"почты."
+
+#: src/wheezy/validation/rules.py:402
+#, python-format
+msgid "Required to be greater or equal to %(min)s."
+msgstr "Должно быть больше или равно %(min)s."
+
+#: src/wheezy/validation/rules.py:406
+#, python-format
+msgid "The value must fall within the range %(min)s - %(max)s"
+msgstr "Значение должно попадать в диапазон %(min)s - %(max)s"
+
+#: src/wheezy/validation/rules.py:413
+#, python-format
+msgid "Exceeds maximum allowed value of %(max)s."
+msgstr "Превышает максимально допустимое значение %(max)s."

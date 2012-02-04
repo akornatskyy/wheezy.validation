@@ -287,7 +287,7 @@ class RegexRule(object):
         else:
             self.regex = regex
         self.message_template = message_template or _(
-                'Enter a valid value, please.')
+                'Required to match validation pattern.')
 
     def validate(self, value, name, model, result, gettext):
         """
@@ -319,7 +319,7 @@ class SlugRule(RegexRule):
 
     def __init__(self, message_template=None):
         super(SlugRule, self).__init__(r'^[-\w]+$', message_template or _(
-        'Enter a valid slug, please. The value must consist of letters, '
+        'Invalid slug. The value must consist of letters, '
         'digits, underscopes and/or hyphens.'))
 
     def __call__(self, message_template):
@@ -351,7 +351,7 @@ class EmailRule(RegexRule):
                 re.compile(r'[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}',
                     re.IGNORECASE),
                 message_template or
-                _('Enter a valid email address, please.'))
+                _('Required to be a valid email address.'))
 
     def __call__(self, message_template):
         """ Let you customize message template.
@@ -376,6 +376,8 @@ class RangeRule(object):
         >>> r = range(max=Decimal('15.79'))
         >>> r.validate(Decimal('10'), None, None, result, _)
         True
+        >>> r.validate(Decimal('20'), None, None, result, _)
+        False
     """
 
     def __init__(self, min=None, max=None, message_template=None):
@@ -397,18 +399,18 @@ class RangeRule(object):
                 self.min = min
                 self.check = self.check_min
                 self.message_template = message_template or _(
-                        'Required to be greater or equal to %(min)d.')
+                        'Required to be greater or equal to %(min)s.')
             else:
                 self.max = max
                 self.message_template = message_template or _(
-                        'The value must fall within the range %(min)d'
-                        ' - %(max)d')
+                        'The value must fall within the range %(min)s'
+                        ' - %(max)s')
         else:
             if max:
                 self.max = max
                 self.check = self.check_max
                 self.message_template = message_template or _(
-                        'Exceeds maximum allowed value of %(max)d.')
+                        'Exceeds maximum allowed value of %(max)s.')
             else:
                 self.check = self.succeed
 
