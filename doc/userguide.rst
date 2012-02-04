@@ -79,6 +79,17 @@ There are a number of validation rules defined already.
 * ``compare``. Compares attribute being validated with some other attribute
   value. Supported comparison operations include: ``equal``. See 
   :py:class:`~wheezy.validation.rules.CompareRule`.
+* ``regex``. Search for regular expression pattern. Initialized with 
+  ``regex`` as a regular expression pattern or a pre-compiled regular 
+  expression. See :py:class:`~wheezy.validation.rules.RegexRule`.
+* ``slug``. Ensures only letters, numbers, underscores or hyphens. See 
+  :py:class:`~wheezy.validation.rules.SlugRule`.
+* ``email``. Ensures a valid email. See 
+  :py:class:`~wheezy.validation.rules.EmailRule`.
+* ``range``. Ensures value is in range defined by this rule. Works with any 
+  numbers including int, float, decimal, etc. Supported range attributes 
+  include: ``min``, ``max``. See 
+  :py:class:`~wheezy.validation.rules.RangeRule`.
 
 Custom Message
 ~~~~~~~~~~~~~~
@@ -89,6 +100,8 @@ during rule declaration::
     credential_validator = Validator({
         'username': [required(message_template='Required field')]
     })
+
+Every rule supports ``message_template`` argument during rule declaration.
 
 ``gettext`` utilities
 ^^^^^^^^^^^^^^^^^^^^^
