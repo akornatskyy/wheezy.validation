@@ -4,11 +4,16 @@
 
 import re
 
+from datetime import date
+from datetime import datetime
+from datetime import time
+
 from wheezy.validation.comp import ref_getter
 from wheezy.validation.comp import regex_pattern
 
 
 _ = lambda s: s
+required_but_missing = [date.min, datetime.min, time.min]
 
 
 class RequiredRule(object):
@@ -50,11 +55,14 @@ class RequiredRule(object):
             >>> result
             []
 
+            >>> r.validate(date.min, None, None, result, _)
+            False
+
             ``required`` is a shortcut
 
             >>> assert isinstance(required, RequiredRule)
         """
-        if not value:
+        if not value or value in required_but_missing:
             result.append(gettext(self.message_template))
             return False
         return True
@@ -455,7 +463,7 @@ class RangeRule(object):
             ``check_min`` strategy fails
 
             >>> result = []
-            >>> r = RangeRule(min=10, message_template='min %(min)d')
+            >>> r = RangeRule(min=10, message_template='min %(min)s')
             >>> r.validate(1, None, None, result, _)
             False
             >>> result
@@ -473,7 +481,7 @@ class RangeRule(object):
             ``check_max`` strategy fails
 
             >>> result = []
-            >>> r = RangeRule(max=10, message_template='max %(max)d')
+            >>> r = RangeRule(max=10, message_template='max %(max)s')
             >>> r.validate(11, None, None, result, _)
             False
             >>> result
@@ -491,7 +499,7 @@ class RangeRule(object):
             ``check`` strategy fails
 
             >>> r = RangeRule(min=2, max=3,
-            ...         message_template='range %(min)d-%(max)d')
+            ...         message_template='range %(min)s-%(max)s')
             >>> result = []
             >>> r.validate(1, None, None, result, _)
             False
