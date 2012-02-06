@@ -101,6 +101,7 @@ def try_update_model(model, values, results, translations=None):
             try:
                 if isinstance(value, list):
                     value = value[-1]
+                original_value = value
                 value = value_provider(value, gettext)
             except (ArithmeticError, ValueError):
                 results[name] = [gettext(
@@ -109,8 +110,8 @@ def try_update_model(model, values, results, translations=None):
             else:
                 if value is None:
                     results[name] = [gettext(
-                        "The value '%s' is not in one of supported formats.")
-                        % value]
+                        "The value '%s' is not in one of supported formats."
+                        % original_value)]
                     succeed = False
                 else:
                     setter(model, name, value)
@@ -188,10 +189,18 @@ def date_value_provider(str_value, gettext):
         >>> date_value_provider('2/4/12', lambda x: x)
         datetime.date(2012, 2, 4)
 
+        If ``str_value`` is empty string, return date.min
+
+        >>> date_value_provider(' ', lambda x: x)
+        datetime.date(1, 1, 1)
+
         If none of known formats match return None.
 
         >>> date_value_provider('2.4.12', lambda x: x)
     """
+    str_value = str_value.strip()
+    if not str_value:
+        return date.min
     try:
         return date(*strptime(
             str_value,
@@ -213,10 +222,18 @@ def time_value_provider(str_value, gettext):
         >>> time_value_provider('15:40:11', lambda x: x)
         datetime.time(15, 40, 11)
 
+        If ``str_value`` is empty string, return time.min
+
+        >>> time_value_provider(' ', lambda x: x)
+        datetime.time(0, 0)
+
         If none of known formats match return None.
 
         >>> time_value_provider('2.45.17', lambda x: x)
     """
+    str_value = str_value.strip()
+    if not str_value:
+        return time.min
     try:
         return time(*strptime(
             str_value,
@@ -239,8 +256,21 @@ def datetime_value_provider(str_value, gettext):
         If none of known formats match try date_value_provider.
 
         >>> datetime_value_provider('2008/5/18', lambda x: x)
-        datetime.date(2008, 5, 18)
+        datetime.datetime(2008, 5, 18, 0, 0)
+
+        If ``str_value`` is empty string, return datetime.min
+
+        >>> datetime_value_provider(' ', lambda x: x)
+        datetime.datetime(1, 1, 1, 0, 0)
+
+        If none of known formats match return None.
+
+        >>> datetime_value_provider('2.45.17', lambda x: x)
+
     """
+    str_value = str_value.strip()
+    if not str_value:
+        return datetime.min
     try:
         return datetime(*strptime(
             str_value,
@@ -251,7 +281,10 @@ def datetime_value_provider(str_value, gettext):
                 return datetime(*strptime(str_value, fmt)[:6])
             except ValueError:
                 continue
-        return date_value_provider(str_value, gettext)
+        value = date_value_provider(str_value, gettext)
+        if value is None:
+            return None
+        return datetime(value.year, value.month, value.day)
 
 
 value_providers = {
