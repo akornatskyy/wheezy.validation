@@ -222,8 +222,8 @@ default format and if it fails tries fallback formats. Take a look at
 
 Please note that :py:meth:`~wheezy.validation.model.datetime_value_provider`
 fallback to :py:meth:`~wheezy.validation.model.date_value_provider` in case
-none of its own formats matched.
-
+none of its own formats matched. Empty value is converted to minimal value
+for date/time.
 
 Custom Value Providers
 ~~~~~~~~~~~~~~~~~~~~~~
