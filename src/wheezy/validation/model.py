@@ -67,7 +67,7 @@ def try_update_model(model, values, results, translations=None):
 
         Invalid values:
 
-        >>> values = {'balance': ['x'], 'age': ['x'], 'birthday': ['4.2.12']}
+        >>> values = {'balance': ['x'], 'age': [''], 'birthday': ['4.2.12']}
         >>> user = User()
         >>> try_update_model(user, values, results)
         False
@@ -104,8 +104,12 @@ def try_update_model(model, values, results, translations=None):
                 original_value = value
                 value = value_provider(value, gettext)
             except (ArithmeticError, ValueError):
-                results[name] = [gettext(
-                    "The value '%s' is invalid.") % value]
+                if original_value:
+                    results[name] = [gettext(
+                        "The value '%s' is invalid.") % original_value]
+                else:
+                    results[name] = [gettext(
+                        "Input was not in a correct format.")]
                 succeed = False
             else:
                 if value is None:
