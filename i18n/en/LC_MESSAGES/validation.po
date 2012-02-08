@@ -80,34 +80,36 @@ msgid "Required field cannot be left blank."
 msgstr "Required field cannot be left blank."
 
 #: src/wheezy/validation/rules.py:87 src/wheezy/validation/rules.py:90
-#: src/wheezy/validation/rules.py:95
+#: src/wheezy/validation/rules.py:95 src/wheezy/validation/rules.py:98
 #, python-format
 msgid "Required to be a minimum of %(min)d characters in length."
 msgstr "Required to be a minimum of %(min)d characters in length."
 
 #: src/wheezy/validation/rules.py:92 src/wheezy/validation/rules.py:95
-#: src/wheezy/validation/rules.py:100
+#: src/wheezy/validation/rules.py:100 src/wheezy/validation/rules.py:103
 #, python-format
 msgid "The length must fall within the range %(min)d - %(max)d characters."
 msgstr "The length must fall within the range %(min)d - %(max)d characters."
 
 #: src/wheezy/validation/rules.py:99 src/wheezy/validation/rules.py:102
-#: src/wheezy/validation/rules.py:107
+#: src/wheezy/validation/rules.py:107 src/wheezy/validation/rules.py:110
 #, python-format
 msgid "Exceeds maximum length of %(max)d."
 msgstr "Exceeds maximum length of %(max)d."
 
 #: src/wheezy/validation/rules.py:224 src/wheezy/validation/rules.py:227
-#: src/wheezy/validation/rules.py:232
+#: src/wheezy/validation/rules.py:232 src/wheezy/validation/rules.py:235
 #, python-format
 msgid "The value failed equality comparison with \"%(comparand)s\"."
 msgstr "The value failed equality comparison with \"%(comparand)s\"."
 
 #: src/wheezy/validation/rules.py:290 src/wheezy/validation/rules.py:295
+#: src/wheezy/validation/rules.py:298
 msgid "Required to match validation pattern."
 msgstr "Required to match validation pattern."
 
 #: src/wheezy/validation/rules.py:322 src/wheezy/validation/rules.py:327
+#: src/wheezy/validation/rules.py:330
 msgid ""
 "Invalid slug. The value must consist of letters, digits, underscopes and/or "
 "hyphens."
@@ -116,20 +118,24 @@ msgstr ""
 "hyphens."
 
 #: src/wheezy/validation/rules.py:354 src/wheezy/validation/rules.py:359
+#: src/wheezy/validation/rules.py:362
 msgid "Required to be a valid email address."
 msgstr "Required to be a valid email address."
 
 #: src/wheezy/validation/rules.py:402 src/wheezy/validation/rules.py:407
+#: src/wheezy/validation/rules.py:410
 #, python-format
 msgid "Required to be greater or equal to %(min)s."
 msgstr "Required to be greater or equal to %(min)s."
 
 #: src/wheezy/validation/rules.py:406 src/wheezy/validation/rules.py:411
+#: src/wheezy/validation/rules.py:414
 #, python-format
 msgid "The value must fall within the range %(min)s - %(max)s"
 msgstr "The value must fall within the range %(min)s - %(max)s"
 
 #: src/wheezy/validation/rules.py:413 src/wheezy/validation/rules.py:418
+#: src/wheezy/validation/rules.py:421
 #, python-format
 msgid "Exceeds maximum allowed value of %(max)s."
 msgstr "Exceeds maximum allowed value of %(max)s."

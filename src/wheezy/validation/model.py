@@ -100,7 +100,7 @@ def try_update_model(model, values, results, translations=None):
             value = values[name]
             try:
                 if isinstance(value, list):
-                    value = value[-1]
+                    value = value and value[-1] or ''
                 original_value = value
                 value = value_provider(value, gettext)
             except (ArithmeticError, ValueError):
