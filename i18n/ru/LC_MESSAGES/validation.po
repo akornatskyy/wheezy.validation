@@ -135,3 +135,19 @@ msgstr "Значение должно попадать в диапазон %(min
 #, python-format
 msgid "Exceeds maximum allowed value of %(max)s."
 msgstr "Превышает максимально допустимое значение %(max)s."
+
+#: src/wheezy/validation/rules.py:624 src/wheezy/validation/rules.py:625
+msgid "The value does not belong to the list of known items."
+msgstr "Значение не входит в список известных элементов."
+
+#: src/wheezy/validation/rules.py:655
+msgid "Required to be above a minimum allowed."
+msgstr "Обязательно должно быть выше минимально допустимого значения."
+
+#: src/wheezy/validation/rules.py:659
+msgid "Must fall within a valid range."
+msgstr "Должно находиться в пределах допустимого диапазона."
+
+#: src/wheezy/validation/rules.py:665
+msgid "Exceeds maximum allowed."
+msgstr "Превышает допустимый максимум."

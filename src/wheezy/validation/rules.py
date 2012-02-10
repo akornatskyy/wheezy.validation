@@ -7,6 +7,7 @@ import re
 from datetime import date
 from datetime import datetime
 from datetime import time
+from datetime import timedelta
 
 from wheezy.validation.comp import ref_getter
 from wheezy.validation.comp import regex_pattern
@@ -604,6 +605,195 @@ class IteratorRule(object):
                     break
         return succeed
 
+
+class OneOfRule(object):
+    """ Value must match at least one element from ``items``.
+
+        >>> result = []
+        >>> r = one_of([1, 2, 3])
+        >>> r.validate(3, None, None, result, _)
+        True
+        >>> r.validate(7, None, None, result, _)
+        False
+    """
+
+    def __init__(self, items, message_template=None):
+        """
+        """
+        self.items = tuple(items)
+        self.message_template = message_template or _(
+                'The value does not belong to the list of known items.')
+
+    def validate(self, value, name, model, result, gettext):
+        """ Check whenever value belongs to ``self.items``.
+        """
+        if value not in self.items:
+            result.append(gettext(self.message_template))
+            return False
+        return True
+
+
+class RelativeDeltaRule(object):
+    """ Check if value is in relative date/time range.
+
+        >>> r = RelativeDeltaRule()
+        >>> r.now() # doctest: +ELLIPSIS
+        Traceback (most recent call last):
+            ...
+        NotImplementedError: ...
+    """
+
+    def __init__(self, min=None, max=None, message_template=None):
+        """
+        """
+        if min:
+            self.min = min
+            if not max:
+                self.min = min
+                self.check = self.check_min
+                self.message_template = message_template or _(
+                        'Required to be above a minimum allowed.')
+            else:
+                self.max = max
+                self.message_template = message_template or _(
+                        'Must fall within a valid range.')
+        else:
+            if max:
+                self.max = max
+                self.check = self.check_max
+                self.message_template = message_template or _(
+                        'Exceeds maximum allowed.')
+            else:
+                self.check = self.succeed
+
+    def now(self):
+        raise NotImplementedError('Subclasses must override method now()')
+
+    def succeed(self, value, name, model, result, gettext):
+        return True
+
+    def check_min(self, value, name, model, result, gettext):
+        if value < self.now() + self.min:
+            result.append(gettext(self.message_template)
+                    % {'min': self.min})
+            return False
+        return True
+
+    def check_max(self, value, name, model, result, gettext):
+        if value > self.now() + self.max:
+            result.append(gettext(self.message_template)
+                    % {'max': self.max})
+            return False
+        return True
+
+    def check(self, value, name, model, result, gettext):
+        now = self.now()
+        if value < now + self.min or value > now + self.max:
+            result.append(gettext(self.message_template)
+                    % {'min': self.min, 'max': self.max})
+            return False
+        return True
+
+    def validate(self, value, name, model, result, gettext):
+        """
+        """
+        return value is None or self.check(value, name, model,
+                result, gettext)
+
+
+class RelativeDateDeltaRule(RelativeDeltaRule):
+    """
+        No range succeed.
+
+        >>> result = []
+        >>> r = relative_date()
+        >>> r.validate(date.today(), None, None, result, _)
+        True
+
+        Min range strategy
+
+        >>> result = []
+        >>> r = relative_date(min=timedelta(days=-7))
+        >>> r.validate(date.today(), None, None, result, _)
+        True
+        >>> d = date.today() - timedelta(days=8)
+        >>> r.validate(d, None, None, result, _)
+        False
+
+        Max range strategy
+
+        >>> r = relative_date(max=timedelta(days=7))
+        >>> r.validate(date.today(), None, None, result, _)
+        True
+        >>> d = date.today() + timedelta(days=8)
+        >>> r.validate(d, None, None, result, _)
+        False
+
+        Min - Max range strategy
+
+        >>> result = []
+        >>> r = relative_date(min=timedelta(days=-7), max=timedelta(days=7))
+        >>> r.validate(date.today(), None, None, result, _)
+        True
+        >>> d = date.today() - timedelta(days=8)
+        >>> r.validate(d, None, None, result, _)
+        False
+        >>> d = date.today() + timedelta(days=8)
+        >>> r.validate(d, None, None, result, _)
+        False
+    """
+
+    def now(self):
+        return date.today()
+
+
+class RelativeDateTimeDeltaRule(RelativeDeltaRule):
+    """
+        No range succeed.
+
+        >>> result = []
+        >>> r = relative_datetime()
+        >>> r.validate(datetime.today(), None, None, result, _)
+        True
+
+        Min range strategy
+
+        >>> result = []
+        >>> r = relative_datetime(min=timedelta(days=-7))
+        >>> r.validate(datetime.today(), None, None, result, _)
+        True
+        >>> d = datetime.today() - timedelta(days=8)
+        >>> r.validate(d, None, None, result, _)
+        False
+
+        Max range strategy
+
+        >>> r = relative_datetime(max=timedelta(days=7))
+        >>> r.validate(datetime.today(), None, None, result, _)
+        True
+        >>> d = datetime.today() + timedelta(days=8)
+        >>> r.validate(d, None, None, result, _)
+        False
+
+        Min - Max range strategy
+
+        >>> result = []
+        >>> r = relative_datetime(min=timedelta(days=-7),
+        ...                     max=timedelta(days=7))
+        >>> r.validate(datetime.today(), None, None, result, _)
+        True
+        >>> d = datetime.today() - timedelta(days=8)
+        >>> r.validate(d, None, None, result, _)
+        False
+        >>> d = datetime.today() + timedelta(days=8)
+        >>> r.validate(d, None, None, result, _)
+        False
+    """
+
+    def now(self):
+        return datetime.now()
+
+
 required = RequiredRule()
 length = LengthRule
 compare = CompareRule
@@ -614,3 +804,6 @@ range = RangeRule
 and_ = AndRule
 or_ = OrRule
 iterator = IteratorRule
+one_of = OneOfRule
+relative_date = RelativeDateDeltaRule
+relative_datetime = RelativeDateTimeDeltaRule
