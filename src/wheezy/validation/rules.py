@@ -68,9 +68,6 @@ class RequiredRule(object):
         return True
 
 
-required = RequiredRule()
-
-
 class LengthRule(object):
     """ Result of python function ``len()`` must fall within a range
         defined by this rule.
@@ -213,9 +210,6 @@ class LengthRule(object):
                 result, gettext)
 
 
-length = LengthRule
-
-
 class CompareRule(object):
     """ Compares attribute being validated with some other attribute value.
     """
@@ -273,8 +267,6 @@ class CompareRule(object):
         """
         return self.check(value, None, model, result, gettext)
 
-compare = CompareRule
-
 
 class RegexRule(object):
     """ Search for regular expression pattern.
@@ -311,8 +303,6 @@ class RegexRule(object):
             return False
         return True
 
-regex = RegexRule
-
 
 class SlugRule(RegexRule):
     """ Ensures only letters, numbers, underscores or hyphens.
@@ -339,8 +329,6 @@ class SlugRule(RegexRule):
             'customized'
         """
         return SlugRule(message_template)
-
-slug = SlugRule()
 
 
 class EmailRule(RegexRule):
@@ -370,8 +358,6 @@ class EmailRule(RegexRule):
             'customized'
         """
         return EmailRule(message_template)
-
-email = EmailRule()
 
 
 class RangeRule(object):
@@ -523,4 +509,73 @@ class RangeRule(object):
                 result, gettext)
 
 
+class AndRule(object):
+    """ Applies all ``rules`` regardles of validation result.
+
+        >>> result = []
+        >>> r = and_(required, range(1, 5))
+        >>> r.validate(1, None, None, result, _)
+        True
+        >>> r.validate(0, None, None, result, _)
+        False
+        >>> len(result)
+        2
+    """
+
+    def __init__(self, *rules):
+        """ Initializes rule by converting ``rules`` to tuple.
+        """
+        self.rules = tuple(rules)
+
+    def validate(self, value, name, model, result, gettext):
+        """ Iterate over each rule and check whenever any item in value fail.
+
+            ``value`` - iteratable.
+        """
+        succeed = True
+        for rule in self.rules:
+            succeed &= rule.validate(value, name, model, result, gettext)
+        return succeed
+
+
+class IteratorRule(object):
+    """ Applies ``rules`` to each item.
+
+        >>> result = []
+        >>> r = iterator([required, range(1, 5)])
+        >>> r.validate([1, 2, 3], None, None, result, _)
+        True
+        >>> r.validate([1, 7], None, None, result, _)
+        False
+    """
+
+    def __init__(self, rules, stop=True):
+        """ Initializes rule by converting ``rules`` to tuple.
+        """
+        self.rules = tuple(rules)
+        self.stop = stop
+
+    def validate(self, value, name, model, result, gettext):
+        """ Iterate over each rule and check whenever any item in value fail.
+
+            ``value`` - iteratable.
+        """
+        succeed = True
+        for rule in self.rules:
+            for item in value:
+                rule_succeed = rule.validate(item, name, model,
+                        result, gettext)
+                succeed &= rule_succeed
+                if not rule_succeed and self.stop:
+                    break
+        return succeed
+
+required = RequiredRule()
+length = LengthRule
+compare = CompareRule
+regex = RegexRule
+slug = SlugRule()
+email = EmailRule()
 range = RangeRule
+and_ = AndRule
+iterator = IteratorRule
