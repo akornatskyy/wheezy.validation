@@ -538,6 +538,40 @@ class AndRule(object):
         return succeed
 
 
+class OrRule(object):
+    """ Succeed if at least one rule in ``rules`` succeed.
+
+        >>> result = []
+        >>> r = or_(range(1, 5), range(11, 15))
+        >>> r.validate(1, None, None, result, _)
+        True
+        >>> r.validate(12, None, None, result, _)
+        True
+        >>> r.validate(0, None, None, result, _)
+        False
+        >>> len(result)
+        2
+    """
+
+    def __init__(self, *rules):
+        """ Initializes rule by converting ``rules`` to tuple.
+        """
+        self.rules = tuple(rules)
+
+    def validate(self, value, name, model, result, gettext):
+        """ Iterate over each rule and check whenever value fail.
+            Stop on first succeed.
+        """
+        succeed = True
+        r = []
+        for rule in self.rules:
+            succeed = rule.validate(value, name, model, r, gettext)
+            if succeed:
+                return True
+        result.extend(r)
+        return succeed
+
+
 class IteratorRule(object):
     """ Applies ``rules`` to each item.
 
@@ -578,4 +612,5 @@ slug = SlugRule()
 email = EmailRule()
 range = RangeRule
 and_ = AndRule
+or_ = OrRule
 iterator = IteratorRule
