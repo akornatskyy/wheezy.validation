@@ -76,6 +76,10 @@ msgstr "Значение '%s' не соответсвует ни одному и
 msgid "Input was not in a correct format."
 msgstr "Ввод не в правильном формате."
 
+#: src/wheezy/validation/model.py:130
+msgid "Multiple input was not in a correct format."
+msgstr "Ввод с несколькими значениями был не в правильном формате."
+
 #: src/wheezy/validation/rules.py:12
 msgid "Required field cannot be left blank."
 msgstr "Обязательное поле не может быть пустым."

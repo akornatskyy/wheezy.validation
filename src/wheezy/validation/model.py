@@ -33,11 +33,14 @@ def try_update_model(model, values, results, translations=None):
         ...         self.lunch_time = time.min
         ...         self.last_visit = datetime.min
         ...         self.accepted_policy = False
+        ...         self.prefs = []
+        ...         self.prefs2 = [0]
         >>> user = User()
         >>> values = {'name': 'abc', 'balance': ['0.1'],
         ...     'age': ['33'], 'birthday': ['1978/4/9'],
         ...     'lunch_time': ['13:05'], 'last_visit': ['2012/2/4 16:14:52'],
-        ...     'accepted_policy': ['1']}
+        ...     'accepted_policy': ['1'], 'prefs': ['1', '2'],
+        ...     'prefs2': ['1', '2']}
         >>> results = {}
         >>> try_update_model(user, values, results)
         True
@@ -54,6 +57,10 @@ def try_update_model(model, values, results, translations=None):
         datetime.datetime(2012, 2, 4, 16, 14, 52)
         >>> user.accepted_policy
         True
+        >>> user.prefs
+        ['1', '2']
+        >>> user.prefs2
+        [1, 2]
 
         ``model`` can be dict.
 
@@ -67,7 +74,8 @@ def try_update_model(model, values, results, translations=None):
 
         Invalid values:
 
-        >>> values = {'balance': ['x'], 'age': [''], 'birthday': ['4.2.12']}
+        >>> values = {'balance': ['x'], 'age': [''], 'birthday': ['4.2.12'],
+        ...         'prefs2': ['1', 'x']}
         >>> user = User()
         >>> try_update_model(user, values, results)
         False
@@ -78,6 +86,8 @@ def try_update_model(model, values, results, translations=None):
         1
         >>> user.age
         0
+        >>> user.prefs2
+        [0]
     """
     if translations is None:
         translations = null_translations
@@ -93,16 +103,50 @@ def try_update_model(model, values, results, translations=None):
         setter = setattr
     succeed = True
     for name in attribute_names:
-        attr = getter(model, name)
-        provider_name = type(attr).__name__
         try:
-            value_provider = value_providers[provider_name]
             value = values[name]
+        except KeyError:
+            continue
+        attr = getter(model, name)
+        # Check if we have a deal with list like attribute
+        if hasattr(attr, '__setitem__'):
+            # Guess type of list by checking the first item,
+            # fallback to str provider that leaves value unchanged.
+            if attr:
+                provider_name = type(attr[0]).__name__
+                try:
+                    value_provider = value_providers[provider_name]
+                except KeyError:  # pragma: nocover
+                    continue
+            else:
+                value_provider = value_providers['str']
+            items = []
+            try:
+                for item in value:
+                    items.append(value_provider(item, gettext))
+                attr[:] = items
+            except (ArithmeticError, ValueError):
+                results[name] = [gettext(
+                        "Multiple input was not in a correct format.")]
+                succeed = False
+        else:  # A simple value attribute
+            provider_name = type(attr).__name__
+            try:
+                value_provider = value_providers[provider_name]
+            except KeyError:  # pragma: nocover
+                continue
             try:
                 if isinstance(value, list):
                     value = value and value[-1] or ''
                 original_value = value
                 value = value_provider(value, gettext)
+                if value is None:
+                    results[name] = [gettext(
+                        "The value '%s' is not in one of supported formats."
+                        % original_value)]
+                    succeed = False
+                else:
+                    setter(model, name, value)
             except (ArithmeticError, ValueError):
                 if original_value:
                     results[name] = [gettext(
@@ -111,16 +155,6 @@ def try_update_model(model, values, results, translations=None):
                     results[name] = [gettext(
                         "Input was not in a correct format.")]
                 succeed = False
-            else:
-                if value is None:
-                    results[name] = [gettext(
-                        "The value '%s' is not in one of supported formats."
-                        % original_value)]
-                    succeed = False
-                else:
-                    setter(model, name, value)
-        except KeyError:
-            pass
     return succeed
 
 
