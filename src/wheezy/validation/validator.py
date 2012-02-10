@@ -3,7 +3,6 @@
 """
 
 from wheezy.validation.comp import iteritems
-from wheezy.validation.comp import iterkeys
 from wheezy.validation.comp import null_translations
 from wheezy.validation.comp import ref_gettext
 from wheezy.validation.comp import ref_getter
@@ -13,10 +12,23 @@ class Validator(object):
     """ Container of validation rules that all together provide
         object validation.
     """
-    def __init__(self, mapping):
-        self.mapping = mapping
+    __SLOTS__ = ['rules', 'inner']
 
-    def validate(self, model, results, stop=True, translations=None):
+    def __init__(self, mapping):
+        # Split mapping by one that holds iteratable of rules and
+        # the other with nested validator
+        rules = []
+        inner = []
+        for (name, value) in iteritems(mapping):
+            if hasattr(value, '__iter__'):
+                rules.append((name, tuple(value)))
+            else:
+                inner.append((name, value))
+        self.rules = tuple(rules)
+        self.inner = tuple(inner)
+
+    def validate(self, model, results, stop=True, translations=None,
+            gettext=None):
         """
             Here is a class and object we are going to validate.
 
@@ -58,6 +70,17 @@ class Validator(object):
             >>> len(results['name'])
             2
 
+            You can nest other validator for composite objects
+
+            >>> class Registration(object):
+            ...     user = User()
+            >>> registration_validator = Validator({
+            ...         'user': v
+            ... })
+            >>> r = Registration()
+            >>> registration_validator.validate(r, results)
+            False
+
             Validation succeed
 
             >>> user.name = 'abcde'
@@ -66,6 +89,9 @@ class Validator(object):
             True
             >>> results
             {}
+            >>> r.user.name = 'abcde'
+            >>> registration_validator.validate(r, results)
+            True
 
             Validatable can be a dict.
 
@@ -74,12 +100,13 @@ class Validator(object):
             >>> v.validate(user, results)
             False
         """
-        if translations is None:
-            translations = null_translations
-        gettext = ref_gettext(translations)
+        if gettext is None:
+            if translations is None:
+                translations = null_translations
+            gettext = ref_gettext(translations)
         succeed = True
         getter = ref_getter(model)
-        for (name, rules) in iteritems(self.mapping):
+        for name, rules in self.rules:
             value = getter(model, name)
             result = []
             for rule in rules:
@@ -90,4 +117,8 @@ class Validator(object):
                     break
             if result:
                 results[name] = result
+        for name, validator in self.inner:
+            value = getter(model, name)
+            succeed &= validator.validate(value, results, stop,
+                                        gettext=gettext)
         return succeed
