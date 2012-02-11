@@ -511,7 +511,7 @@ class RangeRule(object):
 
 
 class AndRule(object):
-    """ Applies all ``rules`` regardles of validation result.
+    """ Applies all ``rules`` regardless of validation result.
 
         >>> result = []
         >>> r = and_(required, range(1, 5))
