@@ -25,8 +25,8 @@ def try_update_model(model, values, results, translations=None):
         ``values`` - a dict of lists or strings
 
         >>> class User(object):
+        ...     name = ''
         ...     def __init__(self):
-        ...         self.name = ''
         ...         self.age = 0
         ...         self.balance = Decimal(0)
         ...         self.birthday = date.min
@@ -98,7 +98,9 @@ def try_update_model(model, values, results, translations=None):
         getter = model_type.__getitem__
         setter = model_type.__setitem__
     else:
-        attribute_names = model.__dict__
+        attribute_names = model.__dict__.keys()
+        attribute_names.extend([name for name in model.__class__.__dict__
+                                    if name[:1] != '_'])
         getter = getattr
         setter = setattr
     succeed = True
