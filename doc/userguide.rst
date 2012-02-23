@@ -213,7 +213,7 @@ values, e.g. integer attributes must default to some integer value, etc.
 List of supported ``value_providers``:
 
 .. literalinclude:: ../src/wheezy/validation/model.py
-   :lines: 328-
+   :lines: 329-
 
 Example of domain model initialized with defaults::
 

@@ -105,10 +105,9 @@ def try_update_model(model, values, results, translations=None):
         setter = setattr
     succeed = True
     for name in attribute_names:
-        try:
-            value = values[name]
-        except KeyError:
+        if name not in values:
             continue
+        value = values[name]
         attr = getter(model, name)
         # Check if we have a deal with list like attribute
         if hasattr(attr, '__setitem__'):
