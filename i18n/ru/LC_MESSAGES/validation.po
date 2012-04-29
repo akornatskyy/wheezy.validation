@@ -84,6 +84,10 @@ msgstr "Ввод с несколькими значениями был не в �
 msgid "Required field cannot be left blank."
 msgstr "Обязательное поле не может быть пустым."
 
+#: src/wheezy/validation/rules.py:77
+msgid "Field cannot have a value."
+msgstr "Поле не может иметь значения."
+
 #: src/wheezy/validation/rules.py:79
 #, python-format
 msgid "Required to be a minimum of %(min)d characters in length."

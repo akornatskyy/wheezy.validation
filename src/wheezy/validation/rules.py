@@ -68,6 +68,58 @@ class RequiredRule(object):
         return True
 
 
+class MissingRule(object):
+    """ Any value evaluated to boolean ``False`` pass this rule.
+    """
+
+    def __init__(self, message_template=None):
+        self.message_template = message_template or _(
+                'Field cannot have a value.')
+
+    def __call__(self, message_template):
+        """ Let you customize message template.
+
+            >>> r = missing('customized')
+            >>> assert r != missing
+            >>> r.message_template
+            'customized'
+        """
+        return MissingRule(message_template)
+
+    def validate(self, value, name, model, result, gettext):
+        """
+            If ``value`` is evaluated to ``True`` than it cause
+            this rule to fail.
+
+            >>> result = []
+            >>> r = MissingRule(message_template='error')
+            >>> r.validate(100, None, None, result, _)
+            False
+            >>> result
+            ['error']
+
+            Anything that python interprets as ``False`` is passing
+            this rule.
+
+            >>> result = []
+            >>> r.validate('', None, None, result, _)
+            True
+            >>> result
+            []
+
+            >>> r.validate(date.min, None, None, result, _)
+            True
+
+            ``missing`` is a shortcut
+
+            >>> assert isinstance(missing, MissingRule)
+        """
+        if value and value not in required_but_missing:
+            result.append(gettext(self.message_template))
+            return False
+        return True
+
+
 class LengthRule(object):
     """ Result of python function ``len()`` must fall within a range
         defined by this rule.
@@ -851,6 +903,7 @@ class RelativeDateTimeDeltaRule(RelativeDeltaRule):
 
 
 required = RequiredRule()
+missing = MissingRule()
 length = LengthRule
 compare = CompareRule
 regex = RegexRule

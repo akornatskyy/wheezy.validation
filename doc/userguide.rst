@@ -90,7 +90,11 @@ a number of other rules to each item in the list.
 
 There are a number of validation rules defined already.
 
-* ``required``. Any value evaluated to boolean ``True`` pass this rule. See
+* ``required``. Any value evaluated to boolean ``True`` pass this rule.
+  Take also a look at ``required_but_missing`` list. See
+  :py:class:`~wheezy.validation.rules.RequiredRule`.
+* ``missing``. Any value evaluated to boolean ``False`` pass this
+  rule. Take also a look at ``required_but_missing`` list. See
   :py:class:`~wheezy.validation.rules.RequiredRule`.
 * ``length``. Result of python function ``len()`` must fall within a range
   defined by this rule. Supported range attributes include: ``min``, ``max``.
