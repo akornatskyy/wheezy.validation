@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: wheezy.validation\n"
 "Report-Msgid-Bugs-To: Andriy Kornatskyy <andriy.kornatskyy@live.com>\n"
 "POT-Creation-Date: 2011-11-02 14:13+0200\n"
-"PO-Revision-Date: 2012-02-04 18:52+0200\n"
+"PO-Revision-Date: 2012-04-29 10:49+0200\n"
 "Last-Translator: Andriy Kornatskyy <andriy.kornatskyy@live.com>\n"
 "Language: Russian\n"
 "MIME-Version: 1.0\n"
@@ -103,6 +103,11 @@ msgstr "Превышена максимально допустимая длин�
 #, python-format
 msgid "The value failed equality comparison with \"%(comparand)s\"."
 msgstr "Значение не равно в сравнении с \"%(comparand)s\"."
+
+#: src/wheezy/validation/rules.py:238
+#, python-format
+msgid "The value failed not equal comparison with \"%(comparand)s\"."
+msgstr "Значение равно в сравнении с \"%(comparand)s\"."
 
 #: src/wheezy/validation/rules.py:290
 msgid "Required to match validation pattern."

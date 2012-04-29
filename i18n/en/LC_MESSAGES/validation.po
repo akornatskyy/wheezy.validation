@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: wheezy.validation\n"
 "Report-Msgid-Bugs-To: Andriy Kornatskyy <andriy.kornatskyy@live.com>\n"
 "POT-Creation-Date: 2011-11-02 14:13+0200\n"
-"PO-Revision-Date: 2012-02-04 18:52+0200\n"
+"PO-Revision-Date: 2012-04-29 10:47+0200\n"
 "Last-Translator: Andriy Kornatskyy <andriy.kornatskyy@live.com>\n"
 "Language: US English\n"
 "MIME-Version: 1.0\n"
@@ -58,13 +58,11 @@ msgstr ""
 "%Y/%m/%d %H:%M:%S|%m/%d/%Y %H:%M|%m/%d/%Y %H:%M:%S|%Y-%m-%d %H:%M|%Y-%m-%d "
 "%H:%M:%S|%m/%d/%y %H:%M|%m/%d/%y %H:%M:%S"
 
-#: src/wheezy/validation/model.py:131 src/wheezy/validation/model.py:132
-#: src/wheezy/validation/model.py:135
+#: src/wheezy/validation/model.py:131 src/wheezy/validation/model.py:135
 msgid "Multiple input was not in a correct format."
 msgstr "Multiple input was not in a correct format."
 
-#: src/wheezy/validation/model.py:146 src/wheezy/validation/model.py:147
-#: src/wheezy/validation/model.py:150
+#: src/wheezy/validation/model.py:146 src/wheezy/validation/model.py:150
 #, python-format
 msgid "The value '%s' is not in one of supported formats."
 msgstr "The value '%s' is not in one of supported formats."
@@ -82,31 +80,36 @@ msgstr "Input was not in a correct format."
 msgid "Required field cannot be left blank."
 msgstr "Required field cannot be left blank."
 
-#: src/wheezy/validation/rules.py:96 src/wheezy/validation/rules.py:98
+#: src/wheezy/validation/rules.py:95 src/wheezy/validation/rules.py:98
 #, python-format
 msgid "Required to be a minimum of %(min)d characters in length."
 msgstr "Required to be a minimum of %(min)d characters in length."
 
-#: src/wheezy/validation/rules.py:101 src/wheezy/validation/rules.py:103
+#: src/wheezy/validation/rules.py:100 src/wheezy/validation/rules.py:103
 #, python-format
 msgid "The length must fall within the range %(min)d - %(max)d characters."
 msgstr "The length must fall within the range %(min)d - %(max)d characters."
 
-#: src/wheezy/validation/rules.py:108 src/wheezy/validation/rules.py:110
+#: src/wheezy/validation/rules.py:107 src/wheezy/validation/rules.py:110
 #, python-format
 msgid "Exceeds maximum length of %(max)d."
 msgstr "Exceeds maximum length of %(max)d."
 
-#: src/wheezy/validation/rules.py:230 src/wheezy/validation/rules.py:235
+#: src/wheezy/validation/rules.py:232 src/wheezy/validation/rules.py:235
 #, python-format
 msgid "The value failed equality comparison with \"%(comparand)s\"."
 msgstr "The value failed equality comparison with \"%(comparand)s\"."
 
-#: src/wheezy/validation/rules.py:291 src/wheezy/validation/rules.py:298
+#: src/wheezy/validation/rules.py:238
+#, python-format
+msgid "The value failed not equal comparison with \"%(comparand)s\"."
+msgstr "The value failed not equal comparison with \"%(comparand)s\"."
+
+#: src/wheezy/validation/rules.py:324
 msgid "Required to match validation pattern."
 msgstr "Required to match validation pattern."
 
-#: src/wheezy/validation/rules.py:321 src/wheezy/validation/rules.py:330
+#: src/wheezy/validation/rules.py:354
 msgid ""
 "Invalid slug. The value must consist of letters, digits, underscopes and/or "
 "hyphens."
@@ -114,37 +117,37 @@ msgstr ""
 "Invalid slug. The value must consist of letters, digits, underscopes and/or "
 "hyphens."
 
-#: src/wheezy/validation/rules.py:351 src/wheezy/validation/rules.py:362
+#: src/wheezy/validation/rules.py:384
 msgid "Required to be a valid email address."
 msgstr "Required to be a valid email address."
 
-#: src/wheezy/validation/rules.py:397 src/wheezy/validation/rules.py:410
+#: src/wheezy/validation/rules.py:430
 #, python-format
 msgid "Required to be greater or equal to %(min)s."
 msgstr "Required to be greater or equal to %(min)s."
 
-#: src/wheezy/validation/rules.py:401 src/wheezy/validation/rules.py:414
+#: src/wheezy/validation/rules.py:434
 #, python-format
 msgid "The value must fall within the range %(min)s - %(max)s"
 msgstr "The value must fall within the range %(min)s - %(max)s"
 
-#: src/wheezy/validation/rules.py:408 src/wheezy/validation/rules.py:421
+#: src/wheezy/validation/rules.py:441
 #, python-format
 msgid "Exceeds maximum allowed value of %(max)s."
 msgstr "Exceeds maximum allowed value of %(max)s."
 
-#: src/wheezy/validation/rules.py:624 src/wheezy/validation/rules.py:625
-msgid "The value does not belong to the list of known items."
-msgstr "The value does not belong to the list of known items."
-
-#: src/wheezy/validation/rules.py:655
+#: src/wheezy/validation/rules.py:655 src/wheezy/validation/rules.py:688
 msgid "Required to be above a minimum allowed."
 msgstr "Required to be above a minimum allowed."
 
-#: src/wheezy/validation/rules.py:659
+#: src/wheezy/validation/rules.py:658
+msgid "The value does not belong to the list of known items."
+msgstr "The value does not belong to the list of known items."
+
+#: src/wheezy/validation/rules.py:659 src/wheezy/validation/rules.py:692
 msgid "Must fall within a valid range."
 msgstr "Must fall within a valid range."
 
-#: src/wheezy/validation/rules.py:665
+#: src/wheezy/validation/rules.py:665 src/wheezy/validation/rules.py:698
 msgid "Exceeds maximum allowed."
 msgstr "Exceeds maximum allowed."

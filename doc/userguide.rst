@@ -96,8 +96,8 @@ There are a number of validation rules defined already.
   defined by this rule. Supported range attributes include: ``min``, ``max``.
   See :py:class:`~wheezy.validation.rules.LengthRule`.
 * ``compare``. Compares attribute being validated with some other attribute
-  value. Supported comparison operations include: ``equal``. See
-  :py:class:`~wheezy.validation.rules.CompareRule`.
+  value. Supported comparison operations include: ``equal``,
+  ``not_equal``. See :py:class:`~wheezy.validation.rules.CompareRule`.
 * ``regex``. Search for regular expression pattern. Initialized with
   ``regex`` as a regular expression pattern or a pre-compiled regular
   expression. See :py:class:`~wheezy.validation.rules.RegexRule`.

@@ -7,7 +7,6 @@ import re
 from datetime import date
 from datetime import datetime
 from datetime import time
-from datetime import timedelta
 
 from wheezy.validation.comp import ref_getter
 from wheezy.validation.comp import regex_pattern
@@ -215,19 +214,28 @@ class CompareRule(object):
     """ Compares attribute being validated with some other attribute value.
     """
 
-    def __init__(self, equal=None, message_template=None):
+    def __init__(self, equal=None, not_equal=None, message_template=None):
         """
             Initialization selects the most appropriate validation
             strategy.
 
             >>> r = CompareRule(equal='confirm_password')
             >>> assert r.check == r.check_equal
+
+            >>> r = CompareRule(not_equal='other')
+            >>> assert r.check == r.check_not_equal
         """
         if equal:
             self.comparand = equal
             self.check = self.check_equal
             self.message_template = message_template or _(
                     'The value failed equality comparison'
+                    ' with "%(comparand)s".')
+        elif not_equal:
+            self.comparand = not_equal
+            self.check = self.check_not_equal
+            self.message_template = message_template or _(
+                    'The value failed not equal comparison'
                     ' with "%(comparand)s".')
 
     def check(self, value, name, model, result, gettext):
@@ -237,6 +245,15 @@ class CompareRule(object):
         getter = ref_getter(model)
         comparand_value = getter(model, self.comparand)
         if value != comparand_value:
+            result.append(gettext(self.message_template)
+                    % {'comparand': self.comparand})
+            return False
+        return True
+
+    def check_not_equal(self, value, name, model, result, gettext):
+        getter = ref_getter(model)
+        comparand_value = getter(model, self.comparand)
+        if value == comparand_value:
             result.append(gettext(self.message_template)
                     % {'comparand': self.comparand})
             return False
@@ -264,6 +281,22 @@ class CompareRule(object):
 
             >>> result = []
             >>> r.validate('z', None, model, result, _)
+            False
+
+            ``check_not_equal`` strategy succeed.
+
+            >>> result = []
+            >>> r = CompareRule(not_equal='previous_password')
+            >>> model = {
+            ...         'previous_password': 'x'
+            ... }
+            >>> r.validate('y', None, model, result, _)
+            True
+
+            ``check_not_equal`` strategy fails.
+
+            >>> result = []
+            >>> r.validate('x', None, model, result, _)
             False
         """
         return self.check(value, None, model, result, gettext)
@@ -712,6 +745,7 @@ class RelativeDateDeltaRule(RelativeDeltaRule):
 
         Min range strategy
 
+        >>> from datetime import timedelta
         >>> result = []
         >>> r = relative_date(min=timedelta(days=-7))
         >>> r.validate(date.today(), None, None, result, _)
@@ -758,6 +792,7 @@ class RelativeDateTimeDeltaRule(RelativeDeltaRule):
 
         Min range strategy
 
+        >>> from datetime import timedelta
         >>> result = []
         >>> r = relative_datetime(min=timedelta(days=-7))
         >>> r.validate(datetime.today(), None, None, result, _)
