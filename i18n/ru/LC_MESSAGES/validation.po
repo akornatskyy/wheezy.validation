@@ -113,6 +113,10 @@ msgstr "Значение равно в сравнении с \"%(comparand)s\"."
 msgid "Required to match validation pattern."
 msgstr "Обязательно должно соответствовать проверяемому шаблону."
 
+#: src/wheezy/validation/rules.py:290
+msgid "Required to not match validation pattern."
+msgstr "Обязательно не должно соответствовать проверяемому шаблону."
+
 #: src/wheezy/validation/rules.py:322
 msgid ""
 "Invalid slug. The value must consist of letters, digits, underscopes and/or "

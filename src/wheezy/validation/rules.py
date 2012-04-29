@@ -306,7 +306,7 @@ class RegexRule(object):
     """ Search for regular expression pattern.
     """
 
-    def __init__(self, regex=None, message_template=None):
+    def __init__(self, regex=None, negated=False, message_template=None):
         """
             ``regex`` - a regular expression pattern to search for
             or a pre-compiled regular expression.
@@ -320,10 +320,16 @@ class RegexRule(object):
             self.regex = re.compile(regex)
         else:
             self.regex = regex
-        self.message_template = message_template or _(
-                'Required to match validation pattern.')
+        if negated:
+            self.validate = self.check_not_found
+            self.message_template = message_template or _(
+                    'Required to not match validation pattern.')
+        else:
+            self.validate = self.check_found
+            self.message_template = message_template or _(
+                    'Required to match validation pattern.')
 
-    def validate(self, value, name, model, result, gettext):
+    def check_found(self, value, name, model, result, gettext):
         """
             >>> result = []
             >>> r = RegexRule(r'\d+')
@@ -333,6 +339,20 @@ class RegexRule(object):
             False
         """
         if not self.regex.search(value):
+            result.append(gettext(self.message_template))
+            return False
+        return True
+
+    def check_not_found(self, value, name, model, result, gettext):
+        """
+            >>> result = []
+            >>> r = RegexRule(r'\d+', negated=True)
+            >>> r.validate('1234', None, None, result, _)
+            False
+            >>> r.validate('x', None, None, result, _)
+            True
+        """
+        if self.regex.search(value):
             result.append(gettext(self.message_template))
             return False
         return True
@@ -350,7 +370,8 @@ class SlugRule(RegexRule):
     """
 
     def __init__(self, message_template=None):
-        super(SlugRule, self).__init__(r'^[-\w]+$', message_template or _(
+        super(SlugRule, self).__init__(r'^[-\w]+$', False,
+                message_template or _(
         'Invalid slug. The value must consist of letters, '
         'digits, underscopes and/or hyphens.'))
 
@@ -378,8 +399,8 @@ class EmailRule(RegexRule):
 
     def __init__(self, message_template=None):
         super(EmailRule, self).__init__(
-                re.compile(r'[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}',
-                    re.IGNORECASE),
+                re.compile(r'[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,5}',
+                    re.IGNORECASE), False,
                 message_template or
                 _('Required to be a valid email address.'))
 

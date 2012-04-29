@@ -100,7 +100,8 @@ There are a number of validation rules defined already.
   ``not_equal``. See :py:class:`~wheezy.validation.rules.CompareRule`.
 * ``regex``. Search for regular expression pattern. Initialized with
   ``regex`` as a regular expression pattern or a pre-compiled regular
-  expression. See :py:class:`~wheezy.validation.rules.RegexRule`.
+  expression. Supports ``nagated`` argument.
+  See :py:class:`~wheezy.validation.rules.RegexRule`.
 * ``slug``. Ensures only letters, numbers, underscores or hyphens. See
   :py:class:`~wheezy.validation.rules.SlugRule`.
 * ``email``. Ensures a valid email. See
