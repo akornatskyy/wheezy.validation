@@ -8,6 +8,7 @@ from datetime import time
 from decimal import Decimal
 from time import strptime
 
+from wheezy.validation.comp import ntos
 from wheezy.validation.comp import null_translations
 from wheezy.validation.comp import ref_gettext
 from wheezy.validation.format import decimal_separator
@@ -144,14 +145,15 @@ def try_update_model(model, values, results, translations=None):
                 if value is None:
                     results[name] = [gettext(
                         "The value '%s' is not in one of supported formats."
-                        % original_value)]
+                        % ntos(original_value))]
                     succeed = False
                 else:
                     setter(model, name, value)
             except (ArithmeticError, ValueError):
                 if original_value:
                     results[name] = [gettext(
-                        "The value '%s' is invalid.") % original_value]
+                        "The value '%s' is invalid."
+                        ) % ntos(original_value)]
                 else:
                     results[name] = [gettext(
                         "Input was not in a correct format.")]
@@ -328,7 +330,7 @@ def datetime_value_provider(str_value, gettext):
 
 value_providers = {
         'str': lambda str_value, gettext: str_value,
-        'unicode': lambda str_value, gettext: str_value.decode('utf-8'),
+        'unicode': lambda str_value, gettext: str_value.decode('UTF-8'),
         'int': int_value_provider,
         'Decimal': decimal_value_provider,
         'bool': bool_value_provider,
