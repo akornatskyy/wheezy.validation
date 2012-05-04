@@ -12,7 +12,7 @@ class Validator(object):
     """ Container of validation rules that all together provide
         object validation.
     """
-    __SLOTS__ = ['rules', 'inner']
+    __slots__ = ('rules', 'inner')
 
     def __init__(self, mapping):
         # Split mapping by one that holds iteratable of rules and
