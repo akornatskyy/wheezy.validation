@@ -8,7 +8,6 @@ from datetime import time
 from decimal import Decimal
 from time import strptime
 
-from wheezy.validation.comp import ntos
 from wheezy.validation.comp import null_translations
 from wheezy.validation.comp import ref_gettext
 from wheezy.validation.format import decimal_separator
@@ -75,7 +74,7 @@ def try_update_model(model, values, results, translations=None):
 
         Invalid values:
 
-        >>> values = {'balance': ['x'], 'age': [''], 'birthday': ['4.2.12'],
+        >>> values = {'balance': ['x'], 'age': ['x'], 'birthday': ['4.2.12'],
         ...         'prefs2': ['1', 'x']}
         >>> user = User()
         >>> try_update_model(user, values, results)
@@ -116,9 +115,9 @@ def try_update_model(model, values, results, translations=None):
             # fallback to str provider that leaves value unchanged.
             if attr:
                 provider_name = type(attr[0]).__name__
-                try:
+                if provider_name in value_providers:
                     value_provider = value_providers[provider_name]
-                except KeyError:  # pragma: nocover
+                else:  # pragma: nocover
                     continue
             else:
                 value_provider = value_providers['str']
@@ -133,31 +132,17 @@ def try_update_model(model, values, results, translations=None):
                 succeed = False
         else:  # A simple value attribute
             provider_name = type(attr).__name__
-            try:
+            if provider_name in value_providers:
                 value_provider = value_providers[provider_name]
-            except KeyError:  # pragma: nocover
-                continue
-            try:
                 if isinstance(value, list):
                     value = value and value[-1] or ''
-                original_value = value
-                value = value_provider(value, gettext)
-                if value is None:
-                    results[name] = [gettext(
-                        "The value '%s' is not in one of supported formats."
-                        % ntos(original_value))]
-                    succeed = False
-                else:
+                try:
+                    value = value_provider(value, gettext)
                     setter(model, name, value)
-            except (ArithmeticError, ValueError):
-                if original_value:
+                except (ArithmeticError, ValueError):
                     results[name] = [gettext(
-                        "The value '%s' is invalid."
-                        ) % ntos(original_value)]
-                else:
-                    results[name] = [gettext(
-                        "Input was not in a correct format.")]
-                succeed = False
+                            "Input was not in a correct format.")]
+                    succeed = False
     return succeed
 
 
@@ -170,8 +155,16 @@ def int_value_provider(str_value, gettext):
         100
         >>> int_value_provider('1,000', lambda x: x)
         1000
+
+        Empty string value is converted to ``None``.
+
+        >>> int_value_provider(' ', lambda x: x)
     """
-    return int(str_value.replace(thousands_separator(gettext), ''))
+    str_value = str_value.strip()
+    if str_value:
+        return int(str_value.replace(thousands_separator(gettext), ''))
+    else:
+        return None
 
 
 def decimal_value_provider(str_value, gettext):
@@ -183,10 +176,18 @@ def decimal_value_provider(str_value, gettext):
         ...         lambda x: x)
         >>> assert Decimal('1007.85') == decimal_value_provider('1,007.85',
         ...         lambda x: x)
+
+        Empty string value is converted to ``None``.
+
+        >>> decimal_value_provider(' ', lambda x: x)
     """
-    str_value = str_value.replace(thousands_separator(gettext), '')
-    str_value = '.'.join(str_value.split(decimal_separator(gettext), 1))
-    return Decimal(str_value)
+    str_value = str_value.strip()
+    if str_value:
+        str_value = str_value.replace(thousands_separator(gettext), '')
+        str_value = '.'.join(str_value.split(decimal_separator(gettext), 1))
+        return Decimal(str_value)
+    else:
+        return None
 
 
 BOOLEAN_TRUE_VALUES = ['1', 'True']
@@ -197,11 +198,15 @@ def bool_value_provider(str_value, gettext):
 
         >>> bool_value_provider('1', lambda x: x)
         True
-        >>> bool_value_provider('', lambda x: x)
-        False
         >>> bool_value_provider('0', lambda x: x)
         False
+
+        Empty string value is converted to ``False``.
+
+        >>> bool_value_provider(' ', lambda x: x)
+        False
     """
+    str_value = str_value.strip()
     return str_value in BOOLEAN_TRUE_VALUES
 
 
@@ -212,10 +217,18 @@ def float_value_provider(str_value, gettext):
         1.5
         >>> float_value_provider('4,531.5', lambda x: x)
         4531.5
+
+        Empty string value is converted to ``None``.
+
+        >>> float_value_provider(' ', lambda x: x)
     """
-    str_value = str_value.replace(thousands_separator(gettext), '')
-    str_value = '.'.join(str_value.split(decimal_separator(gettext), 1))
-    return float(str_value)
+    str_value = str_value.strip()
+    if str_value:
+        str_value = str_value.replace(thousands_separator(gettext), '')
+        str_value = '.'.join(str_value.split(decimal_separator(gettext), 1))
+        return float(str_value)
+    else:
+        return None
 
 
 def date_value_provider(str_value, gettext):
@@ -230,28 +243,31 @@ def date_value_provider(str_value, gettext):
         >>> date_value_provider('2/4/12', lambda x: x)
         datetime.date(2012, 2, 4)
 
-        If ``str_value`` is empty string, return date.min
+        Empty string value is converted to ``None``.
 
         >>> date_value_provider(' ', lambda x: x)
-        datetime.date(1, 1, 1)
 
-        If none of known formats match return None.
+        If none of known formats match raise ValueError.
 
         >>> date_value_provider('2.4.12', lambda x: x)
+        Traceback (most recent call last):
+            ...
+        ValueError
     """
     str_value = str_value.strip()
-    if not str_value:
-        return date.min
-    try:
-        return date(*strptime(
-            str_value,
-            default_date_input_format(gettext))[:3])
-    except ValueError:
-        for fmt in fallback_date_input_formats(gettext).split('|'):
-            try:
-                return date(*strptime(str_value, fmt)[:3])
-            except ValueError:
-                continue
+    if str_value:
+        try:
+            return date(*strptime(
+                str_value,
+                default_date_input_format(gettext))[:3])
+        except ValueError:
+            for fmt in fallback_date_input_formats(gettext).split('|'):
+                try:
+                    return date(*strptime(str_value, fmt)[:3])
+                except ValueError:
+                    continue
+            raise ValueError()
+    else:
         return None
 
 
@@ -263,28 +279,31 @@ def time_value_provider(str_value, gettext):
         >>> time_value_provider('15:40:11', lambda x: x)
         datetime.time(15, 40, 11)
 
-        If ``str_value`` is empty string, return time.min
+        Empty string value is converted to ``None``.
 
         >>> time_value_provider(' ', lambda x: x)
-        datetime.time(0, 0)
 
-        If none of known formats match return None.
+        If none of known formats match raise ValueError.
 
         >>> time_value_provider('2.45.17', lambda x: x)
+        Traceback (most recent call last):
+            ...
+        ValueError
     """
     str_value = str_value.strip()
-    if not str_value:
-        return time.min
-    try:
-        return time(*strptime(
-            str_value,
-            default_time_input_format(gettext))[3:6])
-    except ValueError:
-        for fmt in fallback_time_input_formats(gettext).split('|'):
-            try:
-                return time(*strptime(str_value, fmt)[3:6])
-            except ValueError:
-                continue
+    if str_value:
+        try:
+            return time(*strptime(
+                str_value,
+                default_time_input_format(gettext))[3:6])
+        except ValueError:
+            for fmt in fallback_time_input_formats(gettext).split('|'):
+                try:
+                    return time(*strptime(str_value, fmt)[3:6])
+                except ValueError:
+                    continue
+            raise ValueError()
+    else:
         return None
 
 
@@ -299,38 +318,40 @@ def datetime_value_provider(str_value, gettext):
         >>> datetime_value_provider('2008/5/18', lambda x: x)
         datetime.datetime(2008, 5, 18, 0, 0)
 
-        If ``str_value`` is empty string, return datetime.min
+        Empty string value is converted to ``None``.
 
         >>> datetime_value_provider(' ', lambda x: x)
-        datetime.datetime(1, 1, 1, 0, 0)
 
-        If none of known formats match return None.
+        If none of known formats match raise ValueError.
 
-        >>> datetime_value_provider('2.45.17', lambda x: x)
+        >>> datetime_value_provider('2.4.12', lambda x: x)
+        Traceback (most recent call last):
+            ...
+        ValueError
 
     """
     str_value = str_value.strip()
-    if not str_value:
-        return datetime.min
-    try:
-        return datetime(*strptime(
-            str_value,
-            default_datetime_input_format(gettext))[:6])
-    except ValueError:
-        for fmt in fallback_datetime_input_formats(gettext).split('|'):
-            try:
-                return datetime(*strptime(str_value, fmt)[:6])
-            except ValueError:
-                continue
-        value = date_value_provider(str_value, gettext)
-        if value is None:
-            return None
-        return datetime(value.year, value.month, value.day)
+    if str_value:
+        try:
+            return datetime(*strptime(
+                str_value,
+                default_datetime_input_format(gettext))[:6])
+        except ValueError:
+            for fmt in fallback_datetime_input_formats(gettext).split('|'):
+                try:
+                    return datetime(*strptime(str_value, fmt)[:6])
+                except ValueError:
+                    continue
+            value = date_value_provider(str_value, gettext)
+            return datetime(value.year, value.month, value.day)
+    else:
+        return None
 
 
 value_providers = {
-        'str': lambda str_value, gettext: str_value,
-        'unicode': lambda str_value, gettext: str_value.decode('UTF-8'),
+        'str': lambda str_value, gettext: str_value.strip(),
+        'unicode': lambda str_value, gettext: \
+                str_value.strip().decode('UTF-8'),
         'int': int_value_provider,
         'Decimal': decimal_value_provider,
         'bool': bool_value_provider,

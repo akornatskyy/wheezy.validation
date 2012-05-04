@@ -61,17 +61,6 @@ msgstr ""
 "%d.%m.%Y %H:%M:%S|%d.%m.%y %H:%M|%d.%m.%y %H:%M:%S|%Y-%m-%d %H:%M|"
 "%Y-%m-%d %H:%M:%S"
 
-
-#: src/wheezy/validation/model.py:70
-#, python-format
-msgid "The value '%s' is invalid."
-msgstr "Значение '%s' является неверным."
-
-#: src/wheezy/validation/model.py:108
-#, python-format
-msgid "The value '%s' is not in one of supported formats."
-msgstr "Значение '%s' не соответсвует ни одному из поддеживаемых форматов."
-
 #: src/wheezy/validation/model.py:112
 msgid "Input was not in a correct format."
 msgstr "Ввод не в правильном формате."
