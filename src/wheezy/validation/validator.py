@@ -110,15 +110,14 @@ class Validator(object):
             value = getter(model, name)
             result = []
             for rule in rules:
-                rule_succeed = rule.validate(value, name, model,
-                        result, gettext)
+                rule_succeed = rule.validate(value, name,
+                        model, result, gettext)
                 succeed &= rule_succeed
                 if not rule_succeed and stop:
                     break
             if result:
                 results[name] = result
         for name, validator in self.inner:
-            value = getter(model, name)
-            succeed &= validator.validate(value, results, stop,
-                                        gettext=gettext)
+            succeed &= validator.validate(getter(model,name),
+                    results, stop, None, gettext)
         return succeed
