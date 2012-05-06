@@ -118,6 +118,6 @@ class Validator(object):
             if result:
                 results[name] = result
         for name, validator in self.inner:
-            succeed &= validator.validate(getter(model,name),
+            succeed &= validator.validate(getter(model, name),
                     results, stop, None, gettext)
         return succeed
