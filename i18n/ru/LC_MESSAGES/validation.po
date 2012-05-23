@@ -102,6 +102,10 @@ msgstr "Значение не равно в сравнении с \"%(comparand)
 msgid "The value failed not equal comparison with \"%(comparand)s\"."
 msgstr "Значение равно в сравнении с \"%(comparand)s\"."
 
+#: src/wheezy/validation/rules.py:389
+msgid "Required to satisfy validation predicate condition."
+msgstr "Должно удовлетворять условие проверки предиката."
+
 #: src/wheezy/validation/rules.py:290
 msgid "Required to match validation pattern."
 msgstr "Обязательно должно соответствовать проверяемому шаблону."

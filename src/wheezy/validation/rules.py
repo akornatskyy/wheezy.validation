@@ -367,6 +367,34 @@ class CompareRule(object):
         return True
 
 
+class PredicateRule(object):
+    """ Fails if predicate return False. Predicate is any callable
+        of the following contract::
+
+            def predicate(model):
+                return True
+
+        >>> r = PredicateRule(lambda model: model is not None)
+        >>> result = []
+        >>> r.validate('', None, 'x', result, _)
+        True
+        >>> r.validate('', None, None, result, _)
+        False
+    """
+    __slots__ = ('predicate', 'message_template')
+
+    def __init__(self, predicate, message_template=None):
+        self.predicate = predicate
+        self.message_template = message_template or _(
+                'Required to satisfy validation predicate condition.')
+
+    def validate(self, value, name, model, result, gettext):
+        if not self.predicate(model):
+            result.append(gettext(self.message_template))
+            return False
+        return True
+
+
 class RegexRule(object):
     """ Search for regular expression pattern.
     """
@@ -966,6 +994,7 @@ required = RequiredRule()
 missing = optional = empty = MissingRule()
 length = LengthRule
 compare = CompareRule
+predicate = PredicateRule
 regex = RegexRule
 slug = SlugRule()
 email = EmailRule()
