@@ -28,7 +28,7 @@ class Validator(object):
         self.inner = tuple(inner)
 
     def validate(self, model, results, stop=True, translations=None,
-            gettext=None):
+                 gettext=None):
         """
             Here is a class and object we are going to validate.
 
@@ -111,7 +111,7 @@ class Validator(object):
             result = []
             for rule in rules:
                 rule_succeed = rule.validate(value, name,
-                        model, result, gettext)
+                                             model, result, gettext)
                 succeed &= rule_succeed
                 if not rule_succeed and stop:
                     break
@@ -119,5 +119,5 @@ class Validator(object):
                 results[name] = result
         for name, validator in self.inner:
             succeed &= validator.validate(getter(model, name),
-                    results, stop, None, gettext)
+                                          results, stop, None, gettext)
         return succeed

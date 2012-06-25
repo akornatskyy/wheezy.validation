@@ -36,6 +36,6 @@ class ValidationMixin(object):
 
     def validate(self, model, validator):
         return validator.validate(
-                model,
-                self.errors,
-                translations=self.translations['validation'])
+            model,
+            self.errors,
+            translations=self.translations['validation'])

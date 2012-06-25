@@ -49,7 +49,7 @@ clean:
 	find src/ -type d -name __pycache__ | xargs rm -rf
 	find src/ -name '*.py[co]' -delete
 	find src/ -name '*.mo' -delete
-	rm -rf dist/ build/ MANIFEST src/*.egg-info
+	rm -rf dist/ build/ MANIFEST src/*.egg-info .cache .coverage
 
 release:
 	$(PYTHON) setup.py -q bdist_egg

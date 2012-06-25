@@ -100,7 +100,7 @@ def try_update_model(model, values, results, translations=None):
     else:
         attribute_names = list(model.__dict__)
         attribute_names.extend([name for name in model.__class__.__dict__
-                                    if name[:1] != '_'])
+                                if name[:1] != '_'])
         getter = getattr
         setter = setattr
     succeed = True
@@ -128,7 +128,7 @@ def try_update_model(model, values, results, translations=None):
                 attr[:] = items
             except (ArithmeticError, ValueError):
                 results[name] = [gettext(
-                        "Multiple input was not in a correct format.")]
+                    "Multiple input was not in a correct format.")]
                 succeed = False
         else:  # A simple value attribute
             provider_name = type(attr).__name__
@@ -141,7 +141,7 @@ def try_update_model(model, values, results, translations=None):
                     setter(model, name, value)
                 except (ArithmeticError, ValueError):
                     results[name] = [gettext(
-                            "Input was not in a correct format.")]
+                        "Input was not in a correct format.")]
                     succeed = False
     return succeed
 
@@ -349,14 +349,13 @@ def datetime_value_provider(str_value, gettext):
 
 
 value_providers = {
-        'str': lambda str_value, gettext: str_value.strip(),
-        'unicode': lambda str_value, gettext: \
-                str_value.strip().decode('UTF-8'),
-        'int': int_value_provider,
-        'Decimal': decimal_value_provider,
-        'bool': bool_value_provider,
-        'float': float_value_provider,
-        'date': date_value_provider,
-        'time': time_value_provider,
-        'datetime': datetime_value_provider
+    'str': lambda str_value, gettext: str_value.strip(),
+    'unicode': lambda str_value, gettext: str_value.strip().decode('UTF-8'),
+    'int': int_value_provider,
+    'Decimal': decimal_value_provider,
+    'bool': bool_value_provider,
+    'float': float_value_provider,
+    'date': date_value_provider,
+    'time': time_value_provider,
+    'datetime': datetime_value_provider
 }

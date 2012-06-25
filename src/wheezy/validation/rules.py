@@ -23,7 +23,7 @@ class RequiredRule(object):
 
     def __init__(self, message_template=None):
         self.message_template = message_template or _(
-                'Required field cannot be left blank.')
+            'Required field cannot be left blank.')
 
     def __call__(self, message_template):
         """ Let you customize message template.
@@ -76,7 +76,7 @@ class MissingRule(object):
 
     def __init__(self, message_template=None):
         self.message_template = message_template or _(
-                'Field cannot have a value.')
+            'Field cannot have a value.')
 
     def __call__(self, message_template):
         """ Let you customize message template.
@@ -147,20 +147,20 @@ class LengthRule(object):
                 self.min = min
                 self.validate = self.check_min
                 self.message_template = message_template or _(
-                        'Required to be a minimum of %(min)d characters'
-                        ' in length.')
+                    'Required to be a minimum of %(min)d characters'
+                    ' in length.')
             else:
                 self.max = max
                 self.validate = self.check
                 self.message_template = message_template or _(
-                        'The length must fall within the range %(min)d'
-                        ' - %(max)d characters.')
+                    'The length must fall within the range %(min)d'
+                    ' - %(max)d characters.')
         else:
             if max:
                 self.max = max
                 self.validate = self.check_max
                 self.message_template = message_template or _(
-                        'Exceeds maximum length of %(max)d.')
+                    'Exceeds maximum length of %(max)d.')
             else:
                 self.validate = self.succeed
 
@@ -205,7 +205,7 @@ class LengthRule(object):
             return True
         if len(value) < self.min:
             result.append(gettext(self.message_template)
-                    % {'min': self.min})
+                          % {'min': self.min})
             return False
         return True
 
@@ -234,7 +234,7 @@ class LengthRule(object):
             return True
         if len(value) > self.max:
             result.append(gettext(self.message_template)
-                    % {'max': self.max})
+                          % {'max': self.max})
             return False
         return True
 
@@ -269,7 +269,7 @@ class LengthRule(object):
         l = len(value)
         if l < self.min or l > self.max:
             result.append(gettext(self.message_template)
-                    % {'min': self.min, 'max': self.max})
+                          % {'min': self.min, 'max': self.max})
             return False
         return True
 
@@ -294,14 +294,14 @@ class CompareRule(object):
             self.comparand = equal
             self.validate = self.check_equal
             self.message_template = message_template or _(
-                    'The value failed equality comparison'
-                    ' with "%(comparand)s".')
+                'The value failed equality comparison'
+                ' with "%(comparand)s".')
         elif not_equal:
             self.comparand = not_equal
             self.validate = self.check_not_equal
             self.message_template = message_template or _(
-                    'The value failed not equal comparison'
-                    ' with "%(comparand)s".')
+                'The value failed not equal comparison'
+                ' with "%(comparand)s".')
         else:
             self.validate = self.check
 
@@ -337,7 +337,7 @@ class CompareRule(object):
         comparand_value = getter(model, self.comparand)
         if value != comparand_value:
             result.append(gettext(self.message_template)
-                    % {'comparand': self.comparand})
+                          % {'comparand': self.comparand})
             return False
         return True
 
@@ -362,7 +362,7 @@ class CompareRule(object):
         comparand_value = getter(model, self.comparand)
         if value == comparand_value:
             result.append(gettext(self.message_template)
-                    % {'comparand': self.comparand})
+                          % {'comparand': self.comparand})
             return False
         return True
 
@@ -386,7 +386,7 @@ class PredicateRule(object):
     def __init__(self, predicate, message_template=None):
         self.predicate = predicate
         self.message_template = message_template or _(
-                'Required to satisfy validation predicate condition.')
+            'Required to satisfy validation predicate condition.')
 
     def validate(self, value, name, model, result, gettext):
         if not self.predicate(model):
@@ -417,11 +417,11 @@ class RegexRule(object):
         if negated:
             self.validate = self.check_not_found
             self.message_template = message_template or _(
-                    'Required to not match validation pattern.')
+                'Required to not match validation pattern.')
         else:
             self.validate = self.check_found
             self.message_template = message_template or _(
-                    'Required to match validation pattern.')
+                'Required to match validation pattern.')
 
     def check_found(self, value, name, model, result, gettext):
         """
@@ -473,10 +473,11 @@ class SlugRule(RegexRule):
     __slots__ = ()
 
     def __init__(self, message_template=None):
-        super(SlugRule, self).__init__(r'^[-\w]+$', False,
-                message_template or _(
-        'Invalid slug. The value must consist of letters, '
-        'digits, underscopes and/or hyphens.'))
+        super(SlugRule, self).__init__(
+            r'^[-\w]+$', False,
+            message_template or _(
+                'Invalid slug. The value must consist of letters, '
+                'digits, underscopes and/or hyphens.'))
 
     def __call__(self, message_template):
         """ Let you customize message template.
@@ -503,10 +504,10 @@ class EmailRule(RegexRule):
 
     def __init__(self, message_template=None):
         super(EmailRule, self).__init__(
-                re.compile(r'[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,5}',
-                    re.IGNORECASE), False,
-                message_template or
-                _('Required to be a valid email address.'))
+            re.compile(r'[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,5}',
+                       re.IGNORECASE), False,
+            message_template or
+            _('Required to be a valid email address.'))
 
     def __call__(self, message_template):
         """ Let you customize message template.
@@ -553,19 +554,19 @@ class RangeRule(object):
                 self.min = min
                 self.validate = self.check_min
                 self.message_template = message_template or _(
-                        'Required to be greater or equal to %(min)s.')
+                    'Required to be greater or equal to %(min)s.')
             else:
                 self.max = max
                 self.validate = self.check
                 self.message_template = message_template or _(
-                        'The value must fall within the range %(min)s'
-                        ' - %(max)s')
+                    'The value must fall within the range %(min)s'
+                    ' - %(max)s')
         else:
             if max:
                 self.max = max
                 self.validate = self.check_max
                 self.message_template = message_template or _(
-                        'Exceeds maximum allowed value of %(max)s.')
+                    'Exceeds maximum allowed value of %(max)s.')
             else:
                 self.validate = self.succeed
 
@@ -610,7 +611,7 @@ class RangeRule(object):
             return True
         if value < self.min:
             result.append(gettext(self.message_template)
-                    % {'min': self.min})
+                          % {'min': self.min})
             return False
         return True
 
@@ -639,7 +640,7 @@ class RangeRule(object):
             return True
         if value > self.max:
             result.append(gettext(self.message_template)
-                    % {'max': self.max})
+                          % {'max': self.max})
             return False
         return True
 
@@ -673,7 +674,7 @@ class RangeRule(object):
             return True
         if value < self.min or value > self.max:
             result.append(gettext(self.message_template)
-                    % {'min': self.min, 'max': self.max})
+                          % {'min': self.min, 'max': self.max})
             return False
         return True
 
@@ -777,7 +778,7 @@ class IteratorRule(object):
         for rule in self.rules:
             for item in value:
                 rule_succeed = rule.validate(item, name, model,
-                        result, gettext)
+                                             result, gettext)
                 succeed &= rule_succeed
                 if not rule_succeed and self.stop:
                     break
@@ -806,7 +807,7 @@ class OneOfRule(object):
         """
         self.items = tuple(items)
         self.message_template = message_template or _(
-                'The value does not belong to the list of known items.')
+            'The value does not belong to the list of known items.')
 
     def validate(self, value, name, model, result, gettext):
         """ Check whenever value belongs to ``self.items``.
@@ -837,18 +838,18 @@ class RelativeDeltaRule(object):
                 self.min = min
                 self.validate = self.check_min
                 self.message_template = message_template or _(
-                        'Required to be above a minimum allowed.')
+                    'Required to be above a minimum allowed.')
             else:
                 self.max = max
                 self.validate = self.check
                 self.message_template = message_template or _(
-                        'Must fall within a valid range.')
+                    'Must fall within a valid range.')
         else:
             if max:
                 self.max = max
                 self.validate = self.check_max
                 self.message_template = message_template or _(
-                        'Exceeds maximum allowed.')
+                    'Exceeds maximum allowed.')
             else:
                 self.validate = self.succeed
 
@@ -863,7 +864,7 @@ class RelativeDeltaRule(object):
             return True
         if value < self.now() + self.min:
             result.append(gettext(self.message_template)
-                    % {'min': self.min})
+                          % {'min': self.min})
             return False
         return True
 
@@ -872,7 +873,7 @@ class RelativeDeltaRule(object):
             return True
         if value > self.now() + self.max:
             result.append(gettext(self.message_template)
-                    % {'max': self.max})
+                          % {'max': self.max})
             return False
         return True
 
@@ -882,7 +883,7 @@ class RelativeDeltaRule(object):
         now = self.now()
         if value < now + self.min or value > now + self.max:
             result.append(gettext(self.message_template)
-                    % {'min': self.min, 'max': self.max})
+                          % {'min': self.min, 'max': self.max})
             return False
         return True
 
