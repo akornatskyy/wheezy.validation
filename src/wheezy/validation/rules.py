@@ -497,6 +497,8 @@ class EmailRule(RegexRule):
         >>> result = []
         >>> r.validate('x.14@somewhere.org', None, None, result, _)
         True
+        >>> r.validate('x.14@somewhere.or g', None, None, result, _)
+        False
         >>> r.validate('x%', None, None, result, _)
         False
     """
@@ -504,7 +506,7 @@ class EmailRule(RegexRule):
 
     def __init__(self, message_template=None):
         super(EmailRule, self).__init__(
-            re.compile(r'[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,5}',
+            re.compile(r'^[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,5}$',
                        re.IGNORECASE), False,
             message_template or
             _('Required to be a valid email address.'))
