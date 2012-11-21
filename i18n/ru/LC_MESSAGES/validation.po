@@ -82,6 +82,11 @@ msgstr "Поле не может иметь значения."
 msgid "Required to be a minimum of %(min)d characters in length."
 msgstr "Должно содержать, как минимум, %(min)d символов в длинну."
 
+#: src/wheezy/validation/rules.py:155
+#, python-format
+msgid "The length must be exactly %(len)d characters."
+msgstr "Должно содержать, ровно, %(len)d символов в длинну."
+
 #: src/wheezy/validation/rules.py:84
 #, python-format
 msgid "The length must fall within the range %(min)d - %(max)d characters."

@@ -149,20 +149,24 @@ class LengthRule(object):
                 self.message_template = message_template or _(
                     'Required to be a minimum of %(min)d characters'
                     ' in length.')
+            elif min == max:
+                self.validate = self.check_equal
+                self.message_template = message_template or _(
+                    'The length must be exactly %(len)d'
+                    ' characters.')
             else:
                 self.max = max
                 self.validate = self.check
                 self.message_template = message_template or _(
                     'The length must fall within the range %(min)d'
                     ' - %(max)d characters.')
+        elif max:
+            self.max = max
+            self.validate = self.check_max
+            self.message_template = message_template or _(
+                'Exceeds maximum length of %(max)d.')
         else:
-            if max:
-                self.max = max
-                self.validate = self.check_max
-                self.message_template = message_template or _(
-                    'Exceeds maximum length of %(max)d.')
-            else:
-                self.validate = self.succeed
+            self.validate = self.succeed
 
     def succeed(self, value, name, model, result, gettext):
         """
@@ -235,6 +239,35 @@ class LengthRule(object):
         if len(value) > self.max:
             result.append(gettext(self.message_template)
                           % {'max': self.max})
+            return False
+        return True
+
+    def check_equal(self, value, name, model, result, gettext):
+        """ ``check_equal`` strategy fails
+
+            >>> result = []
+            >>> r = LengthRule(min=2, max=2, message_template='len %(len)d')
+            >>> r.validate('abc', None, None, result, _)
+            False
+            >>> result
+            ['len 2']
+
+            ``check_equal`` strategy succeed
+
+            >>> result = []
+            >>> r = LengthRule(min=2, max=2)
+            >>> r.validate(None, None, None, result, _)
+            True
+            >>> r.validate('ab', None, None, result, _)
+            True
+            >>> result
+            []
+        """
+        if value is None:
+            return True
+        if len(value) != self.min:
+            result.append(gettext(self.message_template)
+                          % {'len': self.min})
             return False
         return True
 
