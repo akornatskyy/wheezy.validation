@@ -1,7 +1,6 @@
 
-""" ``format`` module.
+""" ``i18n`` module.
 """
-
 
 # thousands separator
 thousands_separator = lambda gettext: gettext(',')

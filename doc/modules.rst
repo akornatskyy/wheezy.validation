@@ -12,19 +12,25 @@ wheezy.validation.mixin
 
 .. automodule:: wheezy.validation.mixin
    :members:
-   
+
 wheezy.validation.model
 -----------------------
 
 .. automodule:: wheezy.validation.model
    :members:
-   
+
+wheezy.validation.patches
+-----------------------
+
+.. automodule:: wheezy.validation.patches
+   :members:
+
 wheezy.validation.rules
 -----------------------
 
 .. automodule:: wheezy.validation.rules
    :members:
-      
+
 wheezy.validation.validator
 ---------------------------
 

@@ -15,42 +15,47 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #. thousands separator
-#: src/wheezy/validation/format.py:7
+#: src/wheezy/validation/format.py:7 src/wheezy/validation/i18n.py:6
 msgid ","
 msgstr ","
 
 #. decimal point separator
-#: src/wheezy/validation/format.py:9
+#: src/wheezy/validation/format.py:9 src/wheezy/validation/i18n.py:8
 msgid "."
 msgstr "."
 
 #. default date input format: 2008/5/18.
-#: src/wheezy/validation/format.py:11
+#: src/wheezy/validation/format.py:11 src/wheezy/validation/i18n.py:10
 msgid "%Y/%m/%d"
 msgstr "%Y/%m/%d"
 
 #. fallback date input formats: 5/18/2008. Use | to separate multiple values.
 #: src/wheezy/validation/format.py:14 src/wheezy/validation/format.py:15
+#: src/wheezy/validation/i18n.py:13
 msgid "%m/%d/%Y|%Y-%m-%d|%m/%d/%y"
 msgstr "%m/%d/%Y|%Y-%m-%d|%m/%d/%y"
 
 #. default time input format: 16:34.
 #: src/wheezy/validation/format.py:16 src/wheezy/validation/format.py:17
+#: src/wheezy/validation/i18n.py:15
 msgid "%H:%M"
 msgstr "%H:%M"
 
 #. fallback time input formats: 16:34:52. Use | to separate multiple values.
 #: src/wheezy/validation/format.py:18 src/wheezy/validation/format.py:21
+#: src/wheezy/validation/i18n.py:17
 msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
 #. default datetime input format: 2008/5/18 16:34
 #: src/wheezy/validation/format.py:20 src/wheezy/validation/format.py:23
+#: src/wheezy/validation/i18n.py:19
 msgid "%Y/%m/%d %H:%M"
 msgstr "%Y/%m/%d %H:%M"
 
 #. fallback datetime input formats: 2008/5/18 16:34:52. Use | to separate.
 #: src/wheezy/validation/format.py:23 src/wheezy/validation/format.py:27
+#: src/wheezy/validation/i18n.py:22
 msgid ""
 "%Y/%m/%d %H:%M:%S|%m/%d/%Y %H:%M|%m/%d/%Y %H:%M:%S|%Y-%m-%d %H:%M|%Y-%m-%d "
 "%H:%M:%S|%m/%d/%y %H:%M|%m/%d/%y %H:%M:%S"

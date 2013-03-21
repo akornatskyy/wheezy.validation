@@ -10,14 +10,14 @@ from time import strptime
 
 from wheezy.validation.comp import null_translations
 from wheezy.validation.comp import ref_gettext
-from wheezy.validation.format import decimal_separator
-from wheezy.validation.format import default_date_input_format
-from wheezy.validation.format import default_datetime_input_format
-from wheezy.validation.format import default_time_input_format
-from wheezy.validation.format import fallback_date_input_formats
-from wheezy.validation.format import fallback_datetime_input_formats
-from wheezy.validation.format import fallback_time_input_formats
-from wheezy.validation.format import thousands_separator
+from wheezy.validation.i18n import decimal_separator
+from wheezy.validation.i18n import default_date_input_format
+from wheezy.validation.i18n import default_datetime_input_format
+from wheezy.validation.i18n import default_time_input_format
+from wheezy.validation.i18n import fallback_date_input_formats
+from wheezy.validation.i18n import fallback_datetime_input_formats
+from wheezy.validation.i18n import fallback_time_input_formats
+from wheezy.validation.i18n import thousands_separator
 
 
 def try_update_model(model, values, results, translations=None):
@@ -359,3 +359,11 @@ value_providers = {
     'time': time_value_provider,
     'datetime': datetime_value_provider
 }
+
+
+from wheezy.validation.patches import patch_strptime_cache_size
+if not patch_strptime_cache_size():
+    from warnings import warn
+    warn('Failed to patch _strptime._CACHE_MAX_SIZE')
+    del warn
+del patch_strptime_cache_size
