@@ -167,25 +167,39 @@ def int_value_provider(str_value, gettext):
         return None
 
 
+DZERO = Decimal(0)
+DZERO_VALUES = ['0.0', '0.00']
+
+
 def decimal_value_provider(str_value, gettext):
     """ Converts string value to ``Decimal``.
 
-        >>> assert Decimal('100') == decimal_value_provider('100',
-        ...         lambda x: x)
-        >>> assert Decimal('1000') == decimal_value_provider('1,000',
-        ...         lambda x: x)
-        >>> assert Decimal('1007.85') == decimal_value_provider('1,007.85',
-        ...         lambda x: x)
+        >>> d = lambda s: decimal_value_provider(s, lambda x: x)
+        >>> assert Decimal('100') == d('100')
+        >>> assert Decimal('1000') == d('1,000')
+        >>> assert Decimal('1007.85') == d('1,007.85')
+        >>> assert Decimal('0') == d('0')
+        >>> assert Decimal('0') == d('0.0')
 
         Empty string value is converted to ``None``.
 
-        >>> decimal_value_provider(' ', lambda x: x)
+        >>> d(' ')
     """
     str_value = str_value.strip()
     if str_value:
-        str_value = str_value.replace(thousands_separator(gettext), '')
-        str_value = '.'.join(str_value.split(decimal_separator(gettext), 1))
-        return Decimal(str_value)
+        s = thousands_separator(gettext)
+        if s in str_value:
+            str_value = str_value.replace(s, '')
+        s = decimal_separator(gettext)
+        if s in str_value:
+            str_value = str_value.replace(s, '.', 1)
+            if str_value in DZERO_VALUES:
+                return DZERO
+            return Decimal(str_value)
+        else:
+            if str_value == '0':
+                return DZERO
+            return Decimal(int(str_value))
     else:
         return None
 
@@ -362,7 +376,7 @@ value_providers = {
 
 
 from wheezy.validation.patches import patch_strptime_cache_size
-if not patch_strptime_cache_size():
+if not patch_strptime_cache_size():  # pragma: nocover
     from warnings import warn
     warn('Failed to patch _strptime._CACHE_MAX_SIZE')
     del warn
