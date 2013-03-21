@@ -98,9 +98,8 @@ test-demos:
 po:
 	xgettext --join-existing --sort-by-file --omit-header \
 		--add-comments \
-		-o i18n/validation.po src/wheezy/validation/*.py
-	cp i18n/validation.po i18n/en/LC_MESSAGES
-	for l in `ls --hide *.po i18n`; do \
+		-o i18n/en/LC_MESSAGES/validation.po src/wheezy/validation/*.py
+	for l in `ls -d i18n/*/ | cut -d / -f 2`; do \
 		echo -n "$$l => "; \
 		msgfmt -v i18n/$$l/LC_MESSAGES/validation.po \
 			-o i18n/$$l/LC_MESSAGES/validation.mo; \
