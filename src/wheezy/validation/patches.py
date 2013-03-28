@@ -22,3 +22,18 @@ def patch_strptime_cache_size(max_size=100):
     finally:
         l.release()
     return True
+
+
+def patch_use_cdecimal():  # pragma: nocover
+    """ Use cdecimal module globally. Pure python implementation
+        in-place replacement.
+    """
+    import sys
+    if sys.version_info[:2] >= (3, 3):
+        return True
+    try:
+        import cdecimal
+        sys.modules["decimal"] = cdecimal
+        return True
+    except ImportError:
+        return False
