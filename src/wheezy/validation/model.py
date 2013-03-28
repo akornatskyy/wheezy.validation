@@ -5,9 +5,9 @@
 from datetime import date
 from datetime import datetime
 from datetime import time
-from decimal import Decimal
 from time import strptime
 
+from wheezy.validation.comp import Decimal
 from wheezy.validation.comp import null_translations
 from wheezy.validation.comp import ref_gettext
 from wheezy.validation.i18n import decimal_separator
@@ -167,8 +167,8 @@ def int_value_provider(str_value, gettext):
         return None
 
 
-DZERO = Decimal(0)
-DZERO_VALUES = ['0.0', '0.00']
+decimal_zero = Decimal(0)
+decimal_zero_values = ['0', '0.0', '0.00']
 
 
 def decimal_value_provider(str_value, gettext):
@@ -191,20 +191,15 @@ def decimal_value_provider(str_value, gettext):
         if s in str_value:
             str_value = str_value.replace(s, '')
         s = decimal_separator(gettext)
-        if s in str_value:
-            str_value = str_value.replace(s, '.', 1)
-            if str_value in DZERO_VALUES:
-                return DZERO
-            return Decimal(str_value)
-        else:
-            if str_value == '0':
-                return DZERO
-            return Decimal(int(str_value))
+        str_value = str_value.replace(s, '.', 1)
+        if str_value in decimal_zero_values:
+            return decimal_zero
+        return Decimal(str_value)
     else:
         return None
 
 
-BOOLEAN_TRUE_VALUES = ['1', 'True']
+boolean_true_values = ['1', 'True']
 
 
 def bool_value_provider(str_value, gettext):
@@ -221,7 +216,7 @@ def bool_value_provider(str_value, gettext):
         False
     """
     str_value = str_value.strip()
-    return str_value in BOOLEAN_TRUE_VALUES
+    return str_value in boolean_true_values
 
 
 def float_value_provider(str_value, gettext):

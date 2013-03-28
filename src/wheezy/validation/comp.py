@@ -6,6 +6,7 @@ import sys
 
 
 PY3 = sys.version_info[0] >= 3
+PY_MINOR = sys.version_info[1]
 
 if PY3:  # pragma: nocover
     iterkeys = lambda d: d.keys()
@@ -34,3 +35,12 @@ def ref_getter(model):
         return type(model).__getitem__
     else:
         return getattr
+
+
+if PY3 and PY_MINOR >= 3:  # pragma: nocover
+    from decimal import Decimal
+else:  # pragma: nocover
+    try:
+        from cdecimal import Decimal
+    except ImportError:
+        from decimal import Decimal
