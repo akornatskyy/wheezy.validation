@@ -20,7 +20,7 @@ wheezy.validation.model
    :members:
 
 wheezy.validation.patches
------------------------
+-------------------------
 
 .. automodule:: wheezy.validation.patches
    :members:
