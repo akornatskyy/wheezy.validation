@@ -1,40 +1,37 @@
-"""
+
+""" ``mixin`` module.
 """
 
 
 class ValidationMixin(object):
-    """
+    """ Used primary by service layer to validate domain model.
+
         Requirements:
-        1. self.errors
-        2. self.translations
+        - self.errors
+        - self.translations
 
-        >>> class MyService(ValidationMixin):
-        ...     def __init__(self):
-        ...         self.errors = {}
-        ...         self.translations = {'validation': None}
-        >>> service = MyService()
+        Example::
 
-        >>> service.error('message')
-        >>> service.errors
-        {'__ERROR__': ['message']}
+            class MyService(ValidationMixin):
 
-        >>> from wheezy.validation.rules import required
-        >>> from wheezy.validation.validator import Validator
-        >>> v = Validator({
-        ...	    'name': [required]
-        ... })
-        >>> user = {'name': 'abc'}
-        >>> service.validate(user, v)
-        True
-        >>> user = {'name': None}
-        >>> service.validate(user, v)
-        False
+                def __init__(self, repository, errors, translations, locale):
+                    # ...
+
+                def authenticate(self, credential):
+                    if not self.validate(credential, credential_validator):
+                        return False
+                    # ...
+                    return True
     """
 
     def error(self, message):
+        """ Add `message` to error summary.
+        """
         self.errors.setdefault('__ERROR__', []).append(message)
 
     def validate(self, model, validator):
+        """ Validate given `model` using `validator`.
+        """
         return validator.validate(
             model,
             self.errors,
