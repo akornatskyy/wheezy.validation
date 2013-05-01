@@ -18,6 +18,8 @@ required_but_missing = [date.min, datetime.min, time.min]
 
 class RequiredRule(object):
     """ Any value evaluated to boolean ``True`` pass this rule.
+        You can extend this validator by supplying additional
+        false values to ``required_but_missing`` list.
     """
     __slots__ = ('message_template')
 
@@ -27,42 +29,10 @@ class RequiredRule(object):
 
     def __call__(self, message_template):
         """ Let you customize message template.
-
-            >>> r = required('customized')
-            >>> assert r != required
-            >>> r.message_template
-            'customized'
         """
         return RequiredRule(message_template)
 
     def validate(self, value, name, model, result, gettext):
-        """
-            If ``value`` is evaluated to ``False`` than it cause
-            this rule to fail.
-
-            >>> result = []
-            >>> r = RequiredRule(message_template='required')
-            >>> r.validate(None, None, None, result, _)
-            False
-            >>> result
-            ['required']
-
-            Anything that python interprets as ``True`` is passing
-            this rule.
-
-            >>> result = []
-            >>> r.validate('abc', None, None, result, _)
-            True
-            >>> result
-            []
-
-            >>> r.validate(date.min, None, None, result, _)
-            False
-
-            ``required`` is a shortcut
-
-            >>> assert isinstance(required, RequiredRule)
-        """
         if not value or value in required_but_missing:
             result.append(gettext(self.message_template))
             return False
@@ -80,42 +50,10 @@ class MissingRule(object):
 
     def __call__(self, message_template):
         """ Let you customize message template.
-
-            >>> r = missing('customized')
-            >>> assert r != missing
-            >>> r.message_template
-            'customized'
         """
         return MissingRule(message_template)
 
     def validate(self, value, name, model, result, gettext):
-        """
-            If ``value`` is evaluated to ``True`` than it cause
-            this rule to fail.
-
-            >>> result = []
-            >>> r = MissingRule(message_template='error')
-            >>> r.validate(100, None, None, result, _)
-            False
-            >>> result
-            ['error']
-
-            Anything that python interprets as ``False`` is passing
-            this rule.
-
-            >>> result = []
-            >>> r.validate('', None, None, result, _)
-            True
-            >>> result
-            []
-
-            >>> r.validate(date.min, None, None, result, _)
-            True
-
-            ``missing`` is a shortcut
-
-            >>> assert isinstance(missing, MissingRule)
-        """
         if value and value not in required_but_missing:
             result.append(gettext(self.message_template))
             return False
@@ -132,14 +70,6 @@ class LengthRule(object):
         """
             Initialization selects the most appropriate validation
             strategy.
-
-            >>> r = LengthRule(min=2)
-            >>> assert r.validate == r.check_min
-            >>> r = LengthRule(max=2)
-            >>> assert r.validate == r.check_max
-            >>> r = LengthRule()
-            >>> assert r.validate == r.succeed
-            >>> r = LengthRule(min=1, max=2)
         """
         if min:
             self.min = min
@@ -156,7 +86,7 @@ class LengthRule(object):
                     ' characters.')
             else:
                 self.max = max
-                self.validate = self.check
+                self.validate = self.check_range
                 self.message_template = message_template or _(
                     'The length must fall within the range %(min)d'
                     ' - %(max)d characters.')
@@ -169,42 +99,9 @@ class LengthRule(object):
             self.validate = self.succeed
 
     def succeed(self, value, name, model, result, gettext):
-        """
-            >>> r = LengthRule()
-
-            Succeed if ``value`` is None
-
-            >>> r.validate(None, None, None, None, _)
-            True
-
-            Since no range specified it chooses ``succeed`` strategy.
-
-            >>> r.validate('abc', None, None, None, _)
-            True
-        """
         return True
 
     def check_min(self, value, name, model, result, gettext):
-        """ ``check_min`` strategy fails
-
-            >>> result = []
-            >>> r = LengthRule(min=2, message_template='min %(min)d')
-            >>> r.validate('a', None, None, result, _)
-            False
-            >>> result
-            ['min 2']
-
-            ``check_min`` strategy succeed
-
-            >>> result = []
-            >>> r = LengthRule(min=2)
-            >>> r.validate(None, None, None, result, _)
-            True
-            >>> r.validate('ab', None, None, result, _)
-            True
-            >>> result
-            []
-        """
         if value is None:
             return True
         if len(value) < self.min:
@@ -214,26 +111,6 @@ class LengthRule(object):
         return True
 
     def check_max(self, value, name, model, result, gettext):
-        """ ``check_max`` strategy fails
-
-            >>> result = []
-            >>> r = LengthRule(max=2, message_template='max %(max)d')
-            >>> r.validate('abc', None, None, result, _)
-            False
-            >>> result
-            ['max 2']
-
-            ``check_max`` strategy succeed
-
-            >>> result = []
-            >>> r = LengthRule(max=2)
-            >>> r.validate(None, None, None, result, _)
-            True
-            >>> r.validate('ab', None, None, result, _)
-            True
-            >>> result
-            []
-        """
         if value is None:
             return True
         if len(value) > self.max:
@@ -243,26 +120,6 @@ class LengthRule(object):
         return True
 
     def check_equal(self, value, name, model, result, gettext):
-        """ ``check_equal`` strategy fails
-
-            >>> result = []
-            >>> r = LengthRule(min=2, max=2, message_template='len %(len)d')
-            >>> r.validate('abc', None, None, result, _)
-            False
-            >>> result
-            ['len 2']
-
-            ``check_equal`` strategy succeed
-
-            >>> result = []
-            >>> r = LengthRule(min=2, max=2)
-            >>> r.validate(None, None, None, result, _)
-            True
-            >>> r.validate('ab', None, None, result, _)
-            True
-            >>> result
-            []
-        """
         if value is None:
             return True
         if len(value) != self.min:
@@ -271,32 +128,7 @@ class LengthRule(object):
             return False
         return True
 
-    def check(self, value, name, model, result, gettext):
-        """ ``check`` strategy fails
-
-            >>> r = LengthRule(min=2, max=3,
-            ...         message_template='range %(min)d-%(max)d')
-            >>> result = []
-            >>> r.validate('a', None, None, result, _)
-            False
-            >>> result
-            ['range 2-3']
-
-            ``check`` strategy succeed
-
-            >>> result = []
-            >>> r = LengthRule(min=1, max=2)
-            >>> r.validate(None, None, None, result, _)
-            True
-            >>> r.validate('ab', None, None, result, _)
-            True
-            >>> result
-            []
-
-            ``length`` is shortcut
-
-            >>> assert length is LengthRule
-        """
+    def check_range(self, value, name, model, result, gettext):
         if value is None:
             return True
         l = len(value)
@@ -313,15 +145,8 @@ class CompareRule(object):
     __slots__ = ('validate', 'comparand', 'message_template')
 
     def __init__(self, equal=None, not_equal=None, message_template=None):
-        """
-            Initialization selects the most appropriate validation
+        """ Initialization selects the most appropriate validation
             strategy.
-
-            >>> r = CompareRule(equal='confirm_password')
-            >>> assert r.validate == r.check_equal
-
-            >>> r = CompareRule(not_equal='other')
-            >>> assert r.validate == r.check_not_equal
         """
         if equal:
             self.comparand = equal
@@ -336,36 +161,12 @@ class CompareRule(object):
                 'The value failed not equal comparison'
                 ' with "%(comparand)s".')
         else:
-            self.validate = self.check
+            self.validate = self.succeed
 
-    def check(self, value, name, model, result, gettext):
-        """
-            No any comparer selected
-
-            >>> r = CompareRule()
-            >>> r.validate('abc', None, None, None, _)
-            True
-        """
+    def succeed(self, value, name, model, result, gettext):
         return True
 
     def check_equal(self, value, name, model, result, gettext):
-        """
-            ``check_equal`` strategy succeed.
-
-            >>> result = []
-            >>> r = CompareRule(equal='confirm_password')
-            >>> model = {
-            ...         'confirm_password': 'x'
-            ... }
-            >>> r.validate('x', None, model, result, _)
-            True
-
-            ``check_equal`` strategy fails.
-
-            >>> result = []
-            >>> r.validate('z', None, model, result, _)
-            False
-        """
         getter = ref_getter(model)
         comparand_value = getter(model, self.comparand)
         if value != comparand_value:
@@ -375,22 +176,6 @@ class CompareRule(object):
         return True
 
     def check_not_equal(self, value, name, model, result, gettext):
-        """ ``check_not_equal`` strategy succeed.
-
-            >>> result = []
-            >>> r = CompareRule(not_equal='previous_password')
-            >>> model = {
-            ...         'previous_password': 'x'
-            ... }
-            >>> r.validate('y', None, model, result, _)
-            True
-
-            ``check_not_equal`` strategy fails.
-
-            >>> result = []
-            >>> r.validate('x', None, model, result, _)
-            False
-        """
         getter = ref_getter(model)
         comparand_value = getter(model, self.comparand)
         if value == comparand_value:
@@ -406,13 +191,6 @@ class PredicateRule(object):
 
             def predicate(model):
                 return True
-
-        >>> r = PredicateRule(lambda model: model is not None)
-        >>> result = []
-        >>> r.validate('', None, 'x', result, _)
-        True
-        >>> r.validate('', None, None, result, _)
-        False
     """
     __slots__ = ('predicate', 'message_template')
 
@@ -433,15 +211,12 @@ class RegexRule(object):
     """
     __slots__ = ('validate', 'regex', 'message_template')
 
-    def __init__(self, regex=None, negated=False, message_template=None):
-        """
-            ``regex`` - a regular expression pattern to search for
-            or a pre-compiled regular expression.
-
-            >>> result = []
-            >>> r = regex(re.compile(r'\w+'))
-            >>> r.validate('x', None, None, result, _)
-            True
+    def __init__(self, regex, negated=False, message_template=None):
+        """ `regex` - a regular expression pattern to search for
+            or a pre-compiled regular expression. The pattern is
+            searched to be found if `negated` is `False`. If
+            `negated` is `True` the rule succeed if the pattern
+            not found.
         """
         if isinstance(regex, regex_pattern):
             self.regex = re.compile(regex)
@@ -457,16 +232,6 @@ class RegexRule(object):
                 'Required to match validation pattern.')
 
     def check_found(self, value, name, model, result, gettext):
-        """
-            >>> result = []
-            >>> r = RegexRule(r'\d+')
-            >>> r.validate(None, None, None, result, _)
-            True
-            >>> r.validate('1234', None, None, result, _)
-            True
-            >>> r.validate('x', None, None, result, _)
-            False
-        """
         if value is None:
             return True
         if not self.regex.search(value):
@@ -475,16 +240,6 @@ class RegexRule(object):
         return True
 
     def check_not_found(self, value, name, model, result, gettext):
-        """
-            >>> result = []
-            >>> r = RegexRule(r'\d+', negated=True)
-            >>> r.validate(None, None, None, result, _)
-            True
-            >>> r.validate('x', None, None, result, _)
-            True
-            >>> r.validate('1234', None, None, result, _)
-            False
-        """
         if value is None:
             return True
         if self.regex.search(value):
@@ -495,13 +250,6 @@ class RegexRule(object):
 
 class SlugRule(RegexRule):
     """ Ensures only letters, numbers, underscores or hyphens.
-
-        >>> r = slug
-        >>> result = []
-        >>> r.validate('x14', None, None, result, _)
-        True
-        >>> r.validate('x%', None, None, result, _)
-        False
     """
     __slots__ = ()
 
@@ -514,26 +262,12 @@ class SlugRule(RegexRule):
 
     def __call__(self, message_template):
         """ Let you customize message template.
-
-            >>> r = slug('customized')
-            >>> assert r != slug
-            >>> r.message_template
-            'customized'
         """
         return SlugRule(message_template)
 
 
 class EmailRule(RegexRule):
     """ Ensures a valid email.
-
-        >>> r = email
-        >>> result = []
-        >>> r.validate('x.14@somewhere.org', None, None, result, _)
-        True
-        >>> r.validate('x.14@somewhere.or g', None, None, result, _)
-        False
-        >>> r.validate('x%', None, None, result, _)
-        False
     """
     __slots__ = ()
 
@@ -546,11 +280,6 @@ class EmailRule(RegexRule):
 
     def __call__(self, message_template):
         """ Let you customize message template.
-
-            >>> r = email('customized')
-            >>> assert r != slug
-            >>> r.message_template
-            'customized'
         """
         return EmailRule(message_template)
 
@@ -558,30 +287,13 @@ class EmailRule(RegexRule):
 class RangeRule(object):
     """ Ensures value is in range defined by this rule.
 
-        Works with any numbers including decimal.
-
-        >>> from decimal import Decimal
-        >>> result = []
-        >>> r = range(max=Decimal('15.79'))
-        >>> r.validate(Decimal('10'), None, None, result, _)
-        True
-        >>> r.validate(Decimal('20'), None, None, result, _)
-        False
+        Works with any numbers including `Decimal`.
     """
     __slots__ = ('validate', 'min', 'max', 'message_template')
 
     def __init__(self, min=None, max=None, message_template=None):
-        """
-            Initialization selects the most appropriate validation
+        """ Initialization selects the most appropriate validation
             strategy.
-
-            >>> r = RangeRule(min=2)
-            >>> assert r.validate == r.check_min
-            >>> r = RangeRule(max=2)
-            >>> assert r.validate == r.check_max
-            >>> r = RangeRule()
-            >>> assert r.validate == r.succeed
-            >>> r = RangeRule(min=1, max=2)
         """
         if min:
             self.min = min
@@ -592,7 +304,7 @@ class RangeRule(object):
                     'Required to be greater or equal to %(min)s.')
             else:
                 self.max = max
-                self.validate = self.check
+                self.validate = self.check_range
                 self.message_template = message_template or _(
                     'The value must fall within the range %(min)s'
                     ' - %(max)s')
@@ -606,42 +318,9 @@ class RangeRule(object):
                 self.validate = self.succeed
 
     def succeed(self, value, name, model, result, gettext):
-        """
-            >>> r = RangeRule()
-
-            Succeed if ``value`` is None
-
-            >>> r.validate(None, None, None, None, _)
-            True
-
-            Since no range specified it chooses ``succeed`` strategy.
-
-            >>> r.validate(100, None, None, None, _)
-            True
-        """
         return True
 
     def check_min(self, value, name, model, result, gettext):
-        """ ``check_min`` strategy fails
-
-            >>> result = []
-            >>> r = RangeRule(min=10, message_template='min %(min)s')
-            >>> r.validate(1, None, None, result, _)
-            False
-            >>> result
-            ['min 10']
-
-            ``check_min`` strategy succeed
-
-            >>> result = []
-            >>> r = RangeRule(min=10)
-            >>> r.validate(None, None, None, result, _)
-            True
-            >>> r.validate(10, None, None, result, _)
-            True
-            >>> result
-            []
-        """
         if value is None:
             return True
         if value < self.min:
@@ -651,26 +330,6 @@ class RangeRule(object):
         return True
 
     def check_max(self, value, name, model, result, gettext):
-        """ ``check_max`` strategy fails
-
-            >>> result = []
-            >>> r = RangeRule(max=10, message_template='max %(max)s')
-            >>> r.validate(11, None, None, result, _)
-            False
-            >>> result
-            ['max 10']
-
-            ``check_max`` strategy succeed
-
-            >>> result = []
-            >>> r = RangeRule(max=10)
-            >>> r.validate(None, None, None, result, _)
-            True
-            >>> r.validate(10, None, None, result, _)
-            True
-            >>> result
-            []
-        """
         if value is None:
             return True
         if value > self.max:
@@ -679,32 +338,7 @@ class RangeRule(object):
             return False
         return True
 
-    def check(self, value, name, model, result, gettext):
-        """ ``check`` strategy fails
-
-            >>> r = RangeRule(min=2, max=3,
-            ...         message_template='range %(min)s-%(max)s')
-            >>> result = []
-            >>> r.validate(1, None, None, result, _)
-            False
-            >>> result
-            ['range 2-3']
-
-            ``check`` strategy succeed
-
-            >>> result = []
-            >>> r = RangeRule(min=1, max=2)
-            >>> r.validate(None, None, None, result, _)
-            True
-            >>> r.validate(2, None, None, result, _)
-            True
-            >>> result
-            []
-
-            ``length`` is shortcut
-
-            >>> assert length is LengthRule
-        """
+    def check_range(self, value, name, model, result, gettext):
         if value is None:
             return True
         if value < self.min or value > self.max:
@@ -716,15 +350,6 @@ class RangeRule(object):
 
 class AndRule(object):
     """ Applies all ``rules`` regardless of validation result.
-
-        >>> result = []
-        >>> r = and_(required, range(1, 5))
-        >>> r.validate(1, None, None, result, _)
-        True
-        >>> r.validate(0, None, None, result, _)
-        False
-        >>> len(result)
-        2
     """
     __slots__ = ('rules')
 
@@ -747,17 +372,6 @@ class AndRule(object):
 
 class OrRule(object):
     """ Succeed if at least one rule in ``rules`` succeed.
-
-        >>> result = []
-        >>> r = or_(range(1, 5), range(11, 15))
-        >>> r.validate(1, None, None, result, _)
-        True
-        >>> r.validate(12, None, None, result, _)
-        True
-        >>> r.validate(0, None, None, result, _)
-        False
-        >>> len(result)
-        2
     """
     __slots__ = ('rules')
 
@@ -782,21 +396,14 @@ class OrRule(object):
 
 
 class IteratorRule(object):
-    """ Applies ``rules`` to each item.
-
-        >>> result = []
-        >>> r = iterator([required, range(1, 5)])
-        >>> r.validate(None, None, None, result, _)
-        True
-        >>> r.validate([1, 2, 3], None, None, result, _)
-        True
-        >>> r.validate([1, 7], None, None, result, _)
-        False
+    """ Applies ``rules`` to each item in value list.
     """
     __slots__ = ('rules', 'stop')
 
     def __init__(self, rules, stop=True):
-        """ Initializes rule by converting ``rules`` to tuple.
+        """ Initializes rule by converting ``rules`` to tuple. If
+            `stop` is `True` (default), the rule returns on first
+            fail, otherwise all errors.
         """
         assert rules
         self.rules = tuple(rules)
@@ -822,24 +429,14 @@ class IteratorRule(object):
 
 class OneOfRule(object):
     """ Value must match at least one element from ``items``.
-
-        >>> result = []
-        >>> r = one_of([1, 2, 3, None])
-        >>> r.validate(3, None, None, result, _)
-        True
-        >>> r.validate(None, None, None, result, _)
-        True
-        >>> r.validate(7, None, None, result, _)
-        False
-        >>> r = one_of([1, 2, 3])
-        >>> r.validate(None, None, None, result, _)
-        False
+        Checks are case sensitive if items are strings.
     """
     __slots__ = ('items', 'message_template')
 
     def __init__(self, items, message_template=None):
+        """ Initializes rule by supplying valid `items`.
         """
-        """
+        assert items
         self.items = tuple(items)
         self.message_template = message_template or _(
             'The value does not belong to the list of known items.')
@@ -876,7 +473,7 @@ class RelativeDeltaRule(object):
                     'Required to be above a minimum allowed.')
             else:
                 self.max = max
-                self.validate = self.check
+                self.validate = self.check_range
                 self.message_template = message_template or _(
                     'Must fall within a valid range.')
         else:
@@ -912,7 +509,7 @@ class RelativeDeltaRule(object):
             return False
         return True
 
-    def check(self, value, name, model, result, gettext):
+    def check_range(self, value, name, model, result, gettext):
         if value is None:
             return True
         now = self.now()
@@ -924,52 +521,7 @@ class RelativeDeltaRule(object):
 
 
 class RelativeDateDeltaRule(RelativeDeltaRule):
-    """
-        No range succeed.
-
-        >>> result = []
-        >>> r = relative_date()
-        >>> r.validate(date.today(), None, None, result, _)
-        True
-
-        Min range strategy
-
-        >>> from datetime import timedelta
-        >>> result = []
-        >>> r = relative_date(min=timedelta(days=-7))
-        >>> r.validate(None, None, None, result, _)
-        True
-        >>> r.validate(date.today(), None, None, result, _)
-        True
-        >>> d = date.today() - timedelta(days=8)
-        >>> r.validate(d, None, None, result, _)
-        False
-
-        Max range strategy
-
-        >>> r = relative_date(max=timedelta(days=7))
-        >>> r.validate(None, None, None, result, _)
-        True
-        >>> r.validate(date.today(), None, None, result, _)
-        True
-        >>> d = date.today() + timedelta(days=8)
-        >>> r.validate(d, None, None, result, _)
-        False
-
-        Min - Max range strategy
-
-        >>> result = []
-        >>> r = relative_date(min=timedelta(days=-7), max=timedelta(days=7))
-        >>> r.validate(None, None, None, result, _)
-        True
-        >>> r.validate(date.today(), None, None, result, _)
-        True
-        >>> d = date.today() - timedelta(days=8)
-        >>> r.validate(d, None, None, result, _)
-        False
-        >>> d = date.today() + timedelta(days=8)
-        >>> r.validate(d, None, None, result, _)
-        False
+    """ Check if value is in relative date range.
     """
     __slots__ = ()
 
@@ -978,47 +530,7 @@ class RelativeDateDeltaRule(RelativeDeltaRule):
 
 
 class RelativeDateTimeDeltaRule(RelativeDeltaRule):
-    """
-        No range succeed.
-
-        >>> result = []
-        >>> r = relative_datetime()
-        >>> r.validate(datetime.today(), None, None, result, _)
-        True
-
-        Min range strategy
-
-        >>> from datetime import timedelta
-        >>> result = []
-        >>> r = relative_datetime(min=timedelta(days=-7))
-        >>> r.validate(datetime.today(), None, None, result, _)
-        True
-        >>> d = datetime.today() - timedelta(days=8)
-        >>> r.validate(d, None, None, result, _)
-        False
-
-        Max range strategy
-
-        >>> r = relative_datetime(max=timedelta(days=7))
-        >>> r.validate(datetime.today(), None, None, result, _)
-        True
-        >>> d = datetime.today() + timedelta(days=8)
-        >>> r.validate(d, None, None, result, _)
-        False
-
-        Min - Max range strategy
-
-        >>> result = []
-        >>> r = relative_datetime(min=timedelta(days=-7),
-        ...                     max=timedelta(days=7))
-        >>> r.validate(datetime.today(), None, None, result, _)
-        True
-        >>> d = datetime.today() - timedelta(days=8)
-        >>> r.validate(d, None, None, result, _)
-        False
-        >>> d = datetime.today() + timedelta(days=8)
-        >>> r.validate(d, None, None, result, _)
-        False
+    """ Check if value is in relative datetime range.
     """
     __slots__ = ()
 
