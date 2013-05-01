@@ -21,73 +21,9 @@ from wheezy.validation.i18n import thousands_separator
 
 
 def try_update_model(model, values, results, translations=None):
-    """
-        ``values`` - a dict of lists or strings
-
-        >>> class User(object):
-        ...     name = ''
-        ...     def __init__(self):
-        ...         self.age = 0
-        ...         self.balance = Decimal(0)
-        ...         self.birthday = date.min
-        ...         self.lunch_time = time.min
-        ...         self.last_visit = datetime.min
-        ...         self.accepted_policy = False
-        ...         self.prefs = []
-        ...         self.prefs2 = [0]
-        >>> user = User()
-        >>> values = {'name': 'abc', 'balance': ['0.1'],
-        ...     'age': ['33'], 'birthday': ['1978/4/9'],
-        ...     'lunch_time': ['13:05'], 'last_visit': ['2012/2/4 16:14:52'],
-        ...     'accepted_policy': ['1'], 'prefs': ['1', '2'],
-        ...     'prefs2': ['1', '2']}
-        >>> results = {}
-        >>> try_update_model(user, values, results)
-        True
-        >>> user.name
-        'abc'
-        >>> assert Decimal('0.1') == user.balance
-        >>> user.age
-        33
-        >>> user.birthday
-        datetime.date(1978, 4, 9)
-        >>> user.lunch_time
-        datetime.time(13, 5)
-        >>> user.last_visit
-        datetime.datetime(2012, 2, 4, 16, 14, 52)
-        >>> user.accepted_policy
-        True
-        >>> user.prefs
-        ['1', '2']
-        >>> user.prefs2
-        [1, 2]
-
-        ``model`` can be dict.
-
-        >>> user = {'name': '', 'age': '0'}
-        >>> try_update_model(user, values, results)
-        True
-        >>> user['name']
-        'abc'
-        >>> user['age']
-        '33'
-
-        Invalid values:
-
-        >>> values = {'balance': ['x'], 'age': ['x'], 'birthday': ['4.2.12'],
-        ...         'prefs2': ['1', 'x']}
-        >>> user = User()
-        >>> try_update_model(user, values, results)
-        False
-        >>> len(results['balance'])
-        1
-        >>> assert Decimal(0) == user.balance
-        >>> len(results['age'])
-        1
-        >>> user.age
-        0
-        >>> user.prefs2
-        [0]
+    """ Try update `model` with `values` (a dict of lists or strings),
+        any errors encountered put into `results` and use `translations`
+        for i18n.
     """
     if translations is None:
         translations = null_translations
@@ -146,19 +82,12 @@ def try_update_model(model, values, results, translations=None):
     return succeed
 
 
+# region: internal details
+
 # value_provider => lambda str_value, gettext: parsed_value
 
 def int_value_provider(str_value, gettext):
     """ Converts string value to ``int``.
-
-        >>> int_value_provider('100', lambda x: x)
-        100
-        >>> int_value_provider('1,000', lambda x: x)
-        1000
-
-        Empty string value is converted to ``None``.
-
-        >>> int_value_provider(' ', lambda x: x)
     """
     str_value = str_value.strip()
     if str_value:
@@ -173,17 +102,6 @@ decimal_zero_values = ['0', '0.0', '0.00']
 
 def decimal_value_provider(str_value, gettext):
     """ Converts string value to ``Decimal``.
-
-        >>> d = lambda s: decimal_value_provider(s, lambda x: x)
-        >>> assert Decimal('100') == d('100')
-        >>> assert Decimal('1000') == d('1,000')
-        >>> assert Decimal('1007.85') == d('1,007.85')
-        >>> assert Decimal('0') == d('0')
-        >>> assert Decimal('0') == d('0.0')
-
-        Empty string value is converted to ``None``.
-
-        >>> d(' ')
     """
     str_value = str_value.strip()
     if str_value:
@@ -203,17 +121,7 @@ boolean_true_values = ['1', 'True']
 
 
 def bool_value_provider(str_value, gettext):
-    """ Converts string value to ``boolean``.
-
-        >>> bool_value_provider('1', lambda x: x)
-        True
-        >>> bool_value_provider('0', lambda x: x)
-        False
-
-        Empty string value is converted to ``False``.
-
-        >>> bool_value_provider(' ', lambda x: x)
-        False
+    """ Converts string value to ``bool``.
     """
     str_value = str_value.strip()
     return str_value in boolean_true_values
@@ -221,15 +129,6 @@ def bool_value_provider(str_value, gettext):
 
 def float_value_provider(str_value, gettext):
     """ Converts string value to ``float``.
-
-        >>> float_value_provider('1.5', lambda x: x)
-        1.5
-        >>> float_value_provider('4,531.5', lambda x: x)
-        4531.5
-
-        Empty string value is converted to ``None``.
-
-        >>> float_value_provider(' ', lambda x: x)
     """
     str_value = str_value.strip()
     if str_value:
@@ -242,26 +141,6 @@ def float_value_provider(str_value, gettext):
 
 def date_value_provider(str_value, gettext):
     """ Converts string value to ``datetime.date``.
-
-        >>> date_value_provider('2012/2/4', lambda x: x)
-        datetime.date(2012, 2, 4)
-        >>> date_value_provider('2/4/2012', lambda x: x)
-        datetime.date(2012, 2, 4)
-        >>> date_value_provider('2012-2-4', lambda x: x)
-        datetime.date(2012, 2, 4)
-        >>> date_value_provider('2/4/12', lambda x: x)
-        datetime.date(2012, 2, 4)
-
-        Empty string value is converted to ``None``.
-
-        >>> date_value_provider(' ', lambda x: x)
-
-        If none of known formats match raise ValueError.
-
-        >>> date_value_provider('2.4.12', lambda x: x)
-        Traceback (most recent call last):
-            ...
-        ValueError
     """
     str_value = str_value.strip()
     if str_value:
@@ -282,22 +161,6 @@ def date_value_provider(str_value, gettext):
 
 def time_value_provider(str_value, gettext):
     """ Converts string value to ``datetime.time``.
-
-        >>> time_value_provider('15:40', lambda x: x)
-        datetime.time(15, 40)
-        >>> time_value_provider('15:40:11', lambda x: x)
-        datetime.time(15, 40, 11)
-
-        Empty string value is converted to ``None``.
-
-        >>> time_value_provider(' ', lambda x: x)
-
-        If none of known formats match raise ValueError.
-
-        >>> time_value_provider('2.45.17', lambda x: x)
-        Traceback (most recent call last):
-            ...
-        ValueError
     """
     str_value = str_value.strip()
     if str_value:
@@ -318,26 +181,6 @@ def time_value_provider(str_value, gettext):
 
 def datetime_value_provider(str_value, gettext):
     """ Converts string value to ``datetime.datetime``.
-
-        >>> datetime_value_provider('2008/5/18 15:40', lambda x: x)
-        datetime.datetime(2008, 5, 18, 15, 40)
-
-        If none of known formats match try date_value_provider.
-
-        >>> datetime_value_provider('2008/5/18', lambda x: x)
-        datetime.datetime(2008, 5, 18, 0, 0)
-
-        Empty string value is converted to ``None``.
-
-        >>> datetime_value_provider(' ', lambda x: x)
-
-        If none of known formats match raise ValueError.
-
-        >>> datetime_value_provider('2.4.12', lambda x: x)
-        Traceback (most recent call last):
-            ...
-        ValueError
-
     """
     str_value = str_value.strip()
     if str_value:
