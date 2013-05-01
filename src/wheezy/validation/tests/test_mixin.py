@@ -29,7 +29,7 @@ class ValidationMixinTestCase(unittest.TestCase):
             'error-message-2'])] == sorted(s.errors.items())
 
     def test_validate(self):
-        """
+        """ Ensure errors is updated by validator.
         """
         from wheezy.validation.rules import required
         from wheezy.validation.validator import Validator
