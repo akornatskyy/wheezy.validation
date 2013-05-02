@@ -538,6 +538,25 @@ class RelativeDateTimeDeltaRule(RelativeDeltaRule):
         return datetime.now()
 
 
+class IgnoreRule(object):
+    """ The idea behind this rule is to be able to substitute
+        any validation rule by this one that always succeed:
+
+            from wheezy.validation.rules import ignore as regex
+
+        This way all `regex` rules are ignored within a scope of
+        import.
+    """
+
+    def __init__(self, *args, **kwargs):
+        pass
+
+    def validate(self, value, name, model, result, gettext):
+        """ Always succeed.
+        """
+        return True
+
+
 required = RequiredRule()
 missing = optional = empty = MissingRule()
 length = LengthRule
@@ -553,3 +572,4 @@ iterator = IteratorRule
 one_of = OneOfRule
 relative_date = RelativeDateDeltaRule
 relative_datetime = RelativeDateTimeDeltaRule
+ignore = IgnoreRule

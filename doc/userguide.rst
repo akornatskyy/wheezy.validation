@@ -135,6 +135,9 @@ There are a number of validation rules defined already.
   date/datetime range. See
   :py:class:`~wheezy.validation.rules.RelativeDateDeltaRule` and
   :py:class:`~wheezy.validation.rules.RelativeDateTimeDeltaRule`.
+* ``ignore``. The idea behind this rule is to be able to substitute
+  any validation rule by this one that always succeed. See
+  :py:class:`~wheezy.validation.rules.IgnoreRule`
 
 Custom Message
 ~~~~~~~~~~~~~~
@@ -223,7 +226,7 @@ values, e.g. integer attributes must default to some integer value, etc.
 List of supported ``value_providers``:
 
 .. literalinclude:: ../src/wheezy/validation/model.py
-   :lines: 329-
+   :lines: 203-213
 
 Example of domain model initialized with defaults::
 

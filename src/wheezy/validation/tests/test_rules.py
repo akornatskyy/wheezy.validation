@@ -530,6 +530,24 @@ class RulesTestCase(unittest.TestCase):
 
         self.assertRaises(AssertionError, lambda: one_of([]))
 
+    def test_ignore(self):
+        """ Test `ignore` rule.
+        """
+        from wheezy.validation.rules import IgnoreRule
+        from wheezy.validation.rules import ignore
+
+        # shortcut
+        assert ignore == IgnoreRule
+
+        errors = []
+        r = ignore(1, a=2, b='anything')
+        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        assert v(None)
+        assert v(100)
+        assert v('x')
+        assert not errors
+
 
 class RelativeDeltaRuleMixin:
 
