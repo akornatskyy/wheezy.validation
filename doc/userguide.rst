@@ -102,10 +102,15 @@ There are a number of validation rules defined already.
 * ``compare``. Compares attribute being validated with some other attribute
   value. Supported comparison operations include: ``equal``,
   ``not_equal``. See :py:class:`~wheezy.validation.rules.CompareRule`.
-* ``predicate``. Fails if predicate return boolean ``False``. Predicate
-  is any callable that accepts model and returns boolean. It is
-  useful for custom rules, e.g. a number of days between two model
-  properties must not exceed certain value, etc.
+* ``predicate``, ``model_predicate``. Fails if predicate return
+  boolean ``False``. Predicate is any callable that accepts model and
+  returns a boolean. It is useful for custom rules, e.g. a number of
+  days between two model properties must not exceed certain value, etc.
+  See :py:class:`~wheezy.validation.rules.PredicateRule`.
+* ``must``, ``value_predicate``. Fails if predicate return
+  boolean ``False``. Predicate is any callable that accepts a value and
+  returns a boolean. It is useful for custom rule applicable to
+  multiple attributes of model.
   See :py:class:`~wheezy.validation.rules.PredicateRule`.
 * ``regex``. Search for regular expression pattern. Initialized with
   ``regex`` as a regular expression pattern or a pre-compiled regular

@@ -206,6 +206,27 @@ class PredicateRule(object):
         return True
 
 
+class ValuePredicateRule(object):
+    """ Fails if predicate return False. Predicate is any callable
+        of the following contract::
+
+            def predicate(value):
+                return True
+    """
+    __slots__ = ('predicate', 'message_template')
+
+    def __init__(self, predicate, message_template=None):
+        self.predicate = predicate
+        self.message_template = message_template or _(
+            'Required to satisfy validation value predicate condition.')
+
+    def validate(self, value, name, model, result, gettext):
+        if not self.predicate(value):
+            result.append(gettext(self.message_template))
+            return False
+        return True
+
+
 class RegexRule(object):
     """ Search for regular expression pattern.
     """
@@ -609,7 +630,8 @@ required = RequiredRule()
 missing = optional = empty = MissingRule()
 length = LengthRule
 compare = CompareRule
-predicate = PredicateRule
+model_predicate = predicate = PredicateRule
+value_predicate = must = ValuePredicateRule
 regex = RegexRule
 slug = SlugRule()
 email = EmailRule()

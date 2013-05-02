@@ -231,14 +231,35 @@ class RulesTestCase(unittest.TestCase):
         """ Test `predicate` rule strategy.
         """
         from wheezy.validation.rules import PredicateRule
+        from wheezy.validation.rules import model_predicate
         from wheezy.validation.rules import predicate
 
         # shortcut
-        assert predicate == PredicateRule
+        assert predicate == model_predicate == PredicateRule
 
         errors = []
         r = predicate(lambda m: m is not None)
         v = lambda i: r.validate(None, None, i, errors, lambda s: s)
+
+        assert v('x')
+        assert not errors
+
+        assert not v(None)
+        assert errors
+
+    def test_value_predicate(self):
+        """ Test `value_predicate` rule strategy.
+        """
+        from wheezy.validation.rules import ValuePredicateRule
+        from wheezy.validation.rules import must
+        from wheezy.validation.rules import value_predicate
+
+        # shortcut
+        assert must == value_predicate == ValuePredicateRule
+
+        errors = []
+        r = value_predicate(lambda v: v is not None)
+        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
 
         assert v('x')
         assert not errors
