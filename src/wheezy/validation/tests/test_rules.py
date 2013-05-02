@@ -272,6 +272,7 @@ class RulesTestCase(unittest.TestCase):
         r = regex(r'\d+')
         v = lambda i: r.validate(i, None, None, errors, lambda s: s)
 
+        assert v(None)
         assert v('1234')
         assert not errors
 
@@ -287,6 +288,7 @@ class RulesTestCase(unittest.TestCase):
         r = regex(r'\d+', negated=True)
         v = lambda i: r.validate(i, None, None, errors, lambda s: s)
 
+        assert v(None)
         assert v('x')
         assert not errors
 
@@ -564,6 +566,7 @@ class RelativeDeltaRuleMixin:
         r = self.shortcut(min=timedelta(days=-7))
         v = lambda i: r.validate(i, None, None, errors, lambda s: s)
 
+        assert v(None)
         assert v(r.now())
         assert not errors
 
@@ -578,6 +581,7 @@ class RelativeDeltaRuleMixin:
         r = self.shortcut(max=timedelta(days=7))
         v = lambda i: r.validate(i, None, None, errors, lambda s: s)
 
+        assert v(None)
         assert v(r.now())
         assert not errors
 
@@ -592,6 +596,7 @@ class RelativeDeltaRuleMixin:
         r = self.shortcut(min=timedelta(days=-7), max=timedelta(days=7))
         v = lambda i: r.validate(i, None, None, errors, lambda s: s)
 
+        assert v(None)
         assert v(r.now())
         assert not errors
 
