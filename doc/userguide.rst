@@ -131,10 +131,16 @@ There are a number of validation rules defined already.
 * ``one_of``. Value must match at least one element from ``items``. Checks
   whenever value belongs to ``items``. See
   :py:class:`~wheezy.validation.rules.OneOfRule`.
-* ``relative_date``, ``relative_datetime``. Check if value is in relative
-  date/datetime range. See
-  :py:class:`~wheezy.validation.rules.RelativeDateDeltaRule` and
-  :py:class:`~wheezy.validation.rules.RelativeDateTimeDeltaRule`.
+* ``relative_date``, ``relative_utcdate``, ``relative_tzdate``,
+  ``relative_datetime``, ``relative_utcdatetime``,
+  ``relative_tzdatetime``. Check if value is in relative
+  date/datetime range per local, UTC or tz time. See
+  :py:class:`~wheezy.validation.rules.RelativeDateDeltaRule`,
+  :py:class:`~wheezy.validation.rules.RelativeUTCDateDeltaRule`,
+  :py:class:`~wheezy.validation.rules.RelativeTZDateDeltaRule` and
+  :py:class:`~wheezy.validation.rules.RelativeDateTimeDeltaRule`,
+  :py:class:`~wheezy.validation.rules.RelativeUTCDateTimeDeltaRule`,
+  :py:class:`~wheezy.validation.rules.RelativeTZDateTimeDeltaRule`.
 * ``ignore``. The idea behind this rule is to be able to substitute
   any validation rule by this one that always succeed. See
   :py:class:`~wheezy.validation.rules.IgnoreRule`

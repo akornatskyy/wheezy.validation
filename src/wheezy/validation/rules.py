@@ -521,7 +521,7 @@ class RelativeDeltaRule(object):
 
 
 class RelativeDateDeltaRule(RelativeDeltaRule):
-    """ Check if value is in relative date range.
+    """ Check if value is in relative date range local time.
     """
     __slots__ = ()
 
@@ -529,13 +529,61 @@ class RelativeDateDeltaRule(RelativeDeltaRule):
         return date.today()
 
 
+class RelativeUTCDateDeltaRule(RelativeDeltaRule):
+    """ Check if value is in relative date range UTC time.
+    """
+    __slots__ = ()
+
+    def now(self):
+        return datetime.utcnow().date()
+
+
+class RelativeTZDateDeltaRule(RelativeDeltaRule):
+    """ Check if value is in relative date range TZ time.
+    """
+    __slots__ = ('tz')
+
+    def __init__(self, min=None, max=None, tz=None,
+                 message_template=None):
+        super(RelativeTZDateDeltaRule, self).__init__(
+            min, max, message_template)
+        self.tz = tz
+
+    def now(self):
+        return datetime.now(self.tz).date()
+
+
 class RelativeDateTimeDeltaRule(RelativeDeltaRule):
-    """ Check if value is in relative datetime range.
+    """ Check if value is in relative datetime range local time.
     """
     __slots__ = ()
 
     def now(self):
         return datetime.now()
+
+
+class RelativeUTCDateTimeDeltaRule(RelativeDeltaRule):
+    """ Check if value is in relative datetime range UTC time.
+    """
+    __slots__ = ()
+
+    def now(self):
+        return datetime.utcnow()
+
+
+class RelativeTZDateTimeDeltaRule(RelativeDeltaRule):
+    """ Check if value is in relative date range TZ time.
+    """
+    __slots__ = ('tz')
+
+    def __init__(self, min=None, max=None, tz=None,
+                 message_template=None):
+        super(RelativeTZDateTimeDeltaRule, self).__init__(
+            min, max, message_template)
+        self.tz = tz
+
+    def now(self):
+        return datetime.now(self.tz)
 
 
 class IgnoreRule(object):
@@ -571,5 +619,9 @@ or_ = OrRule
 iterator = IteratorRule
 one_of = OneOfRule
 relative_date = RelativeDateDeltaRule
+relative_utcdate = RelativeUTCDateDeltaRule
+relative_tzdate = RelativeTZDateDeltaRule
 relative_datetime = RelativeDateTimeDeltaRule
+relative_utcdatetime = RelativeUTCDateTimeDeltaRule
+relative_tzdatetime = RelativeTZDateTimeDeltaRule
 ignore = IgnoreRule

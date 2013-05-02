@@ -635,6 +635,24 @@ class RelativeDateDeltaRule(unittest.TestCase, RelativeDeltaRuleMixin):
         self.Rule = RelativeDateDeltaRule
 
 
+class RelativeUTCDateDeltaRule(unittest.TestCase, RelativeDeltaRuleMixin):
+
+    def setUp(self):
+        from wheezy.validation.rules import RelativeUTCDateDeltaRule
+        from wheezy.validation.rules import relative_utcdate
+        self.shortcut = relative_utcdate
+        self.Rule = RelativeUTCDateDeltaRule
+
+
+class RelativeTZDateDeltaRule(unittest.TestCase, RelativeDeltaRuleMixin):
+
+    def setUp(self):
+        from wheezy.validation.rules import RelativeTZDateDeltaRule
+        from wheezy.validation.rules import relative_tzdate
+        self.shortcut = relative_tzdate
+        self.Rule = RelativeTZDateDeltaRule
+
+
 class RelativeDateTimeDeltaRule(unittest.TestCase, RelativeDeltaRuleMixin):
 
     def setUp(self):
@@ -642,3 +660,21 @@ class RelativeDateTimeDeltaRule(unittest.TestCase, RelativeDeltaRuleMixin):
         from wheezy.validation.rules import relative_datetime
         self.shortcut = relative_datetime
         self.Rule = RelativeDateTimeDeltaRule
+
+
+class RelativeUTCDateTimeDeltaRule(unittest.TestCase, RelativeDeltaRuleMixin):
+
+    def setUp(self):
+        from wheezy.validation.rules import RelativeUTCDateTimeDeltaRule
+        from wheezy.validation.rules import relative_utcdatetime
+        self.shortcut = relative_utcdatetime
+        self.Rule = RelativeUTCDateTimeDeltaRule
+
+
+class RelativeTZDateTimeDeltaRule(unittest.TestCase, RelativeDeltaRuleMixin):
+
+    def setUp(self):
+        from wheezy.validation.rules import RelativeTZDateTimeDeltaRule
+        from wheezy.validation.rules import relative_tzdatetime
+        self.shortcut = relative_tzdatetime
+        self.Rule = RelativeTZDateTimeDeltaRule
