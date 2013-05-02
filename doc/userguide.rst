@@ -111,7 +111,7 @@ There are a number of validation rules defined already.
   boolean ``False``. Predicate is any callable that accepts a value and
   returns a boolean. It is useful for custom rule applicable to
   multiple attributes of model.
-  See :py:class:`~wheezy.validation.rules.PredicateRule`.
+  See :py:class:`~wheezy.validation.rules.ValuePredicateRule`.
 * ``regex``. Search for regular expression pattern. Initialized with
   ``regex`` as a regular expression pattern or a pre-compiled regular
   expression. Supports ``nagated`` argument.
