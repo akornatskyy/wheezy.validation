@@ -7,6 +7,12 @@ wheezy.validation
 .. automodule:: wheezy.validation
    :members:
 
+wheezy.validation.checker
+-------------------------
+
+.. automodule:: wheezy.validation.checker
+   :members:
+
 wheezy.validation.mixin
 -----------------------
 
