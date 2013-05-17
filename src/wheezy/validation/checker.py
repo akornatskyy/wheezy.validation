@@ -33,8 +33,8 @@ class Checker(object):
         """ Returns a result of validation limited to attributes in
             `kwargs` which represents attributes of model being validated.
         """
-        m = dict.fromkeys([k for k, i in self.validator.rules] +
-                          [k for k, i in self.validator.inner])
+        m = Model(dict.fromkeys([k for k, i in self.validator.rules] +
+                                [k for k, i in self.validator.inner]))
         m.update(kwargs)
         results = {}
         self.validator.validate(m, results, self.stop,
@@ -53,3 +53,18 @@ class Checker(object):
         """
         results = self.check(**kwargs)
         return results and results[0][1] or None
+
+
+# region: internal details
+
+class Model(dict):
+    __slots__ = ()
+
+    def __setattr__(self, key, value):
+        return super(Model, self).__setitem__(key, value)
+
+    def __getattr__(self, name):
+        try:
+            return super(Model, self).__getitem__(name)
+        except KeyError:
+            raise AttributeError(name)
