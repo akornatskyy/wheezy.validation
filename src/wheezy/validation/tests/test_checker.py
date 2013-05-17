@@ -84,6 +84,8 @@ class AccountValidatorAllErrorsTestCase(unittest.TestCase):
     def test_email(self):
         assert not self.c.errors(email='johh@somewhere.net')
 
+        e = 'Required to be a valid email address.'
+        assert e == self.c.error(email='')
         assert ['Required field cannot be left blank.',
                 'Required to be a minimum of 6 characters in length.',
                 'Required to be a valid email address.'

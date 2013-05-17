@@ -46,7 +46,7 @@ class Checker(object):
         """ Returns first error reported by validator.
         """
         results = self.check(**kwargs)
-        return results and results[0][1][0] or None
+        return results and results[0][1][-1] or None
 
     def errors(self, **kwargs):
         """ Returns all errors reported by validator.
