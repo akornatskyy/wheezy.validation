@@ -58,10 +58,10 @@ class Checker(object):
 # region: internal details
 
 class Model(dict):
+    """ Simulate plain python class, read-only dictionary access
+        through attributes.
+    """
     __slots__ = ()
-
-    def __setattr__(self, key, value):
-        return super(Model, self).__setitem__(key, value)
 
     def __getattr__(self, name):
         try:
