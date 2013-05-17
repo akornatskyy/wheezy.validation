@@ -471,7 +471,7 @@ class RulesTestCase(unittest.TestCase):
         assert not errors
 
         assert not v(0)
-        assert 2 == len(errors)
+        assert 1 == len(errors)
 
         self.assertRaises(AssertionError, lambda: and_())
         self.assertRaises(AssertionError, lambda: and_(required))

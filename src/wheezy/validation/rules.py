@@ -385,10 +385,10 @@ class AndRule(object):
 
             ``value`` - iteratable.
         """
-        succeed = True
         for rule in self.rules:
-            succeed &= rule.validate(value, name, model, result, gettext)
-        return succeed
+            if not rule.validate(value, name, model, result, gettext):
+                return False
+        return True
 
 
 class OrRule(object):
