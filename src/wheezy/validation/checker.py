@@ -63,8 +63,13 @@ class Model(dict):
     """
     __slots__ = ()
 
-    def __getattr__(self, name):
+    def __getitem__(self, key):
+        """ Returns `None` if key is missing.
+        """
         try:
-            return super(Model, self).__getitem__(name)
+            return dict.__getitem__(self, key)
         except KeyError:
-            raise AttributeError(name)
+            self[key] = None
+            return None
+
+    __getattr__ = __getitem__

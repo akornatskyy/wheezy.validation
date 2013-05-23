@@ -99,5 +99,7 @@ class ModelTestCase(unittest.TestCase):
         m = Model(a=1, b=2)
         assert [('a', 1), ('b', 2)] == sorted(m.items())
         assert 1 == m.a
+        assert 1 == m['a']
         assert 2 == m.b
-        self.assertRaises(AttributeError, lambda: m.c)
+        assert None == m.c
+        assert None == m['d']
