@@ -45,11 +45,11 @@ If you need validation check all rules for failed attribute, you need set
 Nested Validator
 ~~~~~~~~~~~~~~~~
 
-:py:class:`~wheezy.validation.validator.Validator` can be nested into the
-other validator so ultimately can form any hierarchically complex structure.
+:py:class:`~wheezy.validation.validator.Validator` can be nested into some
+other validator, so ultimately can form any hierarchically complex structure.
 This can be useful for composite objects, e.g. ``Registration`` model can
 aggregate ``Credential`` model. While each model has own validation,
-registration model can nest validator for credential model::
+registration model can nest the validator for the credential model::
 
     class Registration(object):
         def __init__(self):
@@ -62,7 +62,7 @@ registration model can nest validator for credential model::
 Internationalization
 ~~~~~~~~~~~~~~~~~~~~
 
-:py:class:`~wheezy.validation.validator.Validator` supports python standard
+:py:class:`~wheezy.validation.validator.Validator` supports the python standard
 ``gettext`` module. You need to pass ``gettext`` translations as a argument
 to ``validate`` method. Here is an example::
 
@@ -77,24 +77,24 @@ to ``validate`` method. Here is an example::
 Thread Safety
 ~~~~~~~~~~~~~
 
-Validator does not alter it state once initialized. It is guaranteed to be
+Validator does not alter its state once initialized. It is guaranteed to be
 thread safe.
 
 Validation Rules
 ----------------
 
-Validation rules prevent bad data being processed. A validation rule is a
+Validation rules prevent bad data from being processed. A validation rule is a
 criterion used in the process of data validation. Rules support simple types
-as well as list types of attributes, e.g. ``iterator`` rule can apply
+attributes as well as list typ attributes, e.g. ``iterator`` rule can apply
 a number of other rules to each item in the list.
 
-There are a number of validation rules defined already.
+There are a number of validation rules already defined.
 
-* ``required``. Any value evaluated to boolean ``True`` pass this rule.
-  Take also a look at ``required_but_missing`` list. See
+* ``required``. Any value evaluated to boolean ``True`` passes this rule.
+  Also take a look at the ``required_but_missing`` list. See
   :py:class:`~wheezy.validation.rules.RequiredRule`.
-* ``missing``. Any value evaluated to boolean ``False`` pass this
-  rule. Take also a look at ``required_but_missing`` list. See
+* ``missing``. Any value evaluated to boolean ``False`` passes this
+  rule. Also take a look at the ``required_but_missing`` list. See
   :py:class:`~wheezy.validation.rules.RequiredRule`.
 * ``length``. Result of python function ``len()`` must fall within a range
   defined by this rule. Supported range attributes include: ``min``, ``max``.
@@ -102,19 +102,19 @@ There are a number of validation rules defined already.
 * ``compare``. Compares attribute being validated with some other attribute
   value. Supported comparison operations include: ``equal``,
   ``not_equal``. See :py:class:`~wheezy.validation.rules.CompareRule`.
-* ``predicate``, ``model_predicate``. Fails if predicate return
-  boolean ``False``. Predicate is any callable that accepts model and
+* ``predicate``, ``model_predicate``. Fails if predicate returns
+  boolean ``False``. Predicate is any callable that accepts a model and
   returns a boolean. It is useful for custom rules, e.g. a number of
-  days between two model properties must not exceed certain value, etc.
+  days between two model properties must not exceed a certain value, etc.
   See :py:class:`~wheezy.validation.rules.PredicateRule`.
-* ``must``, ``value_predicate``. Fails if predicate return
+* ``must``, ``value_predicate``. Fails if predicate returns
   boolean ``False``. Predicate is any callable that accepts a value and
   returns a boolean. It is useful for custom rule applicable to
   multiple attributes of model.
   See :py:class:`~wheezy.validation.rules.ValuePredicateRule`.
 * ``regex``. Search for regular expression pattern. Initialized with
   ``regex`` as a regular expression pattern or a pre-compiled regular
-  expression. Supports ``nagated`` argument.
+  expression. Supports ``negated`` argument.
   See :py:class:`~wheezy.validation.rules.RegexRule`.
 * ``slug``. Ensures only letters, numbers, underscores or hyphens. See
   :py:class:`~wheezy.validation.rules.SlugRule`.
@@ -147,13 +147,13 @@ There are a number of validation rules defined already.
   :py:class:`~wheezy.validation.rules.RelativeUTCDateTimeDeltaRule`,
   :py:class:`~wheezy.validation.rules.RelativeTZDateTimeDeltaRule`.
 * ``ignore``. The idea behind this rule is to be able to substitute
-  any validation rule by this one that always succeed. See
+  any validation rule by this one that always succeeds. See
   :py:class:`~wheezy.validation.rules.IgnoreRule`
 
 Custom Message
 ~~~~~~~~~~~~~~
 
-You are able customize error message by using ``message_template`` argument
+You are able to customize the error message by using ``message_template`` argument
 during rule declaration::
 
     credential_validator = Validator({
@@ -178,7 +178,7 @@ Compile po files::
 Custom Rules
 ~~~~~~~~~~~~
 
-It is easy to provide own validation rule. The rule is any callable of the
+It is easy to provide your own validation rule. The rule is any callable with the
 following contract::
 
     def check(self, value, name, model, result, gettext):
@@ -193,10 +193,10 @@ Here is a description of each attribute:
 
 Validation Mixin
 ----------------
-:py:class:`~wheezy.validation.mixin.ValidationMixin` provides sort of
+:py:class:`~wheezy.validation.mixin.ValidationMixin` provides a sort of
 contextual integration with third party modules. Specifically this mixin
 requires two attributes: ``errors`` and ``translations``. Once these two
-attributes provided, validation can be simplified. Let review it by example::
+attributes provided, validation can be simplified. Let's review it by example::
 
     user_validator = Validator({
         'name': [required]
@@ -218,13 +218,13 @@ We defined ``user_validator``. Now here is our integration in some service::
 
 If the ``signin`` operation fails the client can request all validation errors
 from  ``errors`` attribute. Note that general error message ('Unauthorized')
-is stored under ``__ERROR__`` key. Thus can be used to display general
-information to end user.
+is stored under ``__ERROR__`` key. Thus it can be used to display general
+information to the end user.
 
 Model Update
 ------------
 Web form submit is a dictionary where key is the name of the input element
-being submitted and value is a list. That list can have just single value for
+being submitted and value is a list. That list can have just a single value for
 elements like input or several values that depict user choice.
 
 :py:meth:`~wheezy.validation.model.try_update_model` method is provided to
@@ -253,6 +253,8 @@ Values submitted by web form::
 
 Typical use case as follows::
 
+    from wheezy.validation.model import try_update_model
+
     credential = Credential()
     errors = {}
     succeed = try_update_model(credential, values, errors)
@@ -266,8 +268,8 @@ Numbers
 Number value providers (
 :py:meth:`~wheezy.validation.model.int_value_provider`,
 :py:meth:`~wheezy.validation.model.decimal_value_provider`,
-:py:meth:`~wheezy.validation.model.float_value_provider`) support thousands
-separator as well as decimal separator. Take a look at ``validation.po`` file.
+:py:meth:`~wheezy.validation.model.float_value_provider`) supports thousands
+separator as well as decimal separator. Take a look at the ``validation.po`` file.
 
 Date and Time
 ~~~~~~~~~~~~~
@@ -275,12 +277,12 @@ Date and time value providers (
 :py:meth:`~wheezy.validation.model.date_value_provider`,
 :py:meth:`~wheezy.validation.model.time_value_provider`,
 :py:meth:`~wheezy.validation.model.datetime_value_provider`) support a number
-of formats. Generally there is default format and fallback formats. It tries
-default format and if it fails tries fallback formats. Take a look at
-``validation.po`` file for a list of supported format.
+of formats. Generally there is a default format and fallback formats. It tries
+the default format and if it fails tries fallback formats. Take a look at
+the ``validation.po`` file for a list of supported formats.
 
 Please note that :py:meth:`~wheezy.validation.model.datetime_value_provider`
-fallback to :py:meth:`~wheezy.validation.model.date_value_provider` in case
+falls back to :py:meth:`~wheezy.validation.model.date_value_provider` in case
 none of its own formats matched. Empty value is converted to minimal value
 for date/time.
 

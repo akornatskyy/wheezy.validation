@@ -73,6 +73,8 @@ Let assume form submitted values look this way::
 
 Our attempt to update ``Credential`` model with ``values``::
     
+    from wheezy.validation.model import try_update_model
+
     credential = Credential()
     errors = {}
     succeed = try_update_model(credential, values, errors)
