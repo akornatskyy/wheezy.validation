@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: wheezy.validation\n"
 "Report-Msgid-Bugs-To: Andriy Kornatskyy <andriy.kornatskyy@live.com>\n"
 "POT-Creation-Date: 2011-11-02 14:13+0200\n"
-"PO-Revision-Date: 2012-04-29 10:49+0200\n"
+"PO-Revision-Date: 2013-10-10 13:45+0200\n"
 "Last-Translator: Andriy Kornatskyy <andriy.kornatskyy@live.com>\n"
 "Language: Russian\n"
 "MIME-Version: 1.0\n"
@@ -110,10 +110,10 @@ msgstr "Обязательно должно соответствовать пр�
 "почты."
 
 msgid "Required to be a valid number is scientific format."
-msgstr ""
+msgstr "Обязательно должно соответствовать числу в научном формате."
 
 msgid "Required to be a valid base64 string."
-msgstr ""
+msgstr "Обязательно должно соответствовать строке в base64 формате."
 
 #, python-format
 msgid "Required to be greater or equal to %(min)s."
@@ -140,7 +140,7 @@ msgid "Exceeds maximum allowed."
 msgstr "Превышает допустимый максимум."
 
 msgid "Required to satisfy a converter format."
-msgstr ""
+msgstr "Обязательно должно соответствовать формату преобразователя."
 
 msgid "Required to satisfy an integer format."
-msgstr ""
+msgstr "Обязательно должно соответствовать формату целого числа."
