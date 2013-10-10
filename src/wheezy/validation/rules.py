@@ -7,6 +7,8 @@ import re
 from datetime import date
 from datetime import datetime
 from datetime import time
+from time import altzone
+from time import time as unixtime
 
 from wheezy.validation.comp import ref_getter
 from wheezy.validation.comp import regex_pattern
@@ -303,6 +305,42 @@ class EmailRule(RegexRule):
         """ Let you customize message template.
         """
         return EmailRule(message_template)
+
+
+class ScientificRule(RegexRule):
+    """ Ensures a valid scientific string input.
+    """
+    __slots__ = ()
+
+    def __init__(self, message_template=None):
+        super(ScientificRule, self).__init__(
+            re.compile(r'^[+\-]?(?:0|[1-9]\d*)(?:\.\d*)?(?:[eE][+\-]?\d+)?$'),
+            False,
+            message_template or
+            _('Required to be a valid number is scientific format.'))
+
+    def __call__(self, message_template):
+        """ Let you customize message template.
+        """
+        return ScientificRule(message_template)
+
+
+class Base64Rule(RegexRule):
+    """ Ensures a valid base64 string input.
+    """
+    __slots__ = ()
+
+    def __init__(self, message_template=None):
+        super(Base64Rule, self).__init__(
+            re.compile(r'^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|'
+                       '[A-Za-z0-9+/]{3}=)?$'), False,
+            message_template or
+            _('Required to be a valid base64 string.'))
+
+    def __call__(self, message_template):
+        """ Let you customize message template.
+        """
+        return Base64Rule(message_template)
 
 
 class RangeRule(object):
@@ -607,6 +645,24 @@ class RelativeTZDateTimeDeltaRule(RelativeDeltaRule):
         return datetime.now(self.tz)
 
 
+class RelativeUnixTimeDeltaRule(RelativeDeltaRule):
+    """ Check if value is in relative unix range local time.
+    """
+    __slots__ = ()
+
+    def now(self):
+        return int(unixtime())
+
+
+class RelativeUTCUnixTimeDeltaRule(RelativeDeltaRule):
+    """ Check if value is in relative unix range UTC time.
+    """
+    __slots__ = ()
+
+    def now(self):
+        return int(unixtime()) + altzone
+
+
 class IgnoreRule(object):
     """ The idea behind this rule is to be able to substitute
         any validation rule by this one that always succeed:
@@ -626,24 +682,64 @@ class IgnoreRule(object):
         return True
 
 
-required = RequiredRule()
-missing = optional = empty = MissingRule()
-length = LengthRule
-compare = CompareRule
-model_predicate = predicate = PredicateRule
-value_predicate = must = ValuePredicateRule
-regex = RegexRule
-slug = SlugRule()
-email = EmailRule()
-range = RangeRule
+class AdapterRule(object):
+    """ Adapts value according to converter. This is useful when you
+        need keep string input in model but validate as an integer.
+    """
+
+    def __init__(self, converter, rule, message_template=None):
+        self.converter = converter
+        self.rule = rule
+        self.message_template = message_template or _(
+            'Required to satisfy a converter format.')
+
+    def validate(self, value, name, model, result, gettext):
+        if value is None:
+            return True
+        try:
+            value = self.converter(value)
+        except (ArithmeticError, ValueError):
+            result.append(gettext(self.message_template))
+            return False
+        return self.rule.validate(value, name, model, result, gettext)
+
+
+class IntAdapterRule(AdapterRule):
+    """ Adapts value to an integer.
+    """
+
+    def __init__(self, rule, message_template=None):
+        super(IntAdapterRule, self).__init__(
+            int, rule, message_template or _(
+                'Required to satisfy an integer format.'))
+
+
+adapter = AdapterRule
 and_ = AndRule
-or_ = OrRule
-iterator = IteratorRule
-one_of = OneOfRule
-relative_date = RelativeDateDeltaRule
-relative_utcdate = RelativeUTCDateDeltaRule
-relative_tzdate = RelativeTZDateDeltaRule
-relative_datetime = RelativeDateTimeDeltaRule
-relative_utcdatetime = RelativeUTCDateTimeDeltaRule
-relative_tzdatetime = RelativeTZDateTimeDeltaRule
+base64 = Base64Rule()
+compare = CompareRule
+email = EmailRule()
 ignore = IgnoreRule
+int_adapter = IntAdapterRule
+iterator = IteratorRule
+length = LengthRule
+missing = optional = empty = MissingRule()
+model_predicate = predicate = PredicateRule
+one_of = OneOfRule
+or_ = OrRule
+range = RangeRule
+regex = RegexRule
+relative_date = RelativeDateDeltaRule
+relative_datetime = RelativeDateTimeDeltaRule
+relative_tzdate = RelativeTZDateDeltaRule
+relative_tzdatetime = RelativeTZDateTimeDeltaRule
+relative_unixtime = RelativeUnixTimeDeltaRule
+relative_timestamp = RelativeUnixTimeDeltaRule
+relative_utcdate = RelativeUTCDateDeltaRule
+relative_utcdatetime = RelativeUTCDateTimeDeltaRule
+relative_utcunixtime = RelativeUTCUnixTimeDeltaRule
+relative_utctimestamp = RelativeUTCUnixTimeDeltaRule
+required = RequiredRule()
+scientific = ScientificRule()
+slug = SlugRule()
+value_predicate = must = ValuePredicateRule

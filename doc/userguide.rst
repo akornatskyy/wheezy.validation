@@ -120,6 +120,10 @@ There are a number of validation rules already defined.
   :py:class:`~wheezy.validation.rules.SlugRule`.
 * ``email``. Ensures a valid email. See
   :py:class:`~wheezy.validation.rules.EmailRule`.
+* ``scientific``. Ensures a valid scientific string input. See
+  :py:class:`~wheezy.validation.rules.ScientificRule`.
+* ``base64``. Ensures a valid base64 string input. See
+  :py:class:`~wheezy.validation.rules.Base64Rule`.
 * ``range``. Ensures value is in range defined by this rule. Works with any
   numbers including int, float, decimal, etc. Supported range attributes
   include: ``min``, ``max``. See
@@ -138,17 +142,26 @@ There are a number of validation rules already defined.
   :py:class:`~wheezy.validation.rules.OneOfRule`.
 * ``relative_date``, ``relative_utcdate``, ``relative_tzdate``,
   ``relative_datetime``, ``relative_utcdatetime``,
-  ``relative_tzdatetime``. Check if value is in relative
-  date/datetime range per local, UTC or tz time. See
+  ``relative_tzdatetime``. Check if value is in relative date/datetime
+  range per local, UTC or tz time. See
   :py:class:`~wheezy.validation.rules.RelativeDateDeltaRule`,
   :py:class:`~wheezy.validation.rules.RelativeUTCDateDeltaRule`,
   :py:class:`~wheezy.validation.rules.RelativeTZDateDeltaRule` and
   :py:class:`~wheezy.validation.rules.RelativeDateTimeDeltaRule`,
   :py:class:`~wheezy.validation.rules.RelativeUTCDateTimeDeltaRule`,
   :py:class:`~wheezy.validation.rules.RelativeTZDateTimeDeltaRule`.
+* ``relative_timestamp``, ``relative_unixtime``, ``relative_utctimestamp``,
+  ``relative_utcunixtime``. Check if value is in relative unix timestamp
+  range per local, UTC. See
+  :py:class:`~wheezy.validation.rules.RelativeUnixTimeDeltaRule`.
+* ``adapter``, ``int_adapter``. Adapts a value according to converter.
+  This is useful when you need to keep string input in model but validate
+  as an integer. See
+  :py:class:`~wheezy.validation.rules.AdapterRule`,
+  :py:class:`~wheezy.validation.rules.IntAdapterRule`.
 * ``ignore``. The idea behind this rule is to be able to substitute
   any validation rule by this one that always succeeds. See
-  :py:class:`~wheezy.validation.rules.IgnoreRule`
+  :py:class:`~wheezy.validation.rules.IgnoreRule`.
 
 Custom Message
 ~~~~~~~~~~~~~~

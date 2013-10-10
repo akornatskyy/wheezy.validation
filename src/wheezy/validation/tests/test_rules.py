@@ -362,6 +362,52 @@ class RulesTestCase(unittest.TestCase):
         assert r != email
         assert 'customized' == r.message_template
 
+    def test_scientific(self):
+        """ Test `scientific` rule.
+        """
+        from wheezy.validation.rules import ScientificRule
+        from wheezy.validation.rules import scientific
+
+        # shortcut
+        assert isinstance(scientific, ScientificRule)
+
+        errors = []
+        r = scientific
+        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        assert v('12.5e-3')
+        assert not errors
+
+        assert not v('12.x')
+        assert errors
+
+        r = scientific(message_template='customized')
+        assert r != scientific
+        assert 'customized' == r.message_template
+
+    def test_base64(self):
+        """ Test `base64` rule.
+        """
+        from wheezy.validation.rules import Base64Rule
+        from wheezy.validation.rules import base64
+
+        # shortcut
+        assert isinstance(base64, Base64Rule)
+
+        errors = []
+        r = base64
+        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        assert v('d2hlZXp5')
+        assert not errors
+
+        assert not v('d.x')
+        assert errors
+
+        r = base64(message_template='customized')
+        assert r != base64
+        assert 'customized' == r.message_template
+
     def test_range_strategies(self):
         """ Test `range` rule strategies.
         """
@@ -551,6 +597,13 @@ class RulesTestCase(unittest.TestCase):
 
         self.assertRaises(AssertionError, lambda: one_of([]))
 
+    def test_relative_rule(self):
+        """ Test `RelativeDeltaRule` now raises error.
+        """
+        from wheezy.validation.rules import RelativeDeltaRule
+        r = RelativeDeltaRule()
+        self.assertRaises(NotImplementedError, r.now)
+
     def test_ignore(self):
         """ Test `ignore` rule.
         """
@@ -569,15 +622,42 @@ class RulesTestCase(unittest.TestCase):
         assert v('x')
         assert not errors
 
+    def test_adapter(self):
+        """ Test `adapter` and `int_adapter` rules.
+        """
+        from wheezy.validation.rules import IntAdapterRule
+        from wheezy.validation.rules import int_adapter
+        from wheezy.validation.rules import range
 
-class RelativeDeltaRuleMixin:
+        # shortcut
+        assert int_adapter == IntAdapterRule
+
+        errors = []
+        r = int_adapter(range(min=1))
+        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        assert v(None)
+        assert v('100')
+        assert v('1')
+        assert not errors
+
+        assert not v('0')
+        assert errors
+        del errors[:]
+        assert not v('X')
+        assert errors
+
+
+class RelativeDeltaRuleMixin(object):
+
+    def test_shortcut(self):
+        """ Test rule shortcut.
+        """
+        assert self.shortcut == self.Rule
 
     def test_strategies(self):
         """ Test rule strategies.
         """
-        # shortcut
-        assert self.shortcut == self.Rule
-
         r = self.shortcut()
         assert r.validate == r.succeed
         r = self.shortcut(min=2)
@@ -699,3 +779,51 @@ class RelativeTZDateTimeDeltaRule(unittest.TestCase, RelativeDeltaRuleMixin):
         from wheezy.validation.rules import relative_tzdatetime
         self.shortcut = relative_tzdatetime
         self.Rule = RelativeTZDateTimeDeltaRule
+
+
+class RelativeUnixTimeDeltaRule(unittest.TestCase, RelativeDeltaRuleMixin):
+
+    def setUp(self):
+        from wheezy.validation.rules import RelativeUnixTimeDeltaRule
+        from datetime import datetime
+
+        class Proxy(RelativeUnixTimeDeltaRule):
+            def now(self):
+                t = super(Proxy, self).now()
+                return datetime.fromtimestamp(t)
+
+        self.shortcut = Proxy
+        self.Rule = RelativeUnixTimeDeltaRule
+
+    def test_shortcut(self):
+        """ Test rule shortcut.
+        """
+        from wheezy.validation.rules import RelativeUnixTimeDeltaRule
+        from wheezy.validation.rules import relative_unixtime
+        from wheezy.validation.rules import relative_timestamp
+        assert relative_unixtime == RelativeUnixTimeDeltaRule
+        assert relative_unixtime == relative_timestamp
+
+
+class RelativeUTCUnixTimeDeltaRule(unittest.TestCase, RelativeDeltaRuleMixin):
+
+    def setUp(self):
+        from wheezy.validation.rules import RelativeUTCUnixTimeDeltaRule
+        from datetime import datetime
+
+        class Proxy(RelativeUTCUnixTimeDeltaRule):
+            def now(self):
+                t = super(Proxy, self).now()
+                return datetime.fromtimestamp(t)
+
+        self.shortcut = Proxy
+        self.Rule = RelativeUTCUnixTimeDeltaRule
+
+    def test_shortcut(self):
+        """ Test rule shortcut.
+        """
+        from wheezy.validation.rules import RelativeUTCUnixTimeDeltaRule
+        from wheezy.validation.rules import relative_utcunixtime
+        from wheezy.validation.rules import relative_utctimestamp
+        assert relative_utcunixtime == RelativeUTCUnixTimeDeltaRule
+        assert relative_utcunixtime == relative_utctimestamp
