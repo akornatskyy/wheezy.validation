@@ -317,7 +317,7 @@ class ScientificRule(RegexRule):
             re.compile(r'^[+\-]?(?:0|[1-9]\d*)(?:\.\d*)?(?:[eE][+\-]?\d+)?$'),
             False,
             message_template or
-            _('Required to be a valid number is scientific format.'))
+            _('Required to be a valid number in scientific format.'))
 
     def __call__(self, message_template):
         """ Let you customize message template.

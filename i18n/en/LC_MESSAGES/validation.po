@@ -133,8 +133,8 @@ msgid "Required to be a valid email address."
 msgstr "Required to be a valid email address."
 
 #: src/wheezy/validation/rules.py:320
-msgid "Required to be a valid number is scientific format."
-msgstr "Required to be a valid number is scientific format."
+msgid "Required to be a valid number in scientific format."
+msgstr "Required to be a valid number in scientific format."
 
 #: src/wheezy/validation/rules.py:338
 msgid "Required to be a valid base64 string."

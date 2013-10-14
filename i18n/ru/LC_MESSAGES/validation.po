@@ -109,7 +109,7 @@ msgid "Required to be a valid email address."
 msgstr "Обязательно должно соответствовать правильному адресу электронной "
 "почты."
 
-msgid "Required to be a valid number is scientific format."
+msgid "Required to be a valid number in scientific format."
 msgstr "Обязательно должно соответствовать числу в научном формате."
 
 msgid "Required to be a valid base64 string."
