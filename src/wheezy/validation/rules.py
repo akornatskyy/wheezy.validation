@@ -734,7 +734,7 @@ class IntAdapterRule(AdapterRule):
 
 adapter = AdapterRule
 and_ = AndRule
-base64 = Base64Rule()
+base64 = standard_base64 = Base64Rule()
 compare = CompareRule
 email = EmailRule()
 ignore = IgnoreRule
