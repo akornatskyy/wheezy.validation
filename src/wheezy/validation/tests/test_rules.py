@@ -399,14 +399,35 @@ class RulesTestCase(unittest.TestCase):
         v = lambda i: r.validate(i, None, None, errors, lambda s: s)
 
         assert v('d2hlZXp5')
+        assert v('d2hlZXp51+==')
+        assert v('d2hlZXp51/==')
+        assert v('d2hlZXp51+/=')
         assert not errors
 
-        assert not v('d.x')
+        assert not v('dx-_')
         assert errors
 
         r = base64(message_template='customized')
         assert r != base64
         assert 'customized' == r.message_template
+
+    def test_base64alt(self):
+        """ Test `base64` rule.
+        """
+        from wheezy.validation.rules import Base64Rule
+
+        errors = []
+        r = Base64Rule(altchars='-_')
+        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        assert v('d2hlZXp5')
+        assert v('d2hlZXp51-==')
+        assert v('d2hlZXp51_==')
+        assert v('d2hlZXp51-_=')
+        assert not errors
+
+        assert not v('dx+/')
+        assert errors
 
     def test_range_strategies(self):
         """ Test `range` rule strategies.

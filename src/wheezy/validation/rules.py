@@ -330,17 +330,17 @@ class Base64Rule(RegexRule):
     """
     __slots__ = ()
 
-    def __init__(self, message_template=None):
+    def __init__(self, altchars='+/', message_template=None):
         super(Base64Rule, self).__init__(
-            re.compile(r'^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|'
-                       '[A-Za-z0-9+/]{3}=)?$'), False,
+            re.compile('^(?:[A-Za-z0-9%s]{4})*(?:[A-Za-z0-9%s]{2}==|'
+                       '[A-Za-z0-9%s]{3}=)?$' % ((altchars,) * 3)), False,
             message_template or
             _('Required to be a valid base64 string.'))
 
-    def __call__(self, message_template):
+    def __call__(self, message_template, altchars='+/'):
         """ Let you customize message template.
         """
-        return Base64Rule(message_template)
+        return Base64Rule(altchars, message_template)
 
 
 class RangeRule(object):

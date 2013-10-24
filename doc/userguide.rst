@@ -122,7 +122,8 @@ There are a number of validation rules already defined.
   :py:class:`~wheezy.validation.rules.EmailRule`.
 * ``scientific``. Ensures a valid scientific string input. See
   :py:class:`~wheezy.validation.rules.ScientificRule`.
-* ``base64``. Ensures a valid base64 string input. See
+* ``base64``. Ensures a valid base64 string input (supports
+  alternative alphabet for ``+`` and ``/`` characters). See
   :py:class:`~wheezy.validation.rules.Base64Rule`.
 * ``range``. Ensures value is in range defined by this rule. Works with any
   numbers including int, float, decimal, etc. Supported range attributes
