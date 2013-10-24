@@ -343,6 +343,24 @@ class Base64Rule(RegexRule):
         return Base64Rule(altchars, message_template)
 
 
+class URLSafeBase64Rule(Base64Rule):
+    """ Ensures a valid base64 URL-safe string input using an alphabet,
+        which substitutes `-` instead of `+` and `_` instead of `/` in
+        the standard Base64 alphabet. The input can still contain `=`.
+    """
+    __slots__ = ()
+
+    def __init__(self, message_template=None):
+        super(URLSafeBase64Rule, self).__init__(
+            '-_', message_template or
+            _('Required to be a valid URL-safe base64 string.'))
+
+    def __call__(self, message_template):
+        """ Let you customize message template.
+        """
+        return URLSafeBase64Rule(message_template)
+
+
 class RangeRule(object):
     """ Ensures value is in range defined by this rule.
 
@@ -731,15 +749,16 @@ range = RangeRule
 regex = RegexRule
 relative_date = RelativeDateDeltaRule
 relative_datetime = RelativeDateTimeDeltaRule
+relative_timestamp = RelativeUnixTimeDeltaRule
 relative_tzdate = RelativeTZDateDeltaRule
 relative_tzdatetime = RelativeTZDateTimeDeltaRule
 relative_unixtime = RelativeUnixTimeDeltaRule
-relative_timestamp = RelativeUnixTimeDeltaRule
 relative_utcdate = RelativeUTCDateDeltaRule
 relative_utcdatetime = RelativeUTCDateTimeDeltaRule
-relative_utcunixtime = RelativeUTCUnixTimeDeltaRule
 relative_utctimestamp = RelativeUTCUnixTimeDeltaRule
+relative_utcunixtime = RelativeUTCUnixTimeDeltaRule
 required = RequiredRule()
 scientific = ScientificRule()
 slug = SlugRule()
+urlsafe_base64 = URLSafeBase64Rule()
 value_predicate = must = ValuePredicateRule

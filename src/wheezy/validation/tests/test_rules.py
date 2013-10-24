@@ -429,6 +429,32 @@ class RulesTestCase(unittest.TestCase):
         assert not v('dx+/')
         assert errors
 
+    def test_urlsafe_base64(self):
+        """ Test `urlsafe_base64` rule.
+        """
+        from wheezy.validation.rules import URLSafeBase64Rule
+        from wheezy.validation.rules import urlsafe_base64
+
+        # shortcut
+        assert isinstance(urlsafe_base64, URLSafeBase64Rule)
+
+        errors = []
+        r = urlsafe_base64
+        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        assert v('d2hlZXp5')
+        assert v('d2hlZXp51-==')
+        assert v('d2hlZXp51_==')
+        assert v('d2hlZXp51-_=')
+        assert not errors
+
+        assert not v('dx+/')
+        assert errors
+
+        r = urlsafe_base64(message_template='customized')
+        assert r != urlsafe_base64
+        assert 'customized' == r.message_template
+
     def test_range_strategies(self):
         """ Test `range` rule strategies.
         """

@@ -140,41 +140,45 @@ msgstr "Required to be a valid number in scientific format."
 msgid "Required to be a valid base64 string."
 msgstr "Required to be a valid base64 string."
 
-#: src/wheezy/validation/rules.py:363
+#: src/wheezy/validation/rules.py:356
+msgid "Required to be a valid URL-safe base64 string."
+msgstr "Required to be a valid URL-safe base64 string."
+
+#: src/wheezy/validation/rules.py:381
 #, python-format
 msgid "Required to be greater or equal to %(min)s."
 msgstr "Required to be greater or equal to %(min)s."
 
-#: src/wheezy/validation/rules.py:368
+#: src/wheezy/validation/rules.py:386
 #, python-format
 msgid "The value must fall within the range %(min)s - %(max)s"
 msgstr "The value must fall within the range %(min)s - %(max)s"
 
-#: src/wheezy/validation/rules.py:375
+#: src/wheezy/validation/rules.py:393
 #, python-format
 msgid "Exceeds maximum allowed value of %(max)s."
 msgstr "Exceeds maximum allowed value of %(max)s."
 
-#: src/wheezy/validation/rules.py:501
+#: src/wheezy/validation/rules.py:519
 msgid "The value does not belong to the list of known items."
 msgstr "The value does not belong to the list of known items."
 
-#: src/wheezy/validation/rules.py:532
+#: src/wheezy/validation/rules.py:550
 msgid "Required to be above a minimum allowed."
 msgstr "Required to be above a minimum allowed."
 
-#: src/wheezy/validation/rules.py:537
+#: src/wheezy/validation/rules.py:555
 msgid "Must fall within a valid range."
 msgstr "Must fall within a valid range."
 
-#: src/wheezy/validation/rules.py:543
+#: src/wheezy/validation/rules.py:561
 msgid "Exceeds maximum allowed."
 msgstr "Exceeds maximum allowed."
 
-#: src/wheezy/validation/rules.py:694
+#: src/wheezy/validation/rules.py:712
 msgid "Required to satisfy a converter format."
 msgstr "Required to satisfy a converter format."
 
-#: src/wheezy/validation/rules.py:714
+#: src/wheezy/validation/rules.py:732
 msgid "Required to satisfy an integer format."
 msgstr "Required to satisfy an integer format."
