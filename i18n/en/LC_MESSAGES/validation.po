@@ -175,10 +175,10 @@ msgstr "Must fall within a valid range."
 msgid "Exceeds maximum allowed."
 msgstr "Exceeds maximum allowed."
 
-#: src/wheezy/validation/rules.py:712
+#: src/wheezy/validation/rules.py:703
 msgid "Required to satisfy a converter format."
 msgstr "Required to satisfy a converter format."
 
-#: src/wheezy/validation/rules.py:732
+#: src/wheezy/validation/rules.py:723
 msgid "Required to satisfy an integer format."
 msgstr "Required to satisfy an integer format."

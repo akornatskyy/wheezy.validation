@@ -850,27 +850,3 @@ class RelativeUnixTimeDeltaRule(unittest.TestCase, RelativeDeltaRuleMixin):
         from wheezy.validation.rules import relative_timestamp
         assert relative_unixtime == RelativeUnixTimeDeltaRule
         assert relative_unixtime == relative_timestamp
-
-
-class RelativeUTCUnixTimeDeltaRule(unittest.TestCase, RelativeDeltaRuleMixin):
-
-    def setUp(self):
-        from wheezy.validation.rules import RelativeUTCUnixTimeDeltaRule
-        from datetime import datetime
-
-        class Proxy(RelativeUTCUnixTimeDeltaRule):
-            def now(self):
-                t = super(Proxy, self).now()
-                return datetime.fromtimestamp(t)
-
-        self.shortcut = Proxy
-        self.Rule = RelativeUTCUnixTimeDeltaRule
-
-    def test_shortcut(self):
-        """ Test rule shortcut.
-        """
-        from wheezy.validation.rules import RelativeUTCUnixTimeDeltaRule
-        from wheezy.validation.rules import relative_utcunixtime
-        from wheezy.validation.rules import relative_utctimestamp
-        assert relative_utcunixtime == RelativeUTCUnixTimeDeltaRule
-        assert relative_utcunixtime == relative_utctimestamp

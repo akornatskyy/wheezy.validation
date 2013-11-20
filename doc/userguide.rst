@@ -155,9 +155,8 @@ There are a number of validation rules already defined.
   :py:class:`~wheezy.validation.rules.RelativeDateTimeDeltaRule`,
   :py:class:`~wheezy.validation.rules.RelativeUTCDateTimeDeltaRule`,
   :py:class:`~wheezy.validation.rules.RelativeTZDateTimeDeltaRule`.
-* ``relative_timestamp``, ``relative_unixtime``, ``relative_utctimestamp``,
-  ``relative_utcunixtime``. Check if value is in relative unix timestamp
-  range per local, UTC. See
+* ``relative_timestamp``, ``relative_unixtime``. Check if value is in
+  relative unix timestamp range. See
   :py:class:`~wheezy.validation.rules.RelativeUnixTimeDeltaRule`.
 * ``adapter``, ``int_adapter``. Adapts a value according to converter.
   This is useful when you need to keep string input in model but validate

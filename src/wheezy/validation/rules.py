@@ -672,15 +672,6 @@ class RelativeUnixTimeDeltaRule(RelativeDeltaRule):
         return int(unixtime())
 
 
-class RelativeUTCUnixTimeDeltaRule(RelativeDeltaRule):
-    """ Check if value is in relative unix range UTC time.
-    """
-    __slots__ = ()
-
-    def now(self):
-        return int(unixtime()) + altzone
-
-
 class IgnoreRule(object):
     """ The idea behind this rule is to be able to substitute
         any validation rule by this one that always succeed:
@@ -755,8 +746,6 @@ relative_tzdatetime = RelativeTZDateTimeDeltaRule
 relative_unixtime = RelativeUnixTimeDeltaRule
 relative_utcdate = RelativeUTCDateDeltaRule
 relative_utcdatetime = RelativeUTCDateTimeDeltaRule
-relative_utctimestamp = RelativeUTCUnixTimeDeltaRule
-relative_utcunixtime = RelativeUTCUnixTimeDeltaRule
 required = RequiredRule()
 scientific = ScientificRule()
 slug = SlugRule()
