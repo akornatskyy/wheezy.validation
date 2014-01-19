@@ -7,7 +7,6 @@ import re
 from datetime import date
 from datetime import datetime
 from datetime import time
-from time import altzone
 from time import time as unixtime
 
 from wheezy.validation.comp import ref_getter
