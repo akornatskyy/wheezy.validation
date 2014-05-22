@@ -93,8 +93,10 @@ There are a number of validation rules already defined.
 * ``required``. Any value evaluated to boolean ``True`` passes this rule.
   Also take a look at the ``required_but_missing`` list. See
   :py:class:`~wheezy.validation.rules.RequiredRule`.
-* ``missing``. Any value evaluated to boolean ``False`` passes this
-  rule. Also take a look at the ``required_but_missing`` list. See
+* ``not_none``. None value will not pass this rule. See
+  :py:class:`~wheezy.validation.rules.NotNoneRule`.
+* ``missing``, ``empty``. Any value evaluated to boolean ``False`` passes
+  this rule. Also take a look at the ``required_but_missing`` list. See
   :py:class:`~wheezy.validation.rules.RequiredRule`.
 * ``length``. Result of python function ``len()`` must fall within a range
   defined by this rule. Supported range attributes include: ``min``, ``max``.
