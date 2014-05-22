@@ -404,7 +404,7 @@ class RangeRule(object):
                 self.validate = self.check_range
                 self.message_template = message_template or _(
                     'The value must fall within the range %(min)s'
-                    ' - %(max)s')
+                    ' - %(max)s.')
         else:
             if max is not None:
                 self.max = max

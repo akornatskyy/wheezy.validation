@@ -123,8 +123,8 @@ msgid "Required to be greater or equal to %(min)s."
 msgstr "Должно быть больше или равно %(min)s."
 
 #, python-format
-msgid "The value must fall within the range %(min)s - %(max)s"
-msgstr "Значение должно попадать в диапазон %(min)s - %(max)s"
+msgid "The value must fall within the range %(min)s - %(max)s."
+msgstr "Значение должно попадать в диапазон %(min)s - %(max)s."
 
 #, python-format
 msgid "Exceeds maximum allowed value of %(max)s."
