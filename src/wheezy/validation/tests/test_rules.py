@@ -28,7 +28,7 @@ class RulesTestCase(unittest.TestCase):
         assert v(1)
         assert not errors
 
-        for i in required_but_missing:
+        for i in required_but_missing + [0, 0.0, '']:
             assert not v(i)
 
         # shortcut
@@ -38,10 +38,38 @@ class RulesTestCase(unittest.TestCase):
         assert r != required
         assert 'customized' == r.message_template
 
+    def test_not_none(self):
+        """ Test `not_none` rule.
+        """
+        from wheezy.validation.rules import NotNoneRule
+        from wheezy.validation.rules import not_none
+
+        errors = []
+        r = NotNoneRule(message_template='required')
+        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        assert not v(None)
+        assert ['required'] == errors
+
+        # Anything that python interprets as ``True`` is passing
+        # this rule.
+        del errors[:]
+        for i in (0, 0.0, '', 1, 'abc'):
+            assert v(i)
+        assert not errors
+
+        # shortcut
+        assert isinstance(not_none, NotNoneRule)
+
+        r = not_none('customized')
+        assert r != not_none
+        assert 'customized' == r.message_template
+
     def test_missing(self):
         """ Test `missing` rule.
         """
         from wheezy.validation.rules import MissingRule
+        from wheezy.validation.rules import empty
         from wheezy.validation.rules import missing
         from wheezy.validation.rules import required_but_missing
 
@@ -64,6 +92,7 @@ class RulesTestCase(unittest.TestCase):
             assert v(i)
 
         # shortcut
+        assert isinstance(empty, MissingRule)
         assert isinstance(missing, MissingRule)
 
         r = missing('customized')
@@ -390,6 +419,7 @@ class RulesTestCase(unittest.TestCase):
         """
         from wheezy.validation.rules import Base64Rule
         from wheezy.validation.rules import base64
+        from wheezy.validation.rules import standard_base64
 
         # shortcut
         assert isinstance(base64, Base64Rule)
@@ -406,6 +436,10 @@ class RulesTestCase(unittest.TestCase):
 
         assert not v('dx-_')
         assert errors
+
+        # shortcut
+        assert isinstance(base64, Base64Rule)
+        assert isinstance(standard_base64, Base64Rule)
 
         r = base64(message_template='customized')
         assert r != base64
@@ -466,14 +500,23 @@ class RulesTestCase(unittest.TestCase):
 
         r = range()
         assert r.validate == r.succeed
+        r = range(min=0)
+        assert r.validate == r.check_min
         r = range(min=2)
         assert r.validate == r.check_min
+        r = range(max=0)
+        assert r.validate == r.check_max
         r = range(max=2)
         assert r.validate == r.check_max
+        r = range(min=0, max=0)
+        assert r.validate == r.check_range
         r = range(min=2, max=2)
         assert r.validate == r.check_range
 
         from wheezy.validation.comp import Decimal
+
+        r = range(min=Decimal(0))
+        assert r.validate == r.check_min
 
         errors = []
         r = range(max=Decimal('15'))
