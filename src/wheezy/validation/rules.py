@@ -40,6 +40,27 @@ class RequiredRule(object):
         return True
 
 
+class NotNoneRule(object):
+    """ `None` value will not pass this rule.
+    """
+    __slots__ = ('message_template')
+
+    def __init__(self, message_template=None):
+        self.message_template = message_template or _(
+            'Required field cannot be left blank.')
+
+    def __call__(self, message_template):
+        """ Let you customize message template.
+        """
+        return NotNoneRule(message_template)
+
+    def validate(self, value, name, model, result, gettext):
+        if value is None:
+            result.append(gettext(self.message_template))
+            return False
+        return True
+
+
 class MissingRule(object):
     """ Any value evaluated to boolean ``False`` pass this rule.
     """
@@ -371,9 +392,9 @@ class RangeRule(object):
         """ Initialization selects the most appropriate validation
             strategy.
         """
-        if min:
+        if min is not None:
             self.min = min
-            if not max:
+            if max is None:
                 self.min = min
                 self.validate = self.check_min
                 self.message_template = message_template or _(
@@ -385,7 +406,7 @@ class RangeRule(object):
                     'The value must fall within the range %(min)s'
                     ' - %(max)s')
         else:
-            if max:
+            if max is not None:
                 self.max = max
                 self.validate = self.check_max
                 self.message_template = message_template or _(
@@ -731,8 +752,9 @@ ignore = IgnoreRule
 int_adapter = IntAdapterRule
 iterator = IteratorRule
 length = LengthRule
-missing = optional = empty = MissingRule()
+missing = empty = MissingRule()
 model_predicate = predicate = PredicateRule
+not_none = NotNoneRule()
 one_of = OneOfRule
 or_ = OrRule
 range = RangeRule
