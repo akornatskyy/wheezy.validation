@@ -101,5 +101,5 @@ class ModelTestCase(unittest.TestCase):
         assert 1 == m.a
         assert 1 == m['a']
         assert 2 == m.b
-        assert None == m.c
-        assert None == m['d']
+        assert m.c is None
+        assert m['d'] is None

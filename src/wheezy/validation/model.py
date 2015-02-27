@@ -18,6 +18,14 @@ from wheezy.validation.i18n import fallback_date_input_formats
 from wheezy.validation.i18n import fallback_datetime_input_formats
 from wheezy.validation.i18n import fallback_time_input_formats
 from wheezy.validation.i18n import thousands_separator
+from wheezy.validation.patches import patch_strptime_cache_size
+
+
+if not patch_strptime_cache_size():  # pragma: nocover
+    from warnings import warn
+    warn('Failed to patch _strptime._CACHE_MAX_SIZE')
+    del warn
+del patch_strptime_cache_size
 
 
 def try_update_model(model, values, results, translations=None):
@@ -211,11 +219,3 @@ value_providers = {
     'time': time_value_provider,
     'datetime': datetime_value_provider
 }
-
-
-from wheezy.validation.patches import patch_strptime_cache_size
-if not patch_strptime_cache_size():  # pragma: nocover
-    from warnings import warn
-    warn('Failed to patch _strptime._CACHE_MAX_SIZE')
-    del warn
-del patch_strptime_cache_size

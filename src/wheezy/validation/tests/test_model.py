@@ -107,21 +107,25 @@ class ValueProviderTestCase(unittest.TestCase):
         """
         from wheezy.validation.model import int_value_provider
 
-        vp = lambda s: int_value_provider(s, lambda x: x)
+        def vp(s):
+            return int_value_provider(s, lambda x: x)
+
         assert 100 == vp('100')
         assert 1000 == vp('1000')
         assert 1000 == vp('1,000')
         assert 1000000 == vp('1,000,000')
 
         # An empty string value is converted to None
-        assert None == vp('')
-        assert None == vp('  ')
+        assert vp('') is None
+        assert vp('  ') is None
 
     def test_decimal_value_provider(self):
         """ Ensure `decimal_value_provider` is parsing input correctly.
         """
         from wheezy.validation.model import decimal_value_provider
-        vp = lambda s: decimal_value_provider(s, lambda x: x)
+
+        def vp(s):
+            return decimal_value_provider(s, lambda x: x)
 
         assert Decimal('100') == vp('100')
         assert Decimal('100.0') == vp('100.0')
@@ -134,43 +138,49 @@ class ValueProviderTestCase(unittest.TestCase):
         assert Decimal('0') == vp('0.00')
 
         # An empty string value is converted to None
-        assert None == vp('')
-        assert None == vp('  ')
+        assert vp('') is None
+        assert vp('  ') is None
 
     def test_bool_value_provider(self):
         """ Ensure `bool_value_provider` is parsing input correctly.
         """
         from wheezy.validation.model import bool_value_provider
         from wheezy.validation.model import boolean_true_values
-        vp = lambda s: bool_value_provider(s, lambda x: x)
+
+        def vp(s):
+            return bool_value_provider(s, lambda x: x)
 
         for s in boolean_true_values:
-            assert True == vp(s)
-        assert False == vp('0')
+            assert vp(s)
+        assert not vp('0')
 
         # An empty string value is converted to False.
-        assert False == vp('')
-        assert False == vp('  ')
+        assert not vp('')
+        assert not vp('  ')
 
     def test_float_value_provider(self):
         """ Ensure `float_value_provider` is parsing input correctly.
         """
         from wheezy.validation.model import float_value_provider
-        vp = lambda s: float_value_provider(s, lambda x: x)
+
+        def vp(s):
+            return float_value_provider(s, lambda x: x)
 
         assert 1.0 == vp('1.00')
         assert 1.5 == vp('1.5')
         assert 4531.5 == vp('4,531.5')
 
         # An empty string value is converted to None.
-        assert None == vp('')
-        assert None == vp('  ')
+        assert vp('') is None
+        assert vp('  ') is None
 
     def test_date_value_provider(self):
         """ Ensure `date_value_provider` is parsing input correctly.
         """
         from wheezy.validation.model import date_value_provider
-        vp = lambda s: date_value_provider(s, lambda x: x)
+
+        def vp(s):
+            return date_value_provider(s, lambda x: x)
 
         assert date(2012, 2, 4) == vp(' 2012/2/4')
         assert date(2012, 2, 4) == vp('2/4/2012 ')
@@ -178,8 +188,8 @@ class ValueProviderTestCase(unittest.TestCase):
         assert date(2012, 2, 4) == vp('2/4/12')
 
         # An empty string value is converted to None.
-        assert None == vp('')
-        assert None == vp('  ')
+        assert vp('') is None
+        assert vp('  ') is None
 
         # If none of known formats match raise ValueError.
         self.assertRaises(ValueError, lambda: vp('2.4.12'))
@@ -188,14 +198,16 @@ class ValueProviderTestCase(unittest.TestCase):
         """ Ensure `time_value_provider` is parsing input correctly.
         """
         from wheezy.validation.model import time_value_provider
-        vp = lambda s: time_value_provider(s, lambda x: x)
+
+        def vp(s):
+            return time_value_provider(s, lambda x: x)
 
         assert time(15, 40) == vp(' 15:40')
         assert time(15, 40, 11) == vp('15:40:11 ')
 
         # An empty string value is converted to None.
-        assert None == vp('')
-        assert None == vp('  ')
+        assert vp('') is None
+        assert vp('  ') is None
 
         # If none of known formats match raise ValueError.
         self.assertRaises(ValueError, lambda: vp('2.45.17'))
@@ -204,7 +216,9 @@ class ValueProviderTestCase(unittest.TestCase):
         """ Ensure `datetime_value_provider` is parsing input correctly.
         """
         from wheezy.validation.model import datetime_value_provider
-        vp = lambda s: datetime_value_provider(s, lambda x: x)
+
+        def vp(s):
+            return datetime_value_provider(s, lambda x: x)
 
         assert datetime(2008, 5, 18, 15, 40) == vp('2008/5/18 15:40')
 
@@ -213,8 +227,8 @@ class ValueProviderTestCase(unittest.TestCase):
         assert datetime(2008, 5, 18, 0, 0) == vp('2008/5/18')
 
         # An empty string value is converted to None.
-        assert None == vp('')
-        assert None == vp('  ')
+        assert vp('') is None
+        assert vp('  ') is None
 
         # If none of known formats match raise ValueError.
         self.assertRaises(ValueError, lambda: vp('2.4.12'))

@@ -15,42 +15,45 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #. thousands separator
-#: src/wheezy/validation/i18n.py:6
+#: src/wheezy/validation/i18n.py:8
 msgid ","
 msgstr ","
 
 #. decimal point separator
-#: src/wheezy/validation/i18n.py:8
+#: src/wheezy/validation/i18n.py:13
 msgid "."
 msgstr "."
 
 #. default date input format: 2008/5/18.
-#: src/wheezy/validation/i18n.py:10
+#: src/wheezy/validation/i18n.py:18
 msgid "%Y/%m/%d"
 msgstr "%Y/%m/%d"
 
-#. fallback date input formats: 5/18/2008. Use | to separate multiple values.
-#: src/wheezy/validation/i18n.py:13
+#. fallback date input formats: 5/18/2008.
+#. Use | to separate multiple values.
+#: src/wheezy/validation/i18n.py:24
 msgid "%m/%d/%Y|%Y-%m-%d|%m/%d/%y"
 msgstr "%m/%d/%Y|%Y-%m-%d|%m/%d/%y"
 
 #. default time input format: 16:34.
-#: src/wheezy/validation/i18n.py:15
+#: src/wheezy/validation/i18n.py:29
 msgid "%H:%M"
 msgstr "%H:%M"
 
-#. fallback time input formats: 16:34:52. Use | to separate multiple values.
-#: src/wheezy/validation/i18n.py:17
+#. fallback time input formats: 16:34:52.
+#. Use | to separate multiple values.
+#: src/wheezy/validation/i18n.py:35
 msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
 #. default datetime input format: 2008/5/18 16:34
-#: src/wheezy/validation/i18n.py:19
+#: src/wheezy/validation/i18n.py:40
 msgid "%Y/%m/%d %H:%M"
 msgstr "%Y/%m/%d %H:%M"
 
-#. fallback datetime input formats: 2008/5/18 16:34:52. Use | to separate.
-#: src/wheezy/validation/i18n.py:22
+#. fallback datetime input formats: 2008/5/18 16:34:52.
+#. Use | to separate.
+#: src/wheezy/validation/i18n.py:22 src/wheezy/validation/i18n.py:46
 msgid ""
 "%Y/%m/%d %H:%M:%S|%m/%d/%Y %H:%M|%m/%d/%Y %H:%M:%S|%Y-%m-%d %H:%M|%Y-%m-%d "
 "%H:%M:%S|%m/%d/%y %H:%M|%m/%d/%y %H:%M:%S"
@@ -58,69 +61,69 @@ msgstr ""
 "%Y/%m/%d %H:%M:%S|%m/%d/%Y %H:%M|%m/%d/%Y %H:%M:%S|%Y-%m-%d %H:%M|%Y-%m-%d "
 "%H:%M:%S|%m/%d/%y %H:%M|%m/%d/%y %H:%M:%S"
 
-#: src/wheezy/validation/model.py:67
+#: src/wheezy/validation/model.py:75
 msgid "Multiple input was not in a correct format."
 msgstr "Multiple input was not in a correct format."
 
-#: src/wheezy/validation/model.py:80
+#: src/wheezy/validation/model.py:88
 msgid "Input was not in a correct format."
 msgstr "Input was not in a correct format."
 
-#: src/wheezy/validation/rules.py:29 src/wheezy/validation/rules.py:50
+#: src/wheezy/validation/rules.py:53
 msgid "Required field cannot be left blank."
 msgstr "Required field cannot be left blank."
 
-#: src/wheezy/validation/rules.py:71
+#: src/wheezy/validation/rules.py:74
 msgid "Field cannot have a value."
 msgstr "Field cannot have a value."
 
-#: src/wheezy/validation/rules.py:102
+#: src/wheezy/validation/rules.py:105
 #, python-format
 msgid "Required to be a minimum of %(min)d characters in length."
 msgstr "Required to be a minimum of %(min)d characters in length."
 
-#: src/wheezy/validation/rules.py:107
+#: src/wheezy/validation/rules.py:110
 #, python-format
 msgid "The length must be exactly %(len)d characters."
 msgstr "The length must be exactly %(len)d characters."
 
-#: src/wheezy/validation/rules.py:113
+#: src/wheezy/validation/rules.py:116
 #, python-format
 msgid "The length must fall within the range %(min)d - %(max)d characters."
 msgstr "The length must fall within the range %(min)d - %(max)d characters."
 
-#: src/wheezy/validation/rules.py:119
+#: src/wheezy/validation/rules.py:122
 #, python-format
 msgid "Exceeds maximum length of %(max)d."
 msgstr "Exceeds maximum length of %(max)d."
 
-#: src/wheezy/validation/rules.py:177
+#: src/wheezy/validation/rules.py:180
 #, python-format
 msgid "The value failed equality comparison with \"%(comparand)s\"."
 msgstr "The value failed equality comparison with \"%(comparand)s\"."
 
-#: src/wheezy/validation/rules.py:183
+#: src/wheezy/validation/rules.py:186
 #, python-format
 msgid "The value failed not equal comparison with \"%(comparand)s\"."
 msgstr "The value failed not equal comparison with \"%(comparand)s\"."
 
-#: src/wheezy/validation/rules.py:222
+#: src/wheezy/validation/rules.py:225
 msgid "Required to satisfy validation predicate condition."
 msgstr "Required to satisfy validation predicate condition."
 
-#: src/wheezy/validation/rules.py:243
+#: src/wheezy/validation/rules.py:246
 msgid "Required to satisfy validation value predicate condition."
 msgstr "Required to satisfy validation value predicate condition."
 
-#: src/wheezy/validation/rules.py:271
+#: src/wheezy/validation/rules.py:274
 msgid "Required to not match validation pattern."
 msgstr "Required to not match validation pattern."
 
-#: src/wheezy/validation/rules.py:275
+#: src/wheezy/validation/rules.py:278
 msgid "Required to match validation pattern."
 msgstr "Required to match validation pattern."
 
-#: src/wheezy/validation/rules.py:303
+#: src/wheezy/validation/rules.py:306
 msgid ""
 "Invalid slug. The value must consist of letters, digits, underscopes and/or "
 "hyphens."
@@ -128,57 +131,57 @@ msgstr ""
 "Invalid slug. The value must consist of letters, digits, underscopes and/or "
 "hyphens."
 
-#: src/wheezy/validation/rules.py:322
+#: src/wheezy/validation/rules.py:325
 msgid "Required to be a valid email address."
 msgstr "Required to be a valid email address."
 
-#: src/wheezy/validation/rules.py:340
+#: src/wheezy/validation/rules.py:343
 msgid "Required to be a valid number in scientific format."
 msgstr "Required to be a valid number in scientific format."
 
-#: src/wheezy/validation/rules.py:358
+#: src/wheezy/validation/rules.py:361
 msgid "Required to be a valid base64 string."
 msgstr "Required to be a valid base64 string."
 
-#: src/wheezy/validation/rules.py:376
+#: src/wheezy/validation/rules.py:379
 msgid "Required to be a valid URL-safe base64 string."
 msgstr "Required to be a valid URL-safe base64 string."
 
-#: src/wheezy/validation/rules.py:401
+#: src/wheezy/validation/rules.py:404
 #, python-format
 msgid "Required to be greater or equal to %(min)s."
 msgstr "Required to be greater or equal to %(min)s."
 
-#: src/wheezy/validation/rules.py:406
+#: src/wheezy/validation/rules.py:409
 #, python-format
 msgid "The value must fall within the range %(min)s - %(max)s."
 msgstr "The value must fall within the range %(min)s - %(max)s."
 
-#: src/wheezy/validation/rules.py:413
+#: src/wheezy/validation/rules.py:416
 #, python-format
 msgid "Exceeds maximum allowed value of %(max)s."
 msgstr "Exceeds maximum allowed value of %(max)s."
 
-#: src/wheezy/validation/rules.py:539
+#: src/wheezy/validation/rules.py:542
 msgid "The value does not belong to the list of known items."
 msgstr "The value does not belong to the list of known items."
 
-#: src/wheezy/validation/rules.py:570
+#: src/wheezy/validation/rules.py:573
 msgid "Required to be above a minimum allowed."
 msgstr "Required to be above a minimum allowed."
 
-#: src/wheezy/validation/rules.py:575
+#: src/wheezy/validation/rules.py:578
 msgid "Must fall within a valid range."
 msgstr "Must fall within a valid range."
 
-#: src/wheezy/validation/rules.py:581
+#: src/wheezy/validation/rules.py:584
 msgid "Exceeds maximum allowed."
 msgstr "Exceeds maximum allowed."
 
-#: src/wheezy/validation/rules.py:723
+#: src/wheezy/validation/rules.py:726
 msgid "Required to satisfy a converter format."
 msgstr "Required to satisfy a converter format."
 
-#: src/wheezy/validation/rules.py:743
+#: src/wheezy/validation/rules.py:746
 msgid "Required to satisfy an integer format."
 msgstr "Required to satisfy an integer format."

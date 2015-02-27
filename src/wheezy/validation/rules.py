@@ -13,8 +13,11 @@ from wheezy.validation.comp import ref_getter
 from wheezy.validation.comp import regex_pattern
 
 
-_ = lambda s: s
 required_but_missing = [date.min, datetime.min, time.min]
+
+
+def _(s):
+    return s
 
 
 class RequiredRule(object):

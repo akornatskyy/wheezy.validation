@@ -16,7 +16,9 @@ class RulesTestCase(unittest.TestCase):
 
         errors = []
         r = RequiredRule(message_template='required')
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert not v(None)
         assert ['required'] == errors
@@ -46,7 +48,9 @@ class RulesTestCase(unittest.TestCase):
 
         errors = []
         r = NotNoneRule(message_template='required')
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert not v(None)
         assert ['required'] == errors
@@ -75,7 +79,9 @@ class RulesTestCase(unittest.TestCase):
 
         errors = []
         r = MissingRule(message_template='missing')
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert not v(1)
         assert ['missing'] == errors
@@ -126,7 +132,9 @@ class RulesTestCase(unittest.TestCase):
 
         errors = []
         r = length()
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert v(None)
         assert v('abc')
@@ -139,7 +147,9 @@ class RulesTestCase(unittest.TestCase):
 
         errors = []
         r = length(min=2, message_template='min %(min)d')
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert v(None)
         assert v('ab')
@@ -155,7 +165,9 @@ class RulesTestCase(unittest.TestCase):
 
         errors = []
         r = length(max=2, message_template='max %(max)d')
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert v(None)
         assert v('ab')
@@ -171,7 +183,9 @@ class RulesTestCase(unittest.TestCase):
 
         errors = []
         r = length(min=2, max=2, message_template='len %(len)d')
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert v(None)
         assert v('ab')
@@ -187,7 +201,9 @@ class RulesTestCase(unittest.TestCase):
 
         errors = []
         r = length(min=2, max=3, message_template='range %(min)d-%(max)d')
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert v(None)
         assert v('ab')
@@ -219,7 +235,9 @@ class RulesTestCase(unittest.TestCase):
 
         errors = []
         r = compare()
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert v(None)
         assert v('abc')
@@ -232,7 +250,9 @@ class RulesTestCase(unittest.TestCase):
         errors = []
         m = {'confirm_password': 'x'}
         r = compare(equal='confirm_password')
-        v = lambda i: r.validate(i, None, m, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, m, errors, lambda s: s)
 
         assert v('x')
         assert not errors
@@ -248,7 +268,9 @@ class RulesTestCase(unittest.TestCase):
         errors = []
         m = {'previous_password': 'x'}
         r = compare(not_equal='previous_password')
-        v = lambda i: r.validate(i, None, m, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, m, errors, lambda s: s)
 
         assert v('z')
         assert not errors
@@ -268,7 +290,9 @@ class RulesTestCase(unittest.TestCase):
 
         errors = []
         r = predicate(lambda m: m is not None)
-        v = lambda i: r.validate(None, None, i, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(None, None, i, errors, lambda s: s)
 
         assert v('x')
         assert not errors
@@ -288,7 +312,9 @@ class RulesTestCase(unittest.TestCase):
 
         errors = []
         r = value_predicate(lambda v: v is not None)
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert v('x')
         assert not errors
@@ -320,7 +346,9 @@ class RulesTestCase(unittest.TestCase):
 
         errors = []
         r = regex(r'\d+')
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert v(None)
         assert v('1234')
@@ -336,7 +364,9 @@ class RulesTestCase(unittest.TestCase):
 
         errors = []
         r = regex(r'\d+', negated=True)
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert v(None)
         assert v('x')
@@ -356,7 +386,9 @@ class RulesTestCase(unittest.TestCase):
 
         errors = []
         r = slug
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert v('x14')
         assert not errors
@@ -379,7 +411,9 @@ class RulesTestCase(unittest.TestCase):
 
         errors = []
         r = email
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert v('x.14@somewhere.org')
         assert not errors
@@ -402,7 +436,9 @@ class RulesTestCase(unittest.TestCase):
 
         errors = []
         r = scientific
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert v('12.5e-3')
         assert not errors
@@ -426,7 +462,9 @@ class RulesTestCase(unittest.TestCase):
 
         errors = []
         r = base64
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert v('d2hlZXp5')
         assert v('d2hlZXp51+==')
@@ -452,7 +490,9 @@ class RulesTestCase(unittest.TestCase):
 
         errors = []
         r = Base64Rule(altchars='-_')
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert v('d2hlZXp5')
         assert v('d2hlZXp51-==')
@@ -474,7 +514,9 @@ class RulesTestCase(unittest.TestCase):
 
         errors = []
         r = urlsafe_base64
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert v('d2hlZXp5')
         assert v('d2hlZXp51-==')
@@ -520,7 +562,9 @@ class RulesTestCase(unittest.TestCase):
 
         errors = []
         r = range(max=Decimal('15'))
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert v(Decimal('10'))
         assert not errors
@@ -535,7 +579,9 @@ class RulesTestCase(unittest.TestCase):
 
         errors = []
         r = range()
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert v(None)
         assert v(100)
@@ -547,7 +593,9 @@ class RulesTestCase(unittest.TestCase):
 
         errors = []
         r = range(min=10, message_template='min %(min)s')
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert v(None)
         assert v(10)
@@ -563,7 +611,9 @@ class RulesTestCase(unittest.TestCase):
 
         errors = []
         r = range(max=10, message_template='max %(max)s')
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert v(None)
         assert v(10)
@@ -579,7 +629,9 @@ class RulesTestCase(unittest.TestCase):
 
         errors = []
         r = range(min=2, max=3, message_template='range %(min)s-%(max)s')
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert v(None)
         assert v(2)
@@ -601,7 +653,9 @@ class RulesTestCase(unittest.TestCase):
 
         errors = []
         r = and_(required, range(min=1, max=5))
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert v(1)
         assert not errors
@@ -624,7 +678,9 @@ class RulesTestCase(unittest.TestCase):
 
         errors = []
         r = or_(range(min=1, max=5), range(min=11, max=15))
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert v(1)
         assert v(12)
@@ -649,7 +705,9 @@ class RulesTestCase(unittest.TestCase):
 
         errors = []
         r = iterator(rules=[required, range(min=1, max=5)])
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert v(None)
         assert v([1, 2, 3])
@@ -676,7 +734,9 @@ class RulesTestCase(unittest.TestCase):
 
         errors = []
         r = one_of([1, 2, 3, None])
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert v(None)
         assert v(3)
@@ -705,7 +765,9 @@ class RulesTestCase(unittest.TestCase):
 
         errors = []
         r = ignore(1, a=2, b='anything')
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert v(None)
         assert v(100)
@@ -724,7 +786,9 @@ class RulesTestCase(unittest.TestCase):
 
         errors = []
         r = int_adapter(range(min=1))
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert v(None)
         assert v('100')
@@ -762,7 +826,9 @@ class RelativeDeltaRuleMixin(object):
         """
         errors = []
         r = self.shortcut()
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert v(None)
         assert v(r.now())
@@ -773,7 +839,9 @@ class RelativeDeltaRuleMixin(object):
         from datetime import timedelta
         errors = []
         r = self.shortcut(min=timedelta(days=-7))
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert v(None)
         assert v(r.now())
@@ -788,7 +856,9 @@ class RelativeDeltaRuleMixin(object):
         from datetime import timedelta
         errors = []
         r = self.shortcut(max=timedelta(days=7))
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert v(None)
         assert v(r.now())
@@ -803,7 +873,9 @@ class RelativeDeltaRuleMixin(object):
         from datetime import timedelta
         errors = []
         r = self.shortcut(min=timedelta(days=-7), max=timedelta(days=7))
-        v = lambda i: r.validate(i, None, None, errors, lambda s: s)
+
+        def v(i):
+            return r.validate(i, None, None, errors, lambda s: s)
 
         assert v(None)
         assert v(r.now())
