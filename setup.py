@@ -13,7 +13,8 @@ try:
     p = os.path.join('src', 'wheezy', 'validation')
     extra['ext_modules'] = cythonize(
         [os.path.join(p, '*.py')],
-        quiet=True)
+        exclude=os.path.join(p, '__init__.py'),
+        nthreads=2, quiet=True)
 except ImportError:
     pass
 
