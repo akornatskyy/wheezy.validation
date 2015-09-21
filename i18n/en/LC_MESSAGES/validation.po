@@ -53,7 +53,7 @@ msgstr "%Y/%m/%d %H:%M"
 
 #. fallback datetime input formats: 2008/5/18 16:34:52.
 #. Use | to separate.
-#: src/wheezy/validation/i18n.py:22 src/wheezy/validation/i18n.py:46
+#: src/wheezy/validation/i18n.py:46
 msgid ""
 "%Y/%m/%d %H:%M:%S|%m/%d/%Y %H:%M|%m/%d/%Y %H:%M:%S|%Y-%m-%d %H:%M|%Y-%m-%d "
 "%H:%M:%S|%m/%d/%y %H:%M|%m/%d/%y %H:%M:%S"
@@ -61,15 +61,15 @@ msgstr ""
 "%Y/%m/%d %H:%M:%S|%m/%d/%Y %H:%M|%m/%d/%Y %H:%M:%S|%Y-%m-%d %H:%M|%Y-%m-%d "
 "%H:%M:%S|%m/%d/%y %H:%M|%m/%d/%y %H:%M:%S"
 
-#: src/wheezy/validation/model.py:75
+#: src/wheezy/validation/model.py:78
 msgid "Multiple input was not in a correct format."
 msgstr "Multiple input was not in a correct format."
 
-#: src/wheezy/validation/model.py:88
+#: src/wheezy/validation/model.py:91
 msgid "Input was not in a correct format."
 msgstr "Input was not in a correct format."
 
-#: src/wheezy/validation/rules.py:53
+#: src/wheezy/validation/rules.py:32 src/wheezy/validation/rules.py:53
 msgid "Required field cannot be left blank."
 msgstr "Required field cannot be left blank."
 
