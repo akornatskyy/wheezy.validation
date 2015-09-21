@@ -13,6 +13,7 @@ from wheezy.validation.comp import bytes_type
 from wheezy.validation.comp import null_translations
 from wheezy.validation.comp import ref_gettext
 from wheezy.validation.comp import str_type
+from wheezy.validation.comp import tob
 from wheezy.validation.i18n import decimal_separator
 from wheezy.validation.i18n import default_date_input_format
 from wheezy.validation.i18n import default_datetime_input_format
@@ -107,7 +108,7 @@ def bytes_value_provider(value, gettext):
         return value
     if t is str_type:
         return value.encode('UTF-8')
-    return bytes_type(value)
+    return tob(value)
 
 
 def str_value_provider(value, gettext):

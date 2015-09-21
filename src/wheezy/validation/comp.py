@@ -23,6 +23,9 @@ if PY3:  # pragma: nocover
     def copyitems(d):
         return list(d.items())
 
+    def tob(s):
+        return str(s).encode('UTF-8')
+
     regex_pattern = (str,)
     str_type = str
     bytes_type = bytes
@@ -36,9 +39,12 @@ else:  # pragma: nocover
     def copyitems(d):
         return d.items()
 
+    def tob(s):
+        return str(s)
+
     regex_pattern = (str, unicode)
     str_type = unicode
-    bytes_type = bytes
+    bytes_type = str
 
 if PY3:  # pragma: nocover
     def ref_gettext(t):
