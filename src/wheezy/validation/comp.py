@@ -24,6 +24,8 @@ if PY3:  # pragma: nocover
         return list(d.items())
 
     regex_pattern = (str,)
+    str_type = str
+    bytes_type = bytes
 else:  # pragma: nocover
     def iterkeys(d):
         return d.iterkeys()
@@ -35,6 +37,8 @@ else:  # pragma: nocover
         return d.items()
 
     regex_pattern = (str, unicode)
+    str_type = unicode
+    bytes_type = bytes
 
 if PY3:  # pragma: nocover
     def ref_gettext(t):
