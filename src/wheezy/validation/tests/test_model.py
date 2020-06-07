@@ -284,6 +284,6 @@ if not PY3:  # pragma: nocover
 if PY3:  # pragma: nocover
     def ntob(n):
         return n.encode('UTF-8')
-else:
+else:  # pragma: nocover
     def ntob(n):  # noqa
         return n
