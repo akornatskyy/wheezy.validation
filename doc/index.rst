@@ -1,22 +1,21 @@
 .. _`wheezy.validation`:
 
-Wheezy Validation
+wheezy.validation
 =================
 
 Introduction
 ------------
 
-:ref:`wheezy.validation` is a `python`_ package written in pure Python code. 
+:ref:`wheezy.validation` is a `python`_ package written in pure Python code.
 It is a lightweight validation library.
 
 It is optimized for performance, well tested and documented.
 
 Resources:
 
-* `source code`_, `examples`_ and `issues`_ tracker are available
-  on `bitbucket`_
-* `documentation`_, `readthedocs`_
-* `eggs`_ on `pypi`_
+* `source code`_ and `issues`_ tracker are available
+  on `github`_
+* `documentation`_
 
 Contents
 --------
@@ -29,12 +28,8 @@ Contents
    userguide
    modules
 
-.. _`bitbucket`: http://bitbucket.org/akorn/wheezy.validation
-.. _`documentation`: http://packages.python.org/wheezy.validation
-.. _`eggs`: http://pypi.python.org/pypi/wheezy.validation
-.. _`examples`: http://bitbucket.org/akorn/wheezy.validation/src/tip/demos
-.. _`issues`: http://bitbucket.org/akorn/wheezy.validation/issues
-.. _`pypi`: http://pypi.python.org
-.. _`python`: http://www.python.org
-.. _`readthedocs`: http://readthedocs.org/builds/wheezyvalidation/
-.. _`source code`: http://bitbucket.org/akorn/wheezy.validation/src
+.. _`github`: https://github.com/akornatskyy/wheezy.validation
+.. _`documentation`: https://wheezyvalidation.readthedocs.io/en/latest/
+.. _`issues`: ttps://github.com/akornatskyy/wheezy.validation/issues
+.. _`python`: https://www.python.org
+.. _`source code`: https://github.com/akornatskyy/wheezy.validation

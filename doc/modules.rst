@@ -13,6 +13,12 @@ wheezy.validation.checker
 .. automodule:: wheezy.validation.checker
    :members:
 
+wheezy.validation.i18n
+----------------------
+
+.. automodule:: wheezy.validation.i18n
+   :members:
+
 wheezy.validation.mixin
 -----------------------
 
