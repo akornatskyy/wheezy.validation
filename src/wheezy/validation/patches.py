@@ -15,12 +15,12 @@ def patch_strptime_cache_size(max_size=100):
     except (ImportError, AttributeError):  # pragma: nocover
         return False
 
-    l = _strptime._cache_lock
-    l.acquire()
+    lock = _strptime._cache_lock
+    lock.acquire()
     try:
         _strptime._CACHE_MAX_SIZE = max_size
     finally:
-        l.release()
+        lock.release()
     return True
 
 

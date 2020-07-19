@@ -3,7 +3,6 @@
 """
 
 import re
-
 from datetime import date
 from datetime import datetime
 from datetime import time
@@ -156,8 +155,8 @@ class LengthRule(object):
     def check_range(self, value, name, model, result, gettext):
         if value is None:
             return True
-        l = len(value)
-        if l < self.min or l > self.max:
+        length = len(value)
+        if length < self.min or length > self.max:
             result.append(gettext(self.message_template)
                           % {'min': self.min, 'max': self.max})
             return False
@@ -321,8 +320,8 @@ class EmailRule(RegexRule):
         super(EmailRule, self).__init__(
             re.compile(r'^[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,5}$',
                        re.IGNORECASE), False,
-            message_template or
-            _('Required to be a valid email address.'))
+            message_template or _(
+                'Required to be a valid email address.'))
 
     def __call__(self, message_template):
         """ Let you customize message template.
@@ -339,8 +338,8 @@ class ScientificRule(RegexRule):
         super(ScientificRule, self).__init__(
             re.compile(r'^[+\-]?(?:0|[1-9]\d*)(?:\.\d*)?(?:[eE][+\-]?\d+)?$'),
             False,
-            message_template or
-            _('Required to be a valid number in scientific format.'))
+            message_template or _(
+                'Required to be a valid number in scientific format.'))
 
     def __call__(self, message_template):
         """ Let you customize message template.
@@ -357,8 +356,8 @@ class Base64Rule(RegexRule):
         super(Base64Rule, self).__init__(
             re.compile('^(?:[A-Za-z0-9%s]{4})*(?:[A-Za-z0-9%s]{2}==|'
                        '[A-Za-z0-9%s]{3}=)?$' % ((altchars,) * 3)), False,
-            message_template or
-            _('Required to be a valid base64 string.'))
+            message_template or _(
+                'Required to be a valid base64 string.'))
 
     def __call__(self, message_template, altchars='+/'):
         """ Let you customize message template.
@@ -375,8 +374,8 @@ class URLSafeBase64Rule(Base64Rule):
 
     def __init__(self, message_template=None):
         super(URLSafeBase64Rule, self).__init__(
-            '-_', message_template or
-            _('Required to be a valid URL-safe base64 string.'))
+            '-_', message_template or _(
+                'Required to be a valid URL-safe base64 string.'))
 
     def __call__(self, message_template):
         """ Let you customize message template.

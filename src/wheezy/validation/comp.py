@@ -3,7 +3,6 @@
 """
 
 import sys
-
 from gettext import NullTranslations
 
 
@@ -31,10 +30,10 @@ if PY3:  # pragma: nocover
     bytes_type = bytes
 else:  # pragma: nocover
     def iterkeys(d):
-        return d.iterkeys()
+        return d.iterkeys()  # noqa: B301
 
     def iteritems(d):
-        return d.iteritems()
+        return d.iteritems()  # noqa: B301
 
     def copyitems(d):
         return d.items()
@@ -42,8 +41,8 @@ else:  # pragma: nocover
     def tob(s):
         return str(s)
 
-    regex_pattern = (str, unicode)
-    str_type = unicode
+    regex_pattern = (str, unicode)  # noqa: F821
+    str_type = unicode  # noqa: F821
     bytes_type = str
 
 if PY3:  # pragma: nocover
@@ -77,5 +76,5 @@ else:  # pragma: nocover
     # perform absolute import
     __saved_import__ = __import__
 
-    def __import__(n, g=None, l=None, f=None):
-        return __saved_import__(n, g, l, f, 0)
+    def __import__(name, globals=None, locals=None, f=None):  # noqa: N807
+        return __saved_import__(name, globals, locals, f, 0)

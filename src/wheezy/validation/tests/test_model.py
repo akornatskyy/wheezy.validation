@@ -3,7 +3,6 @@
 """
 
 import unittest
-
 from datetime import date
 from datetime import datetime
 from datetime import time
@@ -279,7 +278,7 @@ class User(object):
 
 hello = '\u043f\u0440\u0438\u0432\u0456\u0442'
 if not PY3:  # pragma: nocover
-    hello = unicode(hello, 'unicode_escape')
+    hello = unicode(hello, 'unicode_escape')  # noqa: F821
 
 if PY3:  # pragma: nocover
     def ntob(n):

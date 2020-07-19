@@ -4,12 +4,12 @@
 
 import unittest
 
-from wheezy.validation.validator import Validator
 from wheezy.validation.rules import compare
-from wheezy.validation.rules import required
 from wheezy.validation.rules import email
 from wheezy.validation.rules import length
 from wheezy.validation.rules import one_of
+from wheezy.validation.rules import required
+from wheezy.validation.validator import Validator
 
 
 # region: validation rules

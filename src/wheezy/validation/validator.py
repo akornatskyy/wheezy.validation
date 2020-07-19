@@ -4,8 +4,8 @@
 
 from wheezy.validation.comp import iteritems
 from wheezy.validation.comp import null_translations
-from wheezy.validation.comp import ref_gettext
 from wheezy.validation.comp import ref_getter
+from wheezy.validation.comp import ref_gettext
 
 
 class Validator(object):
