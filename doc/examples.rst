@@ -2,12 +2,10 @@
 Examples
 ========
 
-We start with a simple credential validation example. Before we proceed 
+We start with a simple credential validation example. Before we proceed
 let setup `virtualenv`_ environment::
 
-    $ virtualenv env
-    $ env/bin/easy_install wheezy.validation
-
+    $ pip install wheezy.validation
 
 .. _helloworld:
 
@@ -44,7 +42,7 @@ is ``credential_validator`` that serves our purpose::
         'password': [required, length(min=8, max=12)]
     })
 
-Since validator in no way dependent on object it is going to validate, it can 
+Since validator in no way dependent on object it is going to validate, it can
 be reused in any combination, the only requirement that attributes defined
 in validator must exist in object you are going to validate.
 
@@ -52,7 +50,7 @@ Validation
 ~~~~~~~~~~
 
 Now we can proceed with validation::
-    
+
     credential = Credential()
     errors = {}
     succeed = credential_validator.validate(credential, results=errors)
@@ -72,7 +70,7 @@ Let assume form submitted values look this way::
     values = {'username': [''], 'password': ['']}
 
 Our attempt to update ``Credential`` model with ``values``::
-    
+
     from wheezy.validation.model import try_update_model
 
     credential = Credential()
