@@ -1,4 +1,3 @@
-
 """ ``checker`` module.
 """
 
@@ -23,7 +22,7 @@ class Checker(object):
         """ Use `validator` for next series of checks.
         """
         if isinstance(validator, str):
-            namespace, name = validator.rsplit('.', 1)
+            namespace, name = validator.rsplit(".", 1)
             obj = __import__(namespace, None, None, [name])
             self.validator = getattr(obj, name)
         else:
@@ -33,14 +32,17 @@ class Checker(object):
         """ Returns a result of validation limited to attributes in
             `kwargs` which represents attributes of model being validated.
         """
-        m = Model(dict.fromkeys(
-            [
-                k for k, i in self.validator.rules
-            ] + [k for k, i in self.validator.inner]))
+        m = Model(
+            dict.fromkeys(
+                [k for k, i in self.validator.rules]
+                + [k for k, i in self.validator.inner]
+            )
+        )
         m.update(kwargs)
         results = {}
-        self.validator.validate(m, results, self.stop,
-                                self.translations, self.gettext)
+        self.validator.validate(
+            m, results, self.stop, self.translations, self.gettext
+        )
         results = sorted([(k, results[k]) for k in kwargs if k in results])
         return results or None
 
@@ -59,10 +61,12 @@ class Checker(object):
 
 # region: internal details
 
+
 class Model(dict):
     """ Simulate plain python class, read-only dictionary access
         through attributes.
     """
+
     __slots__ = ()
 
     def __getitem__(self, key):

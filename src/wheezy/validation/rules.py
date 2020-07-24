@@ -1,16 +1,11 @@
-
 """ ``rules`` module.
 """
 
 import re
-from datetime import date
-from datetime import datetime
-from datetime import time
+from datetime import date, datetime, time
 from time import time as unixtime
 
-from wheezy.validation.comp import ref_getter
-from wheezy.validation.comp import regex_pattern
-
+from wheezy.validation.comp import ref_getter, regex_pattern
 
 required_but_missing = [date.min, datetime.min, time.min]
 
@@ -24,11 +19,13 @@ class RequiredRule(object):
         You can extend this validator by supplying additional
         false values to ``required_but_missing`` list.
     """
-    __slots__ = ('message_template')
+
+    __slots__ = "message_template"
 
     def __init__(self, message_template=None):
         self.message_template = message_template or _(
-            'Required field cannot be left blank.')
+            "Required field cannot be left blank."
+        )
 
     def __call__(self, message_template):
         """ Let you customize message template.
@@ -45,11 +42,13 @@ class RequiredRule(object):
 class NotNoneRule(object):
     """ `None` value will not pass this rule.
     """
-    __slots__ = ('message_template')
+
+    __slots__ = "message_template"
 
     def __init__(self, message_template=None):
         self.message_template = message_template or _(
-            'Required field cannot be left blank.')
+            "Required field cannot be left blank."
+        )
 
     def __call__(self, message_template):
         """ Let you customize message template.
@@ -66,11 +65,13 @@ class NotNoneRule(object):
 class MissingRule(object):
     """ Any value evaluated to boolean ``False`` pass this rule.
     """
-    __slots__ = ('message_template')
+
+    __slots__ = "message_template"
 
     def __init__(self, message_template=None):
         self.message_template = message_template or _(
-            'Field cannot have a value.')
+            "Field cannot have a value."
+        )
 
     def __call__(self, message_template):
         """ Let you customize message template.
@@ -88,7 +89,8 @@ class LengthRule(object):
     """ Result of python function ``len()`` must fall within a range
         defined by this rule.
     """
-    __slots__ = ('validate', 'min', 'max', 'message_template')
+
+    __slots__ = ("validate", "min", "max", "message_template")
 
     def __init__(self, min=None, max=None, message_template=None):
         """
@@ -101,24 +103,27 @@ class LengthRule(object):
                 self.min = min
                 self.validate = self.check_min
                 self.message_template = message_template or _(
-                    'Required to be a minimum of %(min)d characters'
-                    ' in length.')
+                    "Required to be a minimum of %(min)d characters"
+                    " in length."
+                )
             elif min == max:
                 self.validate = self.check_equal
                 self.message_template = message_template or _(
-                    'The length must be exactly %(len)d'
-                    ' characters.')
+                    "The length must be exactly %(len)d" " characters."
+                )
             else:
                 self.max = max
                 self.validate = self.check_range
                 self.message_template = message_template or _(
-                    'The length must fall within the range %(min)d'
-                    ' - %(max)d characters.')
+                    "The length must fall within the range %(min)d"
+                    " - %(max)d characters."
+                )
         elif max:
             self.max = max
             self.validate = self.check_max
             self.message_template = message_template or _(
-                'Exceeds maximum length of %(max)d.')
+                "Exceeds maximum length of %(max)d."
+            )
         else:
             self.validate = self.succeed
 
@@ -129,8 +134,7 @@ class LengthRule(object):
         if value is None:
             return True
         if len(value) < self.min:
-            result.append(gettext(self.message_template)
-                          % {'min': self.min})
+            result.append(gettext(self.message_template) % {"min": self.min})
             return False
         return True
 
@@ -138,8 +142,7 @@ class LengthRule(object):
         if value is None:
             return True
         if len(value) > self.max:
-            result.append(gettext(self.message_template)
-                          % {'max': self.max})
+            result.append(gettext(self.message_template) % {"max": self.max})
             return False
         return True
 
@@ -147,8 +150,7 @@ class LengthRule(object):
         if value is None:
             return True
         if len(value) != self.min:
-            result.append(gettext(self.message_template)
-                          % {'len': self.min})
+            result.append(gettext(self.message_template) % {"len": self.min})
             return False
         return True
 
@@ -157,8 +159,10 @@ class LengthRule(object):
             return True
         length = len(value)
         if length < self.min or length > self.max:
-            result.append(gettext(self.message_template)
-                          % {'min': self.min, 'max': self.max})
+            result.append(
+                gettext(self.message_template)
+                % {"min": self.min, "max": self.max}
+            )
             return False
         return True
 
@@ -166,7 +170,8 @@ class LengthRule(object):
 class CompareRule(object):
     """ Compares attribute being validated with some other attribute value.
     """
-    __slots__ = ('validate', 'comparand', 'message_template')
+
+    __slots__ = ("validate", "comparand", "message_template")
 
     def __init__(self, equal=None, not_equal=None, message_template=None):
         """ Initialization selects the most appropriate validation
@@ -176,14 +181,15 @@ class CompareRule(object):
             self.comparand = equal
             self.validate = self.check_equal
             self.message_template = message_template or _(
-                'The value failed equality comparison'
-                ' with "%(comparand)s".')
+                "The value failed equality comparison" ' with "%(comparand)s".'
+            )
         elif not_equal:
             self.comparand = not_equal
             self.validate = self.check_not_equal
             self.message_template = message_template or _(
-                'The value failed not equal comparison'
-                ' with "%(comparand)s".')
+                "The value failed not equal comparison"
+                ' with "%(comparand)s".'
+            )
         else:
             self.validate = self.succeed
 
@@ -194,8 +200,9 @@ class CompareRule(object):
         getter = ref_getter(model)
         comparand_value = getter(model, self.comparand)
         if value != comparand_value:
-            result.append(gettext(self.message_template)
-                          % {'comparand': self.comparand})
+            result.append(
+                gettext(self.message_template) % {"comparand": self.comparand}
+            )
             return False
         return True
 
@@ -203,8 +210,9 @@ class CompareRule(object):
         getter = ref_getter(model)
         comparand_value = getter(model, self.comparand)
         if value == comparand_value:
-            result.append(gettext(self.message_template)
-                          % {'comparand': self.comparand})
+            result.append(
+                gettext(self.message_template) % {"comparand": self.comparand}
+            )
             return False
         return True
 
@@ -216,12 +224,14 @@ class PredicateRule(object):
             def predicate(model):
                 return True
     """
-    __slots__ = ('predicate', 'message_template')
+
+    __slots__ = ("predicate", "message_template")
 
     def __init__(self, predicate, message_template=None):
         self.predicate = predicate
         self.message_template = message_template or _(
-            'Required to satisfy validation predicate condition.')
+            "Required to satisfy validation predicate condition."
+        )
 
     def validate(self, value, name, model, result, gettext):
         if not self.predicate(model):
@@ -237,12 +247,14 @@ class ValuePredicateRule(object):
             def predicate(value):
                 return True
     """
-    __slots__ = ('predicate', 'message_template')
+
+    __slots__ = ("predicate", "message_template")
 
     def __init__(self, predicate, message_template=None):
         self.predicate = predicate
         self.message_template = message_template or _(
-            'Required to satisfy validation value predicate condition.')
+            "Required to satisfy validation value predicate condition."
+        )
 
     def validate(self, value, name, model, result, gettext):
         if not self.predicate(value):
@@ -254,7 +266,8 @@ class ValuePredicateRule(object):
 class RegexRule(object):
     """ Search for regular expression pattern.
     """
-    __slots__ = ('validate', 'regex', 'message_template')
+
+    __slots__ = ("validate", "regex", "message_template")
 
     def __init__(self, regex, negated=False, message_template=None):
         """ `regex` - a regular expression pattern to search for
@@ -270,11 +283,13 @@ class RegexRule(object):
         if negated:
             self.validate = self.check_not_found
             self.message_template = message_template or _(
-                'Required to not match validation pattern.')
+                "Required to not match validation pattern."
+            )
         else:
             self.validate = self.check_found
             self.message_template = message_template or _(
-                'Required to match validation pattern.')
+                "Required to match validation pattern."
+            )
 
     def check_found(self, value, name, model, result, gettext):
         if value is None:
@@ -296,14 +311,19 @@ class RegexRule(object):
 class SlugRule(RegexRule):
     """ Ensures only letters, numbers, underscores or hyphens.
     """
+
     __slots__ = ()
 
     def __init__(self, message_template=None):
         super(SlugRule, self).__init__(
-            r'^[-\w]+$', False,
-            message_template or _(
-                'Invalid slug. The value must consist of letters, '
-                'digits, underscopes and/or hyphens.'))
+            r"^[-\w]+$",
+            False,
+            message_template
+            or _(
+                "Invalid slug. The value must consist of letters, "
+                "digits, underscopes and/or hyphens."
+            ),
+        )
 
     def __call__(self, message_template):
         """ Let you customize message template.
@@ -314,14 +334,17 @@ class SlugRule(RegexRule):
 class EmailRule(RegexRule):
     """ Ensures a valid email.
     """
+
     __slots__ = ()
 
     def __init__(self, message_template=None):
         super(EmailRule, self).__init__(
-            re.compile(r'^[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,5}$',
-                       re.IGNORECASE), False,
-            message_template or _(
-                'Required to be a valid email address.'))
+            re.compile(
+                r"^[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,5}$", re.IGNORECASE
+            ),
+            False,
+            message_template or _("Required to be a valid email address."),
+        )
 
     def __call__(self, message_template):
         """ Let you customize message template.
@@ -332,14 +355,16 @@ class EmailRule(RegexRule):
 class ScientificRule(RegexRule):
     """ Ensures a valid scientific string input.
     """
+
     __slots__ = ()
 
     def __init__(self, message_template=None):
         super(ScientificRule, self).__init__(
-            re.compile(r'^[+\-]?(?:0|[1-9]\d*)(?:\.\d*)?(?:[eE][+\-]?\d+)?$'),
+            re.compile(r"^[+\-]?(?:0|[1-9]\d*)(?:\.\d*)?(?:[eE][+\-]?\d+)?$"),
             False,
-            message_template or _(
-                'Required to be a valid number in scientific format.'))
+            message_template
+            or _("Required to be a valid number in scientific format."),
+        )
 
     def __call__(self, message_template):
         """ Let you customize message template.
@@ -350,16 +375,20 @@ class ScientificRule(RegexRule):
 class Base64Rule(RegexRule):
     """ Ensures a valid base64 string input.
     """
+
     __slots__ = ()
 
-    def __init__(self, altchars='+/', message_template=None):
+    def __init__(self, altchars="+/", message_template=None):
         super(Base64Rule, self).__init__(
-            re.compile('^(?:[A-Za-z0-9%s]{4})*(?:[A-Za-z0-9%s]{2}==|'
-                       '[A-Za-z0-9%s]{3}=)?$' % ((altchars,) * 3)), False,
-            message_template or _(
-                'Required to be a valid base64 string.'))
+            re.compile(
+                "^(?:[A-Za-z0-9%s]{4})*(?:[A-Za-z0-9%s]{2}==|"
+                "[A-Za-z0-9%s]{3}=)?$" % ((altchars,) * 3)
+            ),
+            False,
+            message_template or _("Required to be a valid base64 string."),
+        )
 
-    def __call__(self, message_template, altchars='+/'):
+    def __call__(self, message_template, altchars="+/"):
         """ Let you customize message template.
         """
         return Base64Rule(altchars, message_template)
@@ -370,12 +399,15 @@ class URLSafeBase64Rule(Base64Rule):
         which substitutes `-` instead of `+` and `_` instead of `/` in
         the standard Base64 alphabet. The input can still contain `=`.
     """
+
     __slots__ = ()
 
     def __init__(self, message_template=None):
         super(URLSafeBase64Rule, self).__init__(
-            '-_', message_template or _(
-                'Required to be a valid URL-safe base64 string.'))
+            "-_",
+            message_template
+            or _("Required to be a valid URL-safe base64 string."),
+        )
 
     def __call__(self, message_template):
         """ Let you customize message template.
@@ -388,7 +420,8 @@ class RangeRule(object):
 
         Works with any numbers including `Decimal`.
     """
-    __slots__ = ('validate', 'min', 'max', 'message_template')
+
+    __slots__ = ("validate", "min", "max", "message_template")
 
     def __init__(self, min=None, max=None, message_template=None):
         """ Initialization selects the most appropriate validation
@@ -400,19 +433,22 @@ class RangeRule(object):
                 self.min = min
                 self.validate = self.check_min
                 self.message_template = message_template or _(
-                    'Required to be greater or equal to %(min)s.')
+                    "Required to be greater or equal to %(min)s."
+                )
             else:
                 self.max = max
                 self.validate = self.check_range
                 self.message_template = message_template or _(
-                    'The value must fall within the range %(min)s'
-                    ' - %(max)s.')
+                    "The value must fall within the range %(min)s"
+                    " - %(max)s."
+                )
         else:
             if max is not None:
                 self.max = max
                 self.validate = self.check_max
                 self.message_template = message_template or _(
-                    'Exceeds maximum allowed value of %(max)s.')
+                    "Exceeds maximum allowed value of %(max)s."
+                )
             else:
                 self.validate = self.succeed
 
@@ -423,8 +459,7 @@ class RangeRule(object):
         if value is None:
             return True
         if value < self.min:
-            result.append(gettext(self.message_template)
-                          % {'min': self.min})
+            result.append(gettext(self.message_template) % {"min": self.min})
             return False
         return True
 
@@ -432,8 +467,7 @@ class RangeRule(object):
         if value is None:
             return True
         if value > self.max:
-            result.append(gettext(self.message_template)
-                          % {'max': self.max})
+            result.append(gettext(self.message_template) % {"max": self.max})
             return False
         return True
 
@@ -441,8 +475,10 @@ class RangeRule(object):
         if value is None:
             return True
         if value < self.min or value > self.max:
-            result.append(gettext(self.message_template)
-                          % {'min': self.min, 'max': self.max})
+            result.append(
+                gettext(self.message_template)
+                % {"min": self.min, "max": self.max}
+            )
             return False
         return True
 
@@ -450,7 +486,8 @@ class RangeRule(object):
 class AndRule(object):
     """ Applies all ``rules`` regardless of validation result.
     """
-    __slots__ = ('rules')
+
+    __slots__ = "rules"
 
     def __init__(self, *rules):
         """ Initializes rule by converting ``rules`` to tuple.
@@ -472,7 +509,8 @@ class AndRule(object):
 class OrRule(object):
     """ Succeed if at least one rule in ``rules`` succeed.
     """
-    __slots__ = ('rules')
+
+    __slots__ = "rules"
 
     def __init__(self, *rules):
         """ Initializes rule by converting ``rules`` to tuple.
@@ -497,7 +535,8 @@ class OrRule(object):
 class IteratorRule(object):
     """ Applies ``rules`` to each item in value list.
     """
-    __slots__ = ('rules', 'stop')
+
+    __slots__ = ("rules", "stop")
 
     def __init__(self, rules, stop=True):
         """ Initializes rule by converting ``rules`` to tuple. If
@@ -518,8 +557,9 @@ class IteratorRule(object):
         succeed = True
         for rule in self.rules:
             for item in value:
-                rule_succeed = rule.validate(item, name, model,
-                                             result, gettext)
+                rule_succeed = rule.validate(
+                    item, name, model, result, gettext
+                )
                 succeed &= rule_succeed
                 if not rule_succeed and self.stop:
                     break
@@ -530,7 +570,8 @@ class OneOfRule(object):
     """ Value must match at least one element from ``items``.
         Checks are case sensitive if items are strings.
     """
-    __slots__ = ('items', 'message_template')
+
+    __slots__ = ("items", "message_template")
 
     def __init__(self, items, message_template=None):
         """ Initializes rule by supplying valid `items`.
@@ -538,7 +579,8 @@ class OneOfRule(object):
         assert items
         self.items = tuple(items)
         self.message_template = message_template or _(
-            'The value does not belong to the list of known items.')
+            "The value does not belong to the list of known items."
+        )
 
     def validate(self, value, name, model, result, gettext):
         """ Check whenever value belongs to ``self.items``.
@@ -558,7 +600,8 @@ class RelativeDeltaRule(object):
             ...
         NotImplementedError: ...
     """
-    __slots__ = ('validate', 'min', 'max', 'message_template')
+
+    __slots__ = ("validate", "min", "max", "message_template")
 
     def __init__(self, min=None, max=None, message_template=None):
         """
@@ -569,23 +612,26 @@ class RelativeDeltaRule(object):
                 self.min = min
                 self.validate = self.check_min
                 self.message_template = message_template or _(
-                    'Required to be above a minimum allowed.')
+                    "Required to be above a minimum allowed."
+                )
             else:
                 self.max = max
                 self.validate = self.check_range
                 self.message_template = message_template or _(
-                    'Must fall within a valid range.')
+                    "Must fall within a valid range."
+                )
         else:
             if max:
                 self.max = max
                 self.validate = self.check_max
                 self.message_template = message_template or _(
-                    'Exceeds maximum allowed.')
+                    "Exceeds maximum allowed."
+                )
             else:
                 self.validate = self.succeed
 
     def now(self):
-        raise NotImplementedError('Subclasses must override method now()')
+        raise NotImplementedError("Subclasses must override method now()")
 
     def succeed(self, value, name, model, result, gettext):
         return True
@@ -594,8 +640,7 @@ class RelativeDeltaRule(object):
         if value is None:
             return True
         if value < self.now() + self.min:
-            result.append(gettext(self.message_template)
-                          % {'min': self.min})
+            result.append(gettext(self.message_template) % {"min": self.min})
             return False
         return True
 
@@ -603,8 +648,7 @@ class RelativeDeltaRule(object):
         if value is None:
             return True
         if value > self.now() + self.max:
-            result.append(gettext(self.message_template)
-                          % {'max': self.max})
+            result.append(gettext(self.message_template) % {"max": self.max})
             return False
         return True
 
@@ -613,8 +657,10 @@ class RelativeDeltaRule(object):
             return True
         now = self.now()
         if value < now + self.min or value > now + self.max:
-            result.append(gettext(self.message_template)
-                          % {'min': self.min, 'max': self.max})
+            result.append(
+                gettext(self.message_template)
+                % {"min": self.min, "max": self.max}
+            )
             return False
         return True
 
@@ -622,6 +668,7 @@ class RelativeDeltaRule(object):
 class RelativeDateDeltaRule(RelativeDeltaRule):
     """ Check if value is in relative date range local time.
     """
+
     __slots__ = ()
 
     def now(self):
@@ -631,6 +678,7 @@ class RelativeDateDeltaRule(RelativeDeltaRule):
 class RelativeUTCDateDeltaRule(RelativeDeltaRule):
     """ Check if value is in relative date range UTC time.
     """
+
     __slots__ = ()
 
     def now(self):
@@ -640,12 +688,13 @@ class RelativeUTCDateDeltaRule(RelativeDeltaRule):
 class RelativeTZDateDeltaRule(RelativeDeltaRule):
     """ Check if value is in relative date range TZ time.
     """
-    __slots__ = ('tz')
 
-    def __init__(self, min=None, max=None, tz=None,
-                 message_template=None):
+    __slots__ = "tz"
+
+    def __init__(self, min=None, max=None, tz=None, message_template=None):
         super(RelativeTZDateDeltaRule, self).__init__(
-            min, max, message_template)
+            min, max, message_template
+        )
         self.tz = tz
 
     def now(self):
@@ -655,6 +704,7 @@ class RelativeTZDateDeltaRule(RelativeDeltaRule):
 class RelativeDateTimeDeltaRule(RelativeDeltaRule):
     """ Check if value is in relative datetime range local time.
     """
+
     __slots__ = ()
 
     def now(self):
@@ -664,6 +714,7 @@ class RelativeDateTimeDeltaRule(RelativeDeltaRule):
 class RelativeUTCDateTimeDeltaRule(RelativeDeltaRule):
     """ Check if value is in relative datetime range UTC time.
     """
+
     __slots__ = ()
 
     def now(self):
@@ -673,12 +724,13 @@ class RelativeUTCDateTimeDeltaRule(RelativeDeltaRule):
 class RelativeTZDateTimeDeltaRule(RelativeDeltaRule):
     """ Check if value is in relative date range TZ time.
     """
-    __slots__ = ('tz')
 
-    def __init__(self, min=None, max=None, tz=None,
-                 message_template=None):
+    __slots__ = "tz"
+
+    def __init__(self, min=None, max=None, tz=None, message_template=None):
         super(RelativeTZDateTimeDeltaRule, self).__init__(
-            min, max, message_template)
+            min, max, message_template
+        )
         self.tz = tz
 
     def now(self):
@@ -688,6 +740,7 @@ class RelativeTZDateTimeDeltaRule(RelativeDeltaRule):
 class RelativeUnixTimeDeltaRule(RelativeDeltaRule):
     """ Check if value is in relative unix range local time.
     """
+
     __slots__ = ()
 
     def now(self):
@@ -722,7 +775,8 @@ class AdapterRule(object):
         self.converter = converter
         self.rule = rule
         self.message_template = message_template or _(
-            'Required to satisfy a converter format.')
+            "Required to satisfy a converter format."
+        )
 
     def validate(self, value, name, model, result, gettext):
         if value is None:
@@ -741,8 +795,10 @@ class IntAdapterRule(AdapterRule):
 
     def __init__(self, rule, message_template=None):
         super(IntAdapterRule, self).__init__(
-            int, rule, message_template or _(
-                'Required to satisfy an integer format.'))
+            int,
+            rule,
+            message_template or _("Required to satisfy an integer format."),
+        )
 
 
 adapter = AdapterRule

@@ -1,4 +1,3 @@
-
 """ ``mixin`` module.
 """
 
@@ -25,7 +24,7 @@ class ErrorsMixin(object):
                     return True
     """
 
-    def error(self, message, name='__ERROR__'):
+    def error(self, message, name="__ERROR__"):
         """ Add `message` to errors.
         """
         self.errors.setdefault(name, []).append(message)
@@ -52,7 +51,7 @@ class ValidationMixin(object):
                     return True
     """
 
-    def error(self, message, name='__ERROR__'):
+    def error(self, message, name="__ERROR__"):
         """ Add `message` to errors.
         """
         self.errors.setdefault(name, []).append(message)
@@ -61,6 +60,5 @@ class ValidationMixin(object):
         """ Validate given `model` using `validator`.
         """
         return validator.validate(
-            model,
-            self.errors,
-            translations=self.translations['validation'])
+            model, self.errors, translations=self.translations["validation"]
+        )

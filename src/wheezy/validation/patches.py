@@ -1,4 +1,3 @@
-
 """ ``patches`` module.
 """
 
@@ -8,9 +7,10 @@ def patch_strptime_cache_size(max_size=100):
     """
     try:  # pragma: nocover
         import _strptime
-        if not hasattr(_strptime, '_CACHE_MAX_SIZE'):
+
+        if not hasattr(_strptime, "_CACHE_MAX_SIZE"):
             return False
-        if not hasattr(_strptime, '_cache_lock'):
+        if not hasattr(_strptime, "_cache_lock"):
             return False
     except (ImportError, AttributeError):  # pragma: nocover
         return False
@@ -29,10 +29,12 @@ def patch_use_cdecimal():  # pragma: nocover
         in-place replacement.
     """
     import sys
+
     if sys.version_info[:2] >= (3, 3):
         return True
     try:
         import cdecimal
+
         sys.modules["decimal"] = cdecimal
         return True
     except ImportError:

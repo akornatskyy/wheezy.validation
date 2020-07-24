@@ -8,15 +8,18 @@ from setuptools import setup
 extra = {}
 try:
     from Cython.Build import cythonize
-    p = os.path.join('src', 'wheezy', 'validation')
-    extra['ext_modules'] = cythonize(
-        [os.path.join(p, '*.py')],
-        exclude=os.path.join(p, '__init__.py'),
-        nthreads=2, quiet=True)
+
+    p = os.path.join("src", "wheezy", "validation")
+    extra["ext_modules"] = cythonize(
+        [os.path.join(p, "*.py")],
+        exclude=os.path.join(p, "__init__.py"),
+        nthreads=2,
+        quiet=True,
+    )
 except ImportError:
     pass
 
-README = open(os.path.join(os.path.dirname(__file__), 'README.md')).read()
+README = open(os.path.join(os.path.dirname(__file__), "README.md")).read()
 VERSION = (
     re.search(
         r'__version__ = "(.+)"',
@@ -27,43 +30,43 @@ VERSION = (
 )
 
 setup(
-    name='wheezy.validation',
+    name="wheezy.validation",
     version=VERSION,
-    description='A lightweight object validation library',
+    description="A lightweight object validation library",
     long_description=README,
-    long_description_content_type='text/markdown',
-    url='https://github.com/akornatskyy/wheezy.validation',
-    author='Andriy Kornatskyy',
-    author_email='andriy.kornatskyy@live.com',
-    license='MIT',
+    long_description_content_type="text/markdown",
+    url="https://github.com/akornatskyy/wheezy.validation",
+    author="Andriy Kornatskyy",
+    author_email="andriy.kornatskyy@live.com",
+    license="MIT",
     classifiers=[
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: MIT License',
-        'Natural Language :: English',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.4',
-        'Programming Language :: Python :: 2.5',
-        'Programming Language :: Python :: 2.6',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.2',
-        'Programming Language :: Python :: 3.3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: Implementation :: CPython',
-        'Programming Language :: Python :: Implementation :: PyPy',
-        'Topic :: Software Development :: Libraries :: Python Modules'
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: MIT License",
+        "Natural Language :: English",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 2",
+        "Programming Language :: Python :: 2.4",
+        "Programming Language :: Python :: 2.5",
+        "Programming Language :: Python :: 2.6",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.2",
+        "Programming Language :: Python :: 3.3",
+        "Programming Language :: Python :: 3.4",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: Implementation :: CPython",
+        "Programming Language :: Python :: Implementation :: PyPy",
+        "Topic :: Software Development :: Libraries :: Python Modules",
     ],
-    keywords='validation rules model',
-    packages=['wheezy', 'wheezy.validation'],
-    package_dir={'': 'src'},
-    namespace_packages=['wheezy'],
+    keywords="validation rules model",
+    packages=["wheezy", "wheezy.validation"],
+    package_dir={"": "src"},
+    namespace_packages=["wheezy"],
     zip_safe=False,
-    platforms='any',
+    platforms="any",
     **extra
 )
