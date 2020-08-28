@@ -19,8 +19,7 @@ class MyServiceB(ValidationMixin):
 
 class ErrorMixinTestCase(unittest.TestCase):
     def test_errors(self):
-        """ Ensure error summary.
-        """
+        """Ensure error summary."""
         s = MyServiceA()
         s.error("error-message-1")
         assert {"__ERROR__": ["error-message-1"]} == s.errors
@@ -36,8 +35,7 @@ class ErrorMixinTestCase(unittest.TestCase):
 
 class ValidationMixinTestCase(unittest.TestCase):
     def test_errors(self):
-        """ Ensure error summary.
-        """
+        """Ensure error summary."""
         s = MyServiceB()
         s.error("error-message-1")
         assert {"__ERROR__": ["error-message-1"]} == s.errors
@@ -51,8 +49,7 @@ class ValidationMixinTestCase(unittest.TestCase):
         assert ["__ERROR__", "name"] == sorted(s.errors.keys())
 
     def test_validate(self):
-        """ Ensure errors is updated by validator.
-        """
+        """Ensure errors is updated by validator."""
         from wheezy.validation.rules import required
         from wheezy.validation.validator import Validator
 

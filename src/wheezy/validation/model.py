@@ -34,9 +34,9 @@ del patch_strptime_cache_size
 
 
 def try_update_model(model, values, results, translations=None):
-    """ Try update `model` with `values` (a dict of lists or strings),
-        any errors encountered put into `results` and use `translations`
-        for i18n.
+    """Try update `model` with `values` (a dict of lists or strings),
+    any errors encountered put into `results` and use `translations`
+    for i18n.
     """
     if translations is None:
         translations = null_translations
@@ -104,8 +104,7 @@ def try_update_model(model, values, results, translations=None):
 
 
 def bytes_value_provider(value, gettext):
-    """ Converts ``value`` to ``bytes``.
-    """
+    """Converts ``value`` to ``bytes``."""
     if value is None:
         return None
     t = type(value)
@@ -117,8 +116,7 @@ def bytes_value_provider(value, gettext):
 
 
 def str_value_provider(value, gettext):
-    """ Converts ``value`` to ``str``.
-    """
+    """Converts ``value`` to ``str``."""
     if value is None:
         return None
     t = type(value)
@@ -130,8 +128,7 @@ def str_value_provider(value, gettext):
 
 
 def int_value_provider(value, gettext):
-    """ Converts ``value`` to ``int``.
-    """
+    """Converts ``value`` to ``int``."""
     if value is None or type(value) is int:
         return value
     value = str(value).strip()
@@ -149,8 +146,7 @@ decimal_zero_values = ["0", "0.0", "0.00"]
 
 
 def decimal_value_provider(value, gettext):
-    """ Converts ``value`` to ``Decimal``.
-    """
+    """Converts ``value`` to ``Decimal``."""
     if value is None:
         return None
     value = str(value).strip()
@@ -172,8 +168,7 @@ boolean_true_values = ["1", "True"]
 
 
 def bool_value_provider(value, gettext):
-    """ Converts ``value`` to ``bool``.
-    """
+    """Converts ``value`` to ``bool``."""
     if value is None or type(value) is bool:
         return value
     value = str(value).strip()
@@ -181,8 +176,7 @@ def bool_value_provider(value, gettext):
 
 
 def float_value_provider(value, gettext):
-    """ Converts ``value`` to ``float``.
-    """
+    """Converts ``value`` to ``float``."""
     if value is None or type(value) is float:
         return value
     value = str(value).strip()
@@ -199,8 +193,7 @@ def float_value_provider(value, gettext):
 
 
 def date_value_provider(value, gettext):
-    """ Converts ``value`` to ``datetime.date``.
-    """
+    """Converts ``value`` to ``datetime.date``."""
     if value is None:
         return None
     value = str(value).strip()
@@ -221,8 +214,7 @@ def date_value_provider(value, gettext):
 
 
 def time_value_provider(value, gettext):
-    """ Converts ``value`` to ``datetime.time``.
-    """
+    """Converts ``value`` to ``datetime.time``."""
     if value is None:
         return None
     value = str(value).strip()
@@ -243,8 +235,7 @@ def time_value_provider(value, gettext):
 
 
 def datetime_value_provider(value, gettext):
-    """ Converts ``value`` to ``datetime.datetime``.
-    """
+    """Converts ``value`` to ``datetime.datetime``."""
     if value is None:
         return None
     value = str(value).strip()

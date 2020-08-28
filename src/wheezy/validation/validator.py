@@ -10,15 +10,15 @@ from wheezy.validation.comp import (
 
 
 class Validator(object):
-    """ Container of validation rules that all together provide
-        object validation.
+    """Container of validation rules that all together provide
+    object validation.
     """
 
     __slots__ = ("rules", "inner")
 
     def __init__(self, mapping):
-        """ Split `mapping` by one that holds iteratable of rules and
-            the other with nested validators.
+        """Split `mapping` by one that holds iteratable of rules and
+        the other with nested validators.
         """
         rules = []
         inner = []
@@ -33,13 +33,13 @@ class Validator(object):
     def validate(
         self, model, results, stop=True, translations=None, gettext=None
     ):
-        """ Validates given `model` with results of validation stored
-            in `results`. Be default the validation stops on first
-            rule fail, however with supplied `stop` argument set `False`
-            the `result` will get all errors reported by a rule.
+        """Validates given `model` with results of validation stored
+        in `results`. Be default the validation stops on first
+        rule fail, however with supplied `stop` argument set `False`
+        the `result` will get all errors reported by a rule.
 
-            There is a way to internationalize validation errors with
-            `translations` or `gettext`.
+        There is a way to internationalize validation errors with
+        `translations` or `gettext`.
         """
         if gettext is None:
             if translations is None:

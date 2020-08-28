@@ -3,8 +3,7 @@
 
 
 def patch_strptime_cache_size(max_size=100):
-    """ Patch for strptime regex cache max size.
-    """
+    """Patch for strptime regex cache max size."""
     try:  # pragma: nocover
         import _strptime
 
@@ -25,8 +24,8 @@ def patch_strptime_cache_size(max_size=100):
 
 
 def patch_use_cdecimal():  # pragma: nocover
-    """ Use cdecimal module globally. Pure python implementation
-        in-place replacement.
+    """Use cdecimal module globally. Pure python implementation
+    in-place replacement.
     """
     import sys
 

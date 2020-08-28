@@ -22,8 +22,7 @@ class TryUpdateModelTestCase(unittest.TestCase):
         }
 
     def test_update_class_instance(self):
-        """ Ensure try_update_model works with python class instance.
-        """
+        """Ensure try_update_model works with python class instance."""
         from wheezy.validation.model import try_update_model
 
         errors = {}
@@ -46,8 +45,7 @@ class TryUpdateModelTestCase(unittest.TestCase):
         assert [1, 2] == user.prefs2
 
     def test_update_dict(self):
-        """ Ensure try_update_model works with dict python object.
-        """
+        """Ensure try_update_model works with dict python object."""
         from wheezy.validation.model import try_update_model
 
         errors = {}
@@ -60,8 +58,7 @@ class TryUpdateModelTestCase(unittest.TestCase):
         assert "33" == user["age"]
 
     def test_invalid_input(self):
-        """ Ensure errors and preserved original value for invalid input.
-        """
+        """Ensure errors and preserved original value for invalid input."""
         from wheezy.validation.model import try_update_model
 
         self.values.update(
@@ -90,8 +87,7 @@ class TryUpdateModelTestCase(unittest.TestCase):
 
 class ValueProviderTestCase(unittest.TestCase):
     def test_bytes_value_provider(self):
-        """ Ensure `bytes_value_provider` converts to bytes correctly.
-        """
+        """Ensure `bytes_value_provider` converts to bytes correctly."""
         from wheezy.validation.comp import bytes_type as b
         from wheezy.validation.model import bytes_value_provider
 
@@ -109,8 +105,7 @@ class ValueProviderTestCase(unittest.TestCase):
         assert ntob("  ") == vp("  ")
 
     def test_str_value_provider(self):
-        """ Ensure `str_value_provider` converts to unicode string correctly.
-        """
+        """Ensure `str_value_provider` converts to unicode string correctly."""
         from wheezy.validation.comp import str_type as u
         from wheezy.validation.model import str_value_provider
 
@@ -127,8 +122,7 @@ class ValueProviderTestCase(unittest.TestCase):
         assert u("") == vp("  ")
 
     def test_int_value_provider(self):
-        """ Ensure `int_value_provider` is parsing input correctly.
-        """
+        """Ensure `int_value_provider` is parsing input correctly."""
         from wheezy.validation.model import int_value_provider
 
         def vp(s):
@@ -145,8 +139,7 @@ class ValueProviderTestCase(unittest.TestCase):
         assert vp("  ") is None
 
     def test_decimal_value_provider(self):
-        """ Ensure `decimal_value_provider` is parsing input correctly.
-        """
+        """Ensure `decimal_value_provider` is parsing input correctly."""
         from wheezy.validation.model import decimal_value_provider
 
         def vp(s):
@@ -167,8 +160,7 @@ class ValueProviderTestCase(unittest.TestCase):
         assert vp("  ") is None
 
     def test_bool_value_provider(self):
-        """ Ensure `bool_value_provider` is parsing input correctly.
-        """
+        """Ensure `bool_value_provider` is parsing input correctly."""
         from wheezy.validation.model import (
             bool_value_provider,
             boolean_true_values,
@@ -188,8 +180,7 @@ class ValueProviderTestCase(unittest.TestCase):
         assert vp("  ") is False
 
     def test_float_value_provider(self):
-        """ Ensure `float_value_provider` is parsing input correctly.
-        """
+        """Ensure `float_value_provider` is parsing input correctly."""
         from wheezy.validation.model import float_value_provider
 
         def vp(s):
@@ -205,8 +196,7 @@ class ValueProviderTestCase(unittest.TestCase):
         assert vp("  ") is None
 
     def test_date_value_provider(self):
-        """ Ensure `date_value_provider` is parsing input correctly.
-        """
+        """Ensure `date_value_provider` is parsing input correctly."""
         from wheezy.validation.model import date_value_provider
 
         def vp(s):
@@ -225,8 +215,7 @@ class ValueProviderTestCase(unittest.TestCase):
         self.assertRaises(ValueError, lambda: vp("2.4.12"))
 
     def test_time_value_provider(self):
-        """ Ensure `time_value_provider` is parsing input correctly.
-        """
+        """Ensure `time_value_provider` is parsing input correctly."""
         from wheezy.validation.model import time_value_provider
 
         def vp(s):
@@ -243,8 +232,7 @@ class ValueProviderTestCase(unittest.TestCase):
         self.assertRaises(ValueError, lambda: vp("2.45.17"))
 
     def test_datetime_value_provider(self):
-        """ Ensure `datetime_value_provider` is parsing input correctly.
-        """
+        """Ensure `datetime_value_provider` is parsing input correctly."""
         from wheezy.validation.model import datetime_value_provider
 
         def vp(s):

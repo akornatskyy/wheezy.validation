@@ -21,8 +21,7 @@ class ValidatorTestCase(unittest.TestCase):
         self.v = Validator({"name": [required, length(min=4)]})
 
     def test_stop_on_first_fail(self):
-        """ Validation stops on fist fail.
-        """
+        """Validation stops on fist fail."""
         errors = {}
         u = User()
 
@@ -35,8 +34,7 @@ class ValidatorTestCase(unittest.TestCase):
         assert 1 == len(errors["name"])
 
     def test_all_that_fail(self):
-        """ All fails by settings optional ``stop`` to ``False``.
-        """
+        """All fails by settings optional ``stop`` to ``False``."""
         errors = {}
         u = User()
 
@@ -45,8 +43,7 @@ class ValidatorTestCase(unittest.TestCase):
         assert 2 == len(errors["name"])
 
     def test_nested(self):
-        """ Validator can nest other validator for composite objects.
-        """
+        """Validator can nest other validator for composite objects."""
         from wheezy.validation.validator import Validator
 
         rv = Validator({"user": self.v})
@@ -58,8 +55,7 @@ class ValidatorTestCase(unittest.TestCase):
         assert 1 == len(errors["name"])
 
     def test_validation_succeed(self):
-        """ Validation succeed for valid input.
-        """
+        """Validation succeed for valid input."""
         from wheezy.validation.validator import Validator
 
         rv = Validator({"user": self.v})
@@ -80,8 +76,7 @@ class ValidatorTestCase(unittest.TestCase):
         assert not errors
 
     def test_validate_dict(self):
-        """ Validatable can be a python dict object.
-        """
+        """Validatable can be a python dict object."""
         errors = {}
         u = {"name": None}
         assert not self.v.validate(u, errors)

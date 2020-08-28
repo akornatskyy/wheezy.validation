@@ -6,8 +6,7 @@ import unittest
 
 class RulesTestCase(unittest.TestCase):
     def test_required(self):
-        """ Test `required` rule.
-        """
+        """Test `required` rule."""
         from wheezy.validation.rules import (
             RequiredRule,
             required,
@@ -41,8 +40,7 @@ class RulesTestCase(unittest.TestCase):
         assert "customized" == r.message_template
 
     def test_not_none(self):
-        """ Test `not_none` rule.
-        """
+        """Test `not_none` rule."""
         from wheezy.validation.rules import NotNoneRule, not_none
 
         errors = []
@@ -69,8 +67,7 @@ class RulesTestCase(unittest.TestCase):
         assert "customized" == r.message_template
 
     def test_missing(self):
-        """ Test `missing` rule.
-        """
+        """Test `missing` rule."""
         from wheezy.validation.rules import (
             MissingRule,
             empty,
@@ -107,8 +104,7 @@ class RulesTestCase(unittest.TestCase):
         assert "customized" == r.message_template
 
     def test_length_strategies(self):
-        """ Test `length` rule strategies.
-        """
+        """Test `length` rule strategies."""
         from wheezy.validation.rules import LengthRule, length
 
         # shortcut
@@ -126,8 +122,7 @@ class RulesTestCase(unittest.TestCase):
         assert r.validate == r.check_range
 
     def test_length_succeed(self):
-        """ Test `length` rule strategy succeed.
-        """
+        """Test `length` rule strategy succeed."""
         from wheezy.validation.rules import length
 
         errors = []
@@ -141,8 +136,7 @@ class RulesTestCase(unittest.TestCase):
         assert not errors
 
     def test_length_check_min(self):
-        """ Test `length` rule strategy check_min.
-        """
+        """Test `length` rule strategy check_min."""
         from wheezy.validation.rules import length
 
         errors = []
@@ -159,8 +153,7 @@ class RulesTestCase(unittest.TestCase):
         assert ["min 2"] == errors
 
     def test_length_check_max(self):
-        """ Test `length` rule strategy check_max.
-        """
+        """Test `length` rule strategy check_max."""
         from wheezy.validation.rules import length
 
         errors = []
@@ -177,8 +170,7 @@ class RulesTestCase(unittest.TestCase):
         assert ["max 2"] == errors
 
     def test_length_check_equal(self):
-        """ Test `length` rule strategy check_equal.
-        """
+        """Test `length` rule strategy check_equal."""
         from wheezy.validation.rules import length
 
         errors = []
@@ -195,8 +187,7 @@ class RulesTestCase(unittest.TestCase):
         assert ["len 2"] == errors
 
     def test_length_check_range(self):
-        """ Test `length` rule strategy check_range.
-        """
+        """Test `length` rule strategy check_range."""
         from wheezy.validation.rules import length
 
         errors = []
@@ -213,8 +204,7 @@ class RulesTestCase(unittest.TestCase):
         assert ["range 2-3"] == errors
 
     def test_compare_strategies(self):
-        """ Test `compare` rule strategies.
-        """
+        """Test `compare` rule strategies."""
         from wheezy.validation.rules import CompareRule, compare
 
         # shortcut
@@ -228,8 +218,7 @@ class RulesTestCase(unittest.TestCase):
         assert r.validate == r.check_not_equal
 
     def test_compare_succeed(self):
-        """ Test `compare` rule strategy succeed.
-        """
+        """Test `compare` rule strategy succeed."""
         from wheezy.validation.rules import compare
 
         errors = []
@@ -242,8 +231,7 @@ class RulesTestCase(unittest.TestCase):
         assert v("abc")
 
     def test_compare_check_equal(self):
-        """ Test `compare` rule strategy check_equal.
-        """
+        """Test `compare` rule strategy check_equal."""
         from wheezy.validation.rules import compare
 
         errors = []
@@ -260,8 +248,7 @@ class RulesTestCase(unittest.TestCase):
         assert errors
 
     def test_compare_check_not_equal(self):
-        """ Test `compare` rule strategy check_not_equal.
-        """
+        """Test `compare` rule strategy check_not_equal."""
         from wheezy.validation.rules import compare
 
         errors = []
@@ -278,8 +265,7 @@ class RulesTestCase(unittest.TestCase):
         assert errors
 
     def test_predicate(self):
-        """ Test `predicate` rule strategy.
-        """
+        """Test `predicate` rule strategy."""
         from wheezy.validation.rules import (
             PredicateRule,
             model_predicate,
@@ -302,8 +288,7 @@ class RulesTestCase(unittest.TestCase):
         assert errors
 
     def test_value_predicate(self):
-        """ Test `value_predicate` rule strategy.
-        """
+        """Test `value_predicate` rule strategy."""
         from wheezy.validation.rules import (
             ValuePredicateRule,
             must,
@@ -326,8 +311,7 @@ class RulesTestCase(unittest.TestCase):
         assert errors
 
     def test_regex_strategies(self):
-        """ Test `regex` rule strategies.
-        """
+        """Test `regex` rule strategies."""
         import re
 
         from wheezy.validation.rules import RegexRule, regex
@@ -343,8 +327,7 @@ class RulesTestCase(unittest.TestCase):
         assert r.validate == r.check_not_found
 
     def test_regex_check_found(self):
-        """ Test `regex` rule strategy check_found.
-        """
+        """Test `regex` rule strategy check_found."""
         from wheezy.validation.rules import regex
 
         errors = []
@@ -361,8 +344,7 @@ class RulesTestCase(unittest.TestCase):
         assert errors
 
     def test_regex_check_not_found(self):
-        """ Test `regex` rule strategy check_not_found.
-        """
+        """Test `regex` rule strategy check_not_found."""
         from wheezy.validation.rules import regex
 
         errors = []
@@ -379,8 +361,7 @@ class RulesTestCase(unittest.TestCase):
         assert errors
 
     def test_slug(self):
-        """ Test `slug` rule.
-        """
+        """Test `slug` rule."""
         from wheezy.validation.rules import SlugRule, slug
 
         # shortcut
@@ -403,8 +384,7 @@ class RulesTestCase(unittest.TestCase):
         assert "customized" == r.message_template
 
     def test_email(self):
-        """ Test `email` rule.
-        """
+        """Test `email` rule."""
         from wheezy.validation.rules import EmailRule, email
 
         # shortcut
@@ -427,8 +407,7 @@ class RulesTestCase(unittest.TestCase):
         assert "customized" == r.message_template
 
     def test_scientific(self):
-        """ Test `scientific` rule.
-        """
+        """Test `scientific` rule."""
         from wheezy.validation.rules import ScientificRule, scientific
 
         # shortcut
@@ -451,8 +430,7 @@ class RulesTestCase(unittest.TestCase):
         assert "customized" == r.message_template
 
     def test_base64(self):
-        """ Test `base64` rule.
-        """
+        """Test `base64` rule."""
         from wheezy.validation.rules import Base64Rule, base64, standard_base64
 
         # shortcut
@@ -482,8 +460,7 @@ class RulesTestCase(unittest.TestCase):
         assert "customized" == r.message_template
 
     def test_base64alt(self):
-        """ Test `base64` rule.
-        """
+        """Test `base64` rule."""
         from wheezy.validation.rules import Base64Rule
 
         errors = []
@@ -502,8 +479,7 @@ class RulesTestCase(unittest.TestCase):
         assert errors
 
     def test_urlsafe_base64(self):
-        """ Test `urlsafe_base64` rule.
-        """
+        """Test `urlsafe_base64` rule."""
         from wheezy.validation.rules import URLSafeBase64Rule, urlsafe_base64
 
         # shortcut
@@ -529,8 +505,7 @@ class RulesTestCase(unittest.TestCase):
         assert "customized" == r.message_template
 
     def test_range_strategies(self):
-        """ Test `range` rule strategies.
-        """
+        """Test `range` rule strategies."""
         from wheezy.validation.rules import RangeRule, range
 
         # shortcut
@@ -569,8 +544,7 @@ class RulesTestCase(unittest.TestCase):
         assert errors
 
     def test_range_succeed(self):
-        """ Test `range` rule strategy succeed.
-        """
+        """Test `range` rule strategy succeed."""
         from wheezy.validation.rules import range
 
         errors = []
@@ -583,8 +557,7 @@ class RulesTestCase(unittest.TestCase):
         assert v(100)
 
     def test_range_check_min(self):
-        """ Test `range` rule strategy check_min.
-        """
+        """Test `range` rule strategy check_min."""
         from wheezy.validation.rules import range
 
         errors = []
@@ -601,8 +574,7 @@ class RulesTestCase(unittest.TestCase):
         assert ["min 10"] == errors
 
     def test_range_check_max(self):
-        """ Test `range` rule strategy check_max.
-        """
+        """Test `range` rule strategy check_max."""
         from wheezy.validation.rules import range
 
         errors = []
@@ -619,8 +591,7 @@ class RulesTestCase(unittest.TestCase):
         assert ["max 10"] == errors
 
     def test_range_check_range(self):
-        """ Test `range` rule strategy check_range.
-        """
+        """Test `range` rule strategy check_range."""
         from wheezy.validation.rules import range
 
         errors = []
@@ -637,8 +608,7 @@ class RulesTestCase(unittest.TestCase):
         assert ["range 2-3"] == errors
 
     def test_and(self):
-        """ Test `and` rule.
-        """
+        """Test `and` rule."""
         from wheezy.validation.rules import AndRule, and_, range, required
 
         # shortcut
@@ -660,8 +630,7 @@ class RulesTestCase(unittest.TestCase):
         self.assertRaises(AssertionError, lambda: and_(required))
 
     def test_or(self):
-        """ Test `or` rule.
-        """
+        """Test `or` rule."""
         from wheezy.validation.rules import OrRule, or_, range
 
         # shortcut
@@ -684,8 +653,7 @@ class RulesTestCase(unittest.TestCase):
         self.assertRaises(AssertionError, lambda: or_(range()))
 
     def test_iterator(self):
-        """ Test `iterator` rule.
-        """
+        """Test `iterator` rule."""
         from wheezy.validation.rules import (
             IteratorRule,
             iterator,
@@ -717,8 +685,7 @@ class RulesTestCase(unittest.TestCase):
         self.assertRaises(AssertionError, lambda: iterator([]))
 
     def test_one_of(self):
-        """ Test `one_of` rule.
-        """
+        """Test `one_of` rule."""
         from wheezy.validation.rules import OneOfRule, one_of
 
         # shortcut
@@ -740,16 +707,14 @@ class RulesTestCase(unittest.TestCase):
         self.assertRaises(AssertionError, lambda: one_of([]))
 
     def test_relative_rule(self):
-        """ Test `RelativeDeltaRule` now raises error.
-        """
+        """Test `RelativeDeltaRule` now raises error."""
         from wheezy.validation.rules import RelativeDeltaRule
 
         r = RelativeDeltaRule()
         self.assertRaises(NotImplementedError, r.now)
 
     def test_ignore(self):
-        """ Test `ignore` rule.
-        """
+        """Test `ignore` rule."""
         from wheezy.validation.rules import IgnoreRule, ignore
 
         # shortcut
@@ -767,8 +732,7 @@ class RulesTestCase(unittest.TestCase):
         assert not errors
 
     def test_adapter(self):
-        """ Test `adapter` and `int_adapter` rules.
-        """
+        """Test `adapter` and `int_adapter` rules."""
         from wheezy.validation.rules import IntAdapterRule, int_adapter, range
 
         # shortcut
@@ -794,13 +758,11 @@ class RulesTestCase(unittest.TestCase):
 
 class RelativeDeltaRuleMixin(object):
     def test_shortcut(self):
-        """ Test rule shortcut.
-        """
+        """Test rule shortcut."""
         assert self.shortcut == self.Rule
 
     def test_strategies(self):
-        """ Test rule strategies.
-        """
+        """Test rule strategies."""
         r = self.shortcut()
         assert r.validate == r.succeed
         r = self.shortcut(min=2)
@@ -811,8 +773,7 @@ class RelativeDeltaRuleMixin(object):
         assert r.validate == r.check_range
 
     def test_succeed(self):
-        """ Test succeed strategy.
-        """
+        """Test succeed strategy."""
         errors = []
         r = self.shortcut()
 
@@ -823,8 +784,7 @@ class RelativeDeltaRuleMixin(object):
         assert v(r.now())
 
     def test_check_min(self):
-        """ Test check_min strategy.
-        """
+        """Test check_min strategy."""
         from datetime import timedelta
 
         errors = []
@@ -841,8 +801,7 @@ class RelativeDeltaRuleMixin(object):
         assert errors
 
     def test_check_max(self):
-        """ Test check_max strategy.
-        """
+        """Test check_max strategy."""
         from datetime import timedelta
 
         errors = []
@@ -859,8 +818,7 @@ class RelativeDeltaRuleMixin(object):
         assert errors
 
     def test_check_range(self):
-        """ Test check_range strategy.
-        """
+        """Test check_range strategy."""
         from datetime import timedelta
 
         errors = []
@@ -962,8 +920,7 @@ class RelativeUnixTimeDeltaRule(unittest.TestCase, RelativeDeltaRuleMixin):
         self.Rule = RelativeUnixTimeDeltaRule
 
     def test_shortcut(self):
-        """ Test rule shortcut.
-        """
+        """Test rule shortcut."""
         from wheezy.validation.rules import (
             RelativeUnixTimeDeltaRule,
             relative_timestamp,
