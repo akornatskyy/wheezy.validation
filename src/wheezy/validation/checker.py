@@ -1,8 +1,6 @@
 """ ``checker`` module.
 """
 
-from wheezy.validation.comp import __import__
-
 
 class Checker(object):
     """Intended to be used by unittest/doctest for validation rules.
@@ -21,7 +19,7 @@ class Checker(object):
         """Use `validator` for next series of checks."""
         if isinstance(validator, str):
             namespace, name = validator.rsplit(".", 1)
-            obj = __import__(namespace, None, None, [name])
+            obj = __import__(namespace, None, None, [name], 0)
             self.validator = getattr(obj, name)
         else:
             self.validator = validator

@@ -2,6 +2,7 @@
 """
 
 import unittest
+from decimal import Decimal
 
 
 class RulesTestCase(unittest.TestCase):
@@ -525,8 +526,6 @@ class RulesTestCase(unittest.TestCase):
         assert r.validate == r.check_range
         r = range(min=2, max=2)
         assert r.validate == r.check_range
-
-        from wheezy.validation.comp import Decimal
 
         r = range(min=Decimal(0))
         assert r.validate == r.check_min

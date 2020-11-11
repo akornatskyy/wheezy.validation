@@ -3,8 +3,7 @@
 
 import unittest
 from datetime import date, datetime, time
-
-from wheezy.validation.comp import PY3, Decimal  # noqa: I101
+from decimal import Decimal
 
 
 class TryUpdateModelTestCase(unittest.TestCase):
@@ -88,7 +87,6 @@ class TryUpdateModelTestCase(unittest.TestCase):
 class ValueProviderTestCase(unittest.TestCase):
     def test_bytes_value_provider(self):
         """Ensure `bytes_value_provider` converts to bytes correctly."""
-        from wheezy.validation.comp import bytes_type as b
         from wheezy.validation.model import bytes_value_provider
 
         def vp(s):
@@ -97,16 +95,15 @@ class ValueProviderTestCase(unittest.TestCase):
         expected = hello.encode("UTF-8")
         assert expected == vp(hello)
         assert expected == vp(hello.encode("UTF-8"))
-        assert isinstance(vp(hello), b)
-        assert ntob("100") == vp(100)
+        assert isinstance(vp(hello), bytes)
+        assert b"100" == vp(100)
 
         assert vp(None) is None
-        assert ntob("") == vp("")
-        assert ntob("  ") == vp("  ")
+        assert b"" == vp("")
+        assert b"  " == vp("  ")
 
     def test_str_value_provider(self):
         """Ensure `str_value_provider` converts to unicode string correctly."""
-        from wheezy.validation.comp import str_type as u
         from wheezy.validation.model import str_value_provider
 
         def vp(s):
@@ -114,12 +111,12 @@ class ValueProviderTestCase(unittest.TestCase):
 
         assert hello == vp(hello)
         assert hello == vp(hello.encode("UTF-8"))
-        assert isinstance(vp(hello), u)
-        assert u("100") == vp(100)
+        assert isinstance(vp(hello), str)
+        assert "100" == vp(100)
 
         assert vp(None) is None
-        assert u("") == vp("")
-        assert u("") == vp("  ")
+        assert "" == vp("")
+        assert "" == vp("  ")
 
     def test_int_value_provider(self):
         """Ensure `int_value_provider` is parsing input correctly."""
@@ -269,16 +266,3 @@ class User(object):
 
 
 hello = "\u043f\u0440\u0438\u0432\u0456\u0442"
-if not PY3:  # pragma: nocover
-    hello = unicode(hello, "unicode_escape")  # noqa: F821
-
-if PY3:  # pragma: nocover
-
-    def ntob(n):
-        return n.encode("UTF-8")
-
-
-else:  # pragma: nocover
-
-    def ntob(n):  # noqa
-        return n

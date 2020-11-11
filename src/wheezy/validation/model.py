@@ -2,17 +2,10 @@
 """
 
 from datetime import date, datetime, time
+from decimal import Decimal
+from gettext import NullTranslations
 from time import strptime
 
-from wheezy.validation.comp import (  # noqa: I101
-    PY3,
-    Decimal,
-    bytes_type,
-    null_translations,
-    ref_gettext,
-    str_type,
-    tob,
-)
 from wheezy.validation.i18n import (
     decimal_separator,
     default_date_input_format,
@@ -33,6 +26,9 @@ if not patch_strptime_cache_size():  # pragma: nocover
 del patch_strptime_cache_size
 
 
+null_translations = NullTranslations()
+
+
 def try_update_model(model, values, results, translations=None):
     """Try update `model` with `values` (a dict of lists or strings),
     any errors encountered put into `results` and use `translations`
@@ -40,7 +36,7 @@ def try_update_model(model, values, results, translations=None):
     """
     if translations is None:
         translations = null_translations
-    gettext = ref_gettext(translations)
+    gettext = translations.gettext
     if hasattr(model, "__iter__"):
         attribute_names = model
         model_type = type(model)
@@ -108,11 +104,11 @@ def bytes_value_provider(value, gettext):
     if value is None:
         return None
     t = type(value)
-    if t is bytes_type:
+    if t is bytes:
         return value
-    if t is str_type:
+    if t is str:
         return value.encode("UTF-8")
-    return tob(value)
+    return str(value).encode("UTF-8")
 
 
 def str_value_provider(value, gettext):
@@ -120,11 +116,11 @@ def str_value_provider(value, gettext):
     if value is None:
         return None
     t = type(value)
-    if t is str_type:
+    if t is str:
         return value.strip()
-    if t is bytes_type:
+    if t is bytes:
         return value.strip().decode("UTF-8")
-    return str_type(value)
+    return str(value)
 
 
 def int_value_provider(value, gettext):
@@ -266,9 +262,5 @@ value_providers = {
     "datetime": datetime_value_provider,
 }
 
-if PY3:  # pragma: nocover
-    value_providers["str"] = str_value_provider
-    value_providers["bytes"] = bytes_value_provider
-else:  # pragma: nocover
-    value_providers["str"] = bytes_value_provider
-    value_providers["unicode"] = str_value_provider
+value_providers["str"] = str_value_provider
+value_providers["bytes"] = bytes_value_provider

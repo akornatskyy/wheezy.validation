@@ -1,12 +1,11 @@
 """ ``validator`` module.
 """
 
-from wheezy.validation.comp import (
-    iteritems,
-    null_translations,
-    ref_getter,
-    ref_gettext,
-)
+from gettext import NullTranslations
+
+from wheezy.validation.comp import ref_getter
+
+null_translations = NullTranslations()
 
 
 class Validator(object):
@@ -22,7 +21,7 @@ class Validator(object):
         """
         rules = []
         inner = []
-        for name, value in iteritems(mapping):
+        for name, value in mapping.items():
             if hasattr(value, "__iter__"):
                 rules.append((name, tuple(value)))
             else:
@@ -44,7 +43,7 @@ class Validator(object):
         if gettext is None:
             if translations is None:
                 translations = null_translations
-            gettext = ref_gettext(translations)
+            gettext = translations.gettext
         succeed = True
         getter = ref_getter(model)
         for name, rules in self.rules:

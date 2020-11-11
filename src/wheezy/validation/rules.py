@@ -5,7 +5,7 @@ import re
 from datetime import date, datetime, time
 from time import time as unixtime
 
-from wheezy.validation.comp import ref_getter, regex_pattern
+from wheezy.validation.comp import ref_getter
 
 required_but_missing = [date.min, datetime.min, time.min]
 
@@ -269,7 +269,7 @@ class RegexRule(object):
         `negated` is `True` the rule succeed if the pattern
         not found.
         """
-        if isinstance(regex, regex_pattern):
+        if isinstance(regex, str):
             self.regex = re.compile(regex)
         else:
             self.regex = regex
