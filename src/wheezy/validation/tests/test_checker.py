@@ -3,6 +3,7 @@
 
 import unittest
 
+from wheezy.validation.checker import Checker, Model
 from wheezy.validation.rules import compare, email, length, one_of, required
 from wheezy.validation.validator import Validator
 
@@ -32,8 +33,6 @@ password_match_validator = Validator(
 
 class AccountValidatorTestCase(unittest.TestCase):
     def setUp(self):
-        from wheezy.validation.checker import Checker
-
         self.c = Checker(gettext=lambda t: str(t))
         self.c.use(account_validator)
 
@@ -61,8 +60,6 @@ class AccountValidatorTestCase(unittest.TestCase):
 
 class PasswordMatchValidatorTestCase(unittest.TestCase):
     def setUp(self):
-        from wheezy.validation.checker import Checker
-
         self.c = Checker(gettext=lambda t: str(t))
         self.c.use(
             "wheezy.validation.tests.test_checker." "password_match_validator"
@@ -77,8 +74,6 @@ class PasswordMatchValidatorTestCase(unittest.TestCase):
 
 class AccountValidatorAllErrorsTestCase(unittest.TestCase):
     def setUp(self):
-        from wheezy.validation.checker import Checker
-
         self.c = Checker(stop=False, gettext=lambda t: str(t))
         self.c.use(account_validator)
 
@@ -96,8 +91,6 @@ class AccountValidatorAllErrorsTestCase(unittest.TestCase):
 
 class ModelTestCase(unittest.TestCase):
     def test_items(self):
-        from wheezy.validation.checker import Model
-
         m = Model(a=1, b=2)
         assert [("a", 1), ("b", 2)] == sorted(m.items())
         assert 1 == m.a

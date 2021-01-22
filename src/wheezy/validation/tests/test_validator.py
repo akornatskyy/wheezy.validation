@@ -3,6 +3,9 @@
 
 import unittest
 
+from wheezy.validation.rules import length, required
+from wheezy.validation.validator import Validator
+
 
 class User(object):
     name = None
@@ -15,9 +18,6 @@ class Registration(object):
 
 class ValidatorTestCase(unittest.TestCase):
     def setUp(self):
-        from wheezy.validation.rules import length, required
-        from wheezy.validation.validator import Validator
-
         self.v = Validator({"name": [required, length(min=4)]})
 
     def test_stop_on_first_fail(self):
@@ -44,8 +44,6 @@ class ValidatorTestCase(unittest.TestCase):
 
     def test_nested(self):
         """Validator can nest other validator for composite objects."""
-        from wheezy.validation.validator import Validator
-
         rv = Validator({"user": self.v})
 
         errors = {}
@@ -56,8 +54,6 @@ class ValidatorTestCase(unittest.TestCase):
 
     def test_validation_succeed(self):
         """Validation succeed for valid input."""
-        from wheezy.validation.validator import Validator
-
         rv = Validator({"user": self.v})
 
         errors = {}

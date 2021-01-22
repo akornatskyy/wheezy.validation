@@ -5,6 +5,19 @@ import unittest
 from datetime import date, datetime, time
 from decimal import Decimal
 
+from wheezy.validation.model import (
+    bool_value_provider,
+    boolean_true_values,
+    bytes_value_provider,
+    date_value_provider,
+    datetime_value_provider,
+    float_value_provider,
+    int_value_provider,
+    str_value_provider,
+    time_value_provider,
+    try_update_model,
+)
+
 
 class TryUpdateModelTestCase(unittest.TestCase):
     def setUp(self):
@@ -22,8 +35,6 @@ class TryUpdateModelTestCase(unittest.TestCase):
 
     def test_update_class_instance(self):
         """Ensure try_update_model works with python class instance."""
-        from wheezy.validation.model import try_update_model
-
         errors = {}
         user = User()
 
@@ -45,8 +56,6 @@ class TryUpdateModelTestCase(unittest.TestCase):
 
     def test_update_dict(self):
         """Ensure try_update_model works with dict python object."""
-        from wheezy.validation.model import try_update_model
-
         errors = {}
         user = {"name": "", "age": "0", "extra": ""}
 
@@ -58,8 +67,6 @@ class TryUpdateModelTestCase(unittest.TestCase):
 
     def test_invalid_input(self):
         """Ensure errors and preserved original value for invalid input."""
-        from wheezy.validation.model import try_update_model
-
         self.values.update(
             {
                 "balance": ["x"],
@@ -87,7 +94,6 @@ class TryUpdateModelTestCase(unittest.TestCase):
 class ValueProviderTestCase(unittest.TestCase):
     def test_bytes_value_provider(self):
         """Ensure `bytes_value_provider` converts to bytes correctly."""
-        from wheezy.validation.model import bytes_value_provider
 
         def vp(s):
             return bytes_value_provider(s, lambda x: x)
@@ -104,7 +110,6 @@ class ValueProviderTestCase(unittest.TestCase):
 
     def test_str_value_provider(self):
         """Ensure `str_value_provider` converts to unicode string correctly."""
-        from wheezy.validation.model import str_value_provider
 
         def vp(s):
             return str_value_provider(s, lambda x: x)
@@ -120,7 +125,6 @@ class ValueProviderTestCase(unittest.TestCase):
 
     def test_int_value_provider(self):
         """Ensure `int_value_provider` is parsing input correctly."""
-        from wheezy.validation.model import int_value_provider
 
         def vp(s):
             return int_value_provider(s, lambda x: x)
@@ -158,10 +162,6 @@ class ValueProviderTestCase(unittest.TestCase):
 
     def test_bool_value_provider(self):
         """Ensure `bool_value_provider` is parsing input correctly."""
-        from wheezy.validation.model import (
-            bool_value_provider,
-            boolean_true_values,
-        )
 
         def vp(s):
             return bool_value_provider(s, lambda x: x)
@@ -178,7 +178,6 @@ class ValueProviderTestCase(unittest.TestCase):
 
     def test_float_value_provider(self):
         """Ensure `float_value_provider` is parsing input correctly."""
-        from wheezy.validation.model import float_value_provider
 
         def vp(s):
             return float_value_provider(s, lambda x: x)
@@ -194,7 +193,6 @@ class ValueProviderTestCase(unittest.TestCase):
 
     def test_date_value_provider(self):
         """Ensure `date_value_provider` is parsing input correctly."""
-        from wheezy.validation.model import date_value_provider
 
         def vp(s):
             return date_value_provider(s, lambda x: x)
@@ -213,7 +211,6 @@ class ValueProviderTestCase(unittest.TestCase):
 
     def test_time_value_provider(self):
         """Ensure `time_value_provider` is parsing input correctly."""
-        from wheezy.validation.model import time_value_provider
 
         def vp(s):
             return time_value_provider(s, lambda x: x)
@@ -230,7 +227,6 @@ class ValueProviderTestCase(unittest.TestCase):
 
     def test_datetime_value_provider(self):
         """Ensure `datetime_value_provider` is parsing input correctly."""
-        from wheezy.validation.model import datetime_value_provider
 
         def vp(s):
             return datetime_value_provider(s, lambda x: x)

@@ -4,6 +4,8 @@
 import unittest
 
 from wheezy.validation.mixin import ErrorsMixin, ValidationMixin
+from wheezy.validation.rules import required
+from wheezy.validation.validator import Validator
 
 
 class MyServiceA(ErrorsMixin):
@@ -50,9 +52,6 @@ class ValidationMixinTestCase(unittest.TestCase):
 
     def test_validate(self):
         """Ensure errors is updated by validator."""
-        from wheezy.validation.rules import required
-        from wheezy.validation.validator import Validator
-
         v = Validator({"name": [required]})
         user = {"name": "john"}
         s = MyServiceB()
