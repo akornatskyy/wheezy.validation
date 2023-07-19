@@ -22,7 +22,7 @@ Resources:
 ## Install
 
 [wheezy.validation](https://pypi.org/project/wheezy.validation/)
-requires [python](https://www.python.org) version 3.6+. It is independent of
+requires [python](https://www.python.org) version 3.8+. It is independent of
 operating system. You can install it from
 [pypi](https://pypi.org/project/wheezy.validation/):
 
