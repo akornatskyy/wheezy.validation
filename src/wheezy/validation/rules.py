@@ -2,11 +2,12 @@
 """
 
 import re
-from datetime import date, datetime, time
+from datetime import date, datetime, time, timezone
 from time import time as unixtime
 
 from wheezy.validation.comp import ref_getter
 
+UTC = timezone.utc
 required_but_missing = [date.min, datetime.min, time.min]
 
 
@@ -656,7 +657,7 @@ class RelativeUTCDateDeltaRule(RelativeDeltaRule):
     __slots__ = ()
 
     def now(self):
-        return datetime.utcnow().date()
+        return datetime.now(UTC).date()
 
 
 class RelativeTZDateDeltaRule(RelativeDeltaRule):
@@ -689,7 +690,7 @@ class RelativeUTCDateTimeDeltaRule(RelativeDeltaRule):
     __slots__ = ()
 
     def now(self):
-        return datetime.utcnow()
+        return datetime.now(UTC)
 
 
 class RelativeTZDateTimeDeltaRule(RelativeDeltaRule):
