@@ -1,7 +1,3 @@
-""" ``checker`` module.
-"""
-
-
 class Checker(object):
     """Intended to be used by unittest/doctest for validation rules.
     It is recommended to use test case per validator, test

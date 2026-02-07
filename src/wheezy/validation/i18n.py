@@ -1,7 +1,3 @@
-""" ``i18n`` module.
-"""
-
-
 def thousands_separator(gettext):
     # thousands separator
     return gettext(",")

@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wheezy.validation"
+dynamic = ["version"]
+description = "A lightweight object validation library"
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Andriy Kornatskyy", email = "andriy.kornatskyy@live.com" }]
+keywords = ["validation", "rules", "model"]
+classifiers = [
+  "Intended Audience :: Developers",
+  "Natural Language :: English",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = []
+
+[project.optional-dependencies]
+cython = ["Cython>=3.0", "setuptools>=61.0"]
+
+[project.urls]
+Homepage = "https://github.com/akornatskyy/wheezy.validation"
+Source = "https://github.com/akornatskyy/wheezy.validation"
+Issues = "https://github.com/akornatskyy/wheezy.validation/issues"
+
+[tool.setuptools]
+packages = ["wheezy.validation"]
+package-dir = { "" = "src" }
+zip-safe = false
+include-package-data = true
+
+# [tool.setuptools.package-data]
+# "wheezy.validation" = ["py.typed"]
+
+[tool.setuptools.dynamic]
+version = { attr = "wheezy.validation.__version__" }
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+
+[tool.coverage.run]
+source = ["src/wheezy/validation"]
+omit = ["*/test_*.py", "*/tests/*"]

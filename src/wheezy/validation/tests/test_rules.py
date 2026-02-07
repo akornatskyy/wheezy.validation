@@ -1,6 +1,3 @@
-""" Unit tests for ``wheezy.validation.rules``.
-"""
-
 import re
 import unittest
 from datetime import datetime, timedelta

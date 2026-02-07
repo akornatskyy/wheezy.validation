@@ -1,7 +1,3 @@
-""" ``mixin`` module.
-"""
-
-
 class ErrorsMixin(object):
     """Used primary by service layer to validate business rules.
 

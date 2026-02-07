@@ -1,6 +1,3 @@
-""" Unit tests for ``wheezy.validation.checker``.
-"""
-
 import unittest
 
 from wheezy.validation.checker import Checker, Model

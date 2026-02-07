@@ -1,7 +1,3 @@
-""" ``comp`` module.
-"""
-
-
 def ref_getter(model):
     # if model is a dict
     if hasattr(model, "__iter__"):

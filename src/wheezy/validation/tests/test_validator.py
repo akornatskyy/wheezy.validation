@@ -1,6 +1,3 @@
-""" Unit tests for ``wheezy.validation.validator``.
-"""
-
 import unittest
 
 from wheezy.validation.rules import length, required

@@ -1,6 +1,3 @@
-"""
-"""
-
 # flake8: noqa
 
 from wheezy.validation.mixin import ValidationMixin

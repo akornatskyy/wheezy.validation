@@ -1,6 +1,3 @@
-""" ``rules`` module.
-"""
-
 import re
 from datetime import date, datetime, time, timezone
 from time import time as unixtime

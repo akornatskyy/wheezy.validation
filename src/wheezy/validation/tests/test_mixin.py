@@ -1,6 +1,3 @@
-""" Unit tests for ``wheezy.validation.mixin``.
-"""
-
 import unittest
 
 from wheezy.validation.mixin import ErrorsMixin, ValidationMixin

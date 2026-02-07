@@ -1,6 +1,3 @@
-""" ``validator`` module.
-"""
-
 from gettext import NullTranslations
 
 from wheezy.validation.comp import ref_getter

@@ -1,6 +1,3 @@
-""" Unit tests for ``wheezy.validation.model``.
-"""
-
 import unittest
 from datetime import date, datetime, time
 from decimal import Decimal

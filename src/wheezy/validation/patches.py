@@ -1,7 +1,3 @@
-""" ``patches`` module.
-"""
-
-
 def patch_strptime_cache_size(max_size=100):
     """Patch for strptime regex cache max size."""
     try:  # pragma: nocover

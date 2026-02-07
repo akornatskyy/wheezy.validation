@@ -1,6 +1,3 @@
-""" ``model`` module.
-"""
-
 from datetime import date, datetime, time
 from decimal import Decimal
 from gettext import NullTranslations
@@ -24,7 +21,6 @@ if not patch_strptime_cache_size():  # pragma: nocover
     warn("Failed to patch _strptime._CACHE_MAX_SIZE")
     del warn
 del patch_strptime_cache_size
-
 
 null_translations = NullTranslations()
 

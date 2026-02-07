@@ -1,6 +1,6 @@
 # wheezy.validation
 
-[![Build Status](https://travis-ci.org/akornatskyy/wheezy.validation.svg?branch=master)](https://travis-ci.org/akornatskyy/wheezy.validation)
+[![tests](https://github.com/akornatskyy/wheezy.validation/actions/workflows/tests.yml/badge.svg)](https://github.com/akornatskyy/wheezy.validation/actions/workflows/tests.yml)
 [![Coverage Status](https://coveralls.io/repos/github/akornatskyy/wheezy.validation/badge.svg?branch=master)](https://coveralls.io/github/akornatskyy/wheezy.validation?branch=master)
 [![Documentation Status](https://readthedocs.org/projects/wheezyvalidation/badge/?version=latest)](https://wheezyvalidation.readthedocs.io/en/latest/?badge=latest)
 [![pypi version](https://badge.fury.io/py/wheezy.validation.svg)](https://badge.fury.io/py/wheezy.validation)
@@ -31,4 +31,4 @@ pip install -U wheezy.validation
 ```
 
 If you run into any issue or have comments, go ahead and add on
-[github](https://github.com/akornatskyywheezy.validation).
+[github](https://github.com/akornatskyy/wheezy.validation).
